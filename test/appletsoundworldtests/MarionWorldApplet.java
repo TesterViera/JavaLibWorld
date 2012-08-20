@@ -7,7 +7,7 @@ import javalib.worldimages.*;
 import java.util.*;
 
 //Created by Viera Proulx on 4/2/2012.
-//Copyright 2012 Northeastern University. All rights reserved.
+//LGPL license.
 
 public class MarionWorldApplet extends WorldApplet{
 
