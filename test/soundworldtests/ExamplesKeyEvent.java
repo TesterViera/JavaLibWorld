@@ -1,5 +1,6 @@
 package soundworldtests;
 
+
 import javalib.colors.Black;
 import javalib.colors.Blue;
 import javalib.colors.Green;
@@ -8,6 +9,7 @@ import javalib.colors.White;
 import javalib.colors.Yellow;
 import javalib.soundworld.World;
 import javalib.tunes.Note;
+import javalib.tunes.SoundConstants;
 import javalib.tunes.TuneBucket;
 import javalib.worldimages.DiskImage;
 import javalib.worldimages.Posn;
@@ -22,23 +24,12 @@ import tester.Tester;
  * This program is distributed under the terms of the 
  * GNU Lesser General Public License (LGPL)
  * 
- * <p>DrawFaceSound.java</p>
+ *  Testing the onTick and onKeyEvent methods.
  * 
- * <p>An example of the use of the drawing methods in the 'worldimages' library,
- * augmented to illustrate the behavior of the 'soundworld':</p>
- * 
- * <p>On tick the face changes every four ticks from happy to sad, 
- * one note plays for four ticks, another plays for the first two ticks only
- * the instrument changes from happy to sad (piano to tube)
- * 
- * <p>key events can play bird-tweet on "up" key,  change state with space bar,
- * force end of the world on "x", induce tick-controlled world ending through 
- * "q" key (by setting the condition that is evaluated on each tick)</p> 
- * 
- * @author Viera K. Proulx
- * @since 8 August 2012
+ * @author Virag Shah
+ * @since 15 November 2012
  */
-class DrawFace extends World{
+class KeyEvent extends World {
 
 	boolean happy = true;
 
@@ -48,7 +39,7 @@ class DrawFace extends World{
 	Note note2 = new Note("E4n2");
 	int tickCount = 0;
 
-	DrawFace(boolean happy){
+	KeyEvent(boolean happy){
 		super();
 		this.happy = happy;
 		this.tickCount = 0;
@@ -137,7 +128,7 @@ class DrawFace extends World{
 			this.tickTunes.addNote(this.instrument(), this.note2);
 		}
 		System.out.println("tick count: " + this.tickCount);
-		this.tickCount  = (this.tickCount + 1) % 4;    
+		this.tickCount  = (this.tickCount + 1) % 4;
 	}
 
 	// change the mood of the face is space bar is pressed,
@@ -154,8 +145,24 @@ class DrawFace extends World{
 		if (ke.equals("q"))
 			this.tickCount = 5;
 
-		if (ke.equals("up"))
+		if (ke.equals("a"))
 			this.keyTunes.addNote(BIRD_TWEET, new Note("G2n4"));
+
+		if (ke.equals("s"))
+			//this.keyTunes.addNote(BRASS_SECTION, new Note("A4s2"));
+			this.keyTunes.addNote(BIRD_TWEET, new Note("G2n4"));
+
+		if (ke.equals("d")) {
+			this.keyTunes.addNote(BAGPIPE, new Note("E2f4"));
+			this.keyTunes.addNote(BAGPIPE, new Note("C2n4"));
+			this.keyTunes.addNote(CLARINET, new Note("B2n4"));
+		}
+
+		if (ke.equals("f"))
+			this.keyTunes.addNote(CLARINET, new Note("B4n4"));
+
+		if (ke.equals("g"))
+			this.keyTunes.addNote(CLARINET, new Note("G2n4"));
 	}
 
 	// end the world if the key event upped the tick count
@@ -167,16 +174,16 @@ class DrawFace extends World{
 	}
 }
 
-class ExamplesDrawFace{
-	ExamplesDrawFace(){}
+class ExamplesKeyEvent {
+	ExamplesKeyEvent(){}
 
 	// two sample worlds
-	DrawFace dfw = new DrawFace(true);
-	DrawFace dfwSad = new DrawFace(false);
+	KeyEvent dfw = new KeyEvent(true);
+	KeyEvent dfwSad = new KeyEvent(false);
 
 	void resetDrawFace(){
-		this.dfw = new DrawFace(true);
-		this.dfwSad = new DrawFace(false);
+		this.dfw = new KeyEvent(true);
+		this.dfwSad = new KeyEvent(false);
 	}
 
 	// test the method onTick
@@ -248,39 +255,95 @@ class ExamplesDrawFace{
 
 		// test space key event once
 		resetDrawFace();
-		this.dfw.onKeyEvent(" ");
-		t.checkExpect(this.dfw, this.dfwSad);
+		this.dfw.testOnKey(" ");
+		t.checkExpect(this.dfw.happy, this.dfwSad.happy);
 
 		// test ignored key event
 		resetDrawFace();
-		this.dfw.onKeyEvent("b");
+		this.dfw.testOnKey("b");
 		t.checkExpect(this.dfw, this.dfw);
 
 		// test space key event again
 		resetDrawFace();
-		this.dfwSad.onKeyEvent(" ");
-		t.checkExpect(this.dfwSad, this.dfw); 
+		this.dfw.testOnKey(" ");
+		t.checkExpect(this.dfw.happy, this.dfwSad.happy);
 
 		// test world ending key event
-		this.dfw.onKeyEvent("x");
+		this.dfw.testOnKey("x");
 		t.checkExpect(this.dfw.lastWorld, new WorldEnd(true, this.dfw.makeImage()));
 
 		// test signal for world ending key event
-		this.dfw.onKeyEvent("q");
+		this.dfw.testOnKey("q");
 		t.checkExpect(this.dfw.tickCount, 5);
 		this.dfw.testOnTick();
 		t.checkExpect(this.dfw.lastWorld, new WorldEnd(true, this.dfw.makeImage()));   
 
 		// we need more tests here ....
+
+		resetDrawFace();
+		TuneBucket nowPlayingOnKeyPress = this.dfw.nowPlayingOnKeyPress();
+		t.checkExpect(nowPlayingOnKeyPress.bucketSize(), 0);
+		this.dfw.testOnKey("a");
+		this.dfw.testOnKey("s");
+		this.dfw.testOnKey("d");
+		t.checkExpect(nowPlayingOnKeyPress.bucketSize(), 5);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BIRD_TWEET, new Note("G2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("E2f4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("C2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B2n4")), true);
+
+		this.dfw.testOffKey("a");
+		nowPlayingOnKeyPress = this.dfw.nowPlayingOnKeyPress();
+		t.checkExpect(nowPlayingOnKeyPress.bucketSize(), 4);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BIRD_TWEET, new Note("G2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("E2f4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("C2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B2n4")), true);
+
+		this.dfw.testOnKey("f");
+		this.dfw.testOnKey("g");
+		nowPlayingOnKeyPress = this.dfw.nowPlayingOnKeyPress();
+		t.checkExpect(nowPlayingOnKeyPress.bucketSize(), 6);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BIRD_TWEET, new Note("G2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("E2f4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B4n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("G2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("C2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B2n4")), true);
+
+		this.dfw.testOffKey("s");
+		nowPlayingOnKeyPress = this.dfw.nowPlayingOnKeyPress();
+		t.checkExpect(nowPlayingOnKeyPress.bucketSize(), 5);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BIRD_TWEET, new Note("G2n4")), false);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("E2f4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B4n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("G2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("C2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B2n4")), true);
+
+		this.dfw.testOffKey("d");
+		nowPlayingOnKeyPress = this.dfw.nowPlayingOnKeyPress();
+		t.checkExpect(nowPlayingOnKeyPress.bucketSize(), 2);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("E2f4")), false);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B4n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("G2n4")), true);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.BAGPIPE, new Note("C2n4")), false);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B2n4")), false);
+
+		resetDrawFace();
+		nowPlayingOnKeyPress = this.dfw.nowPlayingOnKeyPress();
+		t.checkExpect(nowPlayingOnKeyPress.bucketSize(), 0);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("B4n4")), false);
+		t.checkExpect(nowPlayingOnKeyPress.contains(SoundConstants.CLARINET, new Note("G2n4")), false);
 	}
 
 	// run the tests and run the game
 	public static void main(String[] argv){
-		ExamplesDrawFace edf = new ExamplesDrawFace();
-		Tester.runReport(edf, false, false);
+		ExamplesKeyEvent eke = new ExamplesKeyEvent();
+		Tester.runReport(eke, false, false);
 
-		edf.resetDrawFace();
-		edf.dfw.bigBang(100, 100, 1.0 );
+		eke.resetDrawFace();
+		eke.dfw.bigBang(100, 100, 1.0 );
 	}
 
 }

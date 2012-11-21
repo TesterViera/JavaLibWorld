@@ -74,7 +74,7 @@ public class ExamplesTunesDemo implements SoundConstants{
     // test the 'copy' method for the class Chord
     Chord rc1 = new Chord("C4n1", "E4n1", "G4n1");
     Chord rc2 = rc1.copyChord();
-    t.checkExpect(rc1.equals(rc2), false);
+    t.checkExpect(rc1.equals(rc2), true);
     t.checkExpect(rc1, rc2);
   }
   

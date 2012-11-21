@@ -1,19 +1,33 @@
 package javalib.soundworld;
 
-import javalib.worldimages.*;
-import javalib.worldcanvas.*;
-
-import java.awt.Insets;
-import java.awt.event.*;
 import java.awt.Color;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javalib.tunes.MusicBox;
+import javalib.tunes.Note;
+import javalib.tunes.SoundConstants;
+import javalib.tunes.TuneBucket;
+import javalib.worldcanvas.WorldCanvas;
+import javalib.worldimages.CircleImage;
+import javalib.worldimages.Posn;
+import javalib.worldimages.TextImage;
+import javalib.worldimages.WorldEnd;
+import javalib.worldimages.WorldImage;
 
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
-
-import java.lang.reflect.Array;
-import java.util.*;
-
-import javalib.tunes.*;
 
 
 /**
@@ -27,8 +41,8 @@ import javalib.tunes.*;
  * World for programming interactive games - with graphics, key events,
  * timer, and sound effects. 
  * 
- * @author Viera K. Proulx
- * @since October 29, 2009, October 21 2010, July 12 2011, February 22 2012
+ * @author Viera K. Proulx, Virag Shah
+ * @since October 29, 2009, October 21 2010, July 12 2011, February 22 2012, 15 November 2012
  */
 abstract public class World implements SoundConstants, Versions{
 
@@ -48,7 +62,7 @@ abstract public class World implements SoundConstants, Versions{
   private volatile MyKeyAdapter ka;
   
   /** the currently pressed key */
-  private volatile ArrayList<String> pressedKeys;
+  private volatile ArrayList<String> pressedKeys = new ArrayList<String>();
   
   /** the mouse adapter for this world */
   private volatile MyMouseAdapter ma;
@@ -81,6 +95,9 @@ abstract public class World implements SoundConstants, Versions{
   
   /** the collection of tunes to play on key event */
   public TuneBucket keyTunes = new TuneBucket();  
+  
+  /** the collection of tunes currently playing on keys press */
+  protected volatile TuneBucket currentKeyTunes = new TuneBucket();
   
   /** the collection of tunes currently playing on key event */
   protected volatile HashMap<String,TuneBucket> keyReleasedTunes;
@@ -536,13 +553,26 @@ abstract public class World implements SoundConstants, Versions{
    * 
    */
   void processKeyReleasedEvent(String ke){
-    TuneBucket tmp = this.keyReleasedTunes.remove(ke);
-    this.pressedKeys.remove(ke);
-    if (tmp != null){
-      tmp.clearBucket();
-    }
-    // invoke user-defined onKeyReleased method
-    this.onKeyReleased(ke);
+	  TuneBucket tmp = this.keyReleasedTunes.remove(ke);
+	  this.pressedKeys.remove(ke);
+	  if (tmp != null) {
+		  if(!isPlaying(tmp))
+			  tmp.clearBucket();
+	  }
+	  // invoke user-defined onKeyReleased method
+	  this.onKeyReleased(ke);
+  }
+
+  /**
+   * The method checks if the given TuneBucket is still being played.
+   * Used to incorporate the scenario where two different keys are playing the 
+   * same tune on the same channel and if one key is released the tune should 
+   * still continue to play until the second key is released.
+   * @param tuneBucket the TuneBucket to check for
+   * @return true if keyReleasedTunes contains the TuneBucket as value. 
+   */
+  public boolean isPlaying(TuneBucket tuneBucket) {
+	  return this.keyReleasedTunes.containsValue(tuneBucket);
   }
 
   /**
@@ -567,42 +597,70 @@ abstract public class World implements SoundConstants, Versions{
    * @param ke the key that was pressed
    */
   public void testOnKey(String ke){
-    if (!this.pressedKeys.contains(ke)){
 
-      this.pressedKeys.add(ke);
+	  if (!this.pressedKeys.contains(ke)) {
 
-      // empty the key tune bucket
-      this.keyTunes.clearTunes();
+		  this.lastWorld = this.worldEnds();
+		  if (this.lastWorld.worldEnds) {
+			  this.stopWorld();
+		  }
 
-      this.onKeyEvent(ke); 
+		  this.pressedKeys.add(ke);
 
-      // play the tunes collected in the key tune bucket
-      // save what is currently playing so it plays for the desired
-      // number of ticks
-      this.keyReleasedTunes.put(ke, this.keyTunes.copy());
-      this.keyTunes.playTunes();
+		  // empty the key tune bucket
+		  this.keyTunes.clearTunes();
 
-      if (this.lastWorld.worldEnds)
-        // stop the world
-        this.stopWorld();
-    }        
+		  this.onKeyEvent(ke);
+
+		  // Only if tunes are added to the keyTunes bucket on key press,
+		  // add it to the keyReleasedTunes hashmap and the currentKeyTunes 
+		  // list so that it can be tested against.
+		  // Play the collected tunes in the keyTunes bucket.
+		  if(this.keyTunes.bucketSize() > 0) {
+			  this.keyReleasedTunes.put(ke, this.keyTunes.copy());
+			  this.currentKeyTunes.add(this.keyTunes);
+			  this.keyTunes.playTunes();
+		  }
+
+		  if (this.worldExists)
+			  this.drawWorld("");
+	  } 
   }
-  
+
   /**
    * Test the release of the key after some time since the press
    * 
    * @param ke the key that was released
    */
-  public void testOffKey(String ke){
-    TuneBucket tmp = this.keyReleasedTunes.remove(ke);
-    this.pressedKeys.remove(ke);
-    if (tmp != null){
-      tmp.clearBucket();
-    }
-    // invoke user-defined onKeyReleased method
-    this.onKeyReleased(ke);
+  public void testOffKey(String ke) {
+	  TuneBucket tmp = this.keyReleasedTunes.remove(ke);
+	  this.pressedKeys.remove(ke);
+
+	  if (tmp != null) {
+		  /** Remove only the tunes/notes associated with the corresponding key released. */
+		  for (int i = 0; i < 16; i++) {
+			  ArrayList<Note> notes = tmp.tunes.get(i).getChord().notes;
+			  for(Note n : notes)
+				  this.currentKeyTunes.tunes.get(i).getChord().notes.remove(n);		
+		  }
+		  tmp.clearBucket();
+	  }
+	  // invoke user-defined onKeyReleased method
+	  this.onKeyReleased(ke);
   }
-  
+
+
+  /**
+   * Allow the programmer to check that the currently playing tunes are those
+   * that have been provided by the previous <code>onKeyEvent</code> method 
+   * invocations.
+   * 
+   * @return the <code>TuneBucket</code> that contains all currently playing 
+   * tunes on key press
+   */
+  public TuneBucket nowPlayingOnKeyPress(){
+	  return this.currentKeyTunes;
+  }
   
  
   /**
