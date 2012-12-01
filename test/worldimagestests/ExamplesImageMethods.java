@@ -563,17 +563,17 @@ public class ExamplesImageMethods implements IExamples{
   // Tests for the FromFileImage class
   void testFromFileImage(Tester t){
     t.checkExpect(this.fromFile1.toString(), 
-        "new FromFileImage(this.pinhole = (20, 30)" + 
+        "new FromFileImage(this.pinhole = (20, 30), " + 
             "\nthis.fileName = Images/shark.png)\n");
     WorldImage fromFile5 = this.fromFile2.getMovedImage(10, 0);
           
-    t.checkExpect(this.fromFile1, this.fromFile2, "fails in pinhole.x");
-    t.checkExpect(this.fromFile1, this.fromFile3, "fails in pinhole.y");
-    t.checkExpect(this.fromFile3, this.fromFile4, "fails in fileName");
+    t.checkFail(this.fromFile1, this.fromFile2, "fails in pinhole.x");
+    t.checkFail(this.fromFile1, this.fromFile3, "fails in pinhole.y");
+    t.checkFail(this.fromFile3, this.fromFile4, "fails in fileName");
     t.checkExpect(this.fromFile1, fromFile5);
 
-    t.checkExpect(this.fromFile1, this.text1, "fails - different classes");
-    t.checkExpect(this.line2, this.fromFile4, "fails - different classes");   
+    t.checkFail(this.fromFile1, this.text1, "fails - different classes");
+    t.checkFail(this.line2, this.fromFile4, "fails - different classes");   
     
     t.checkExpect(this.fromFile1.getMovedImage(-10, 0), this.fromFile2);
     t.checkExpect(this.fromFile1.getMovedImage(0, 10), this.fromFile3);

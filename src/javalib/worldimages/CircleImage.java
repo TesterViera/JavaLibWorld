@@ -115,9 +115,9 @@ public class CircleImage extends WorldImage{
    * Produce a <code>String</code> representation of this circle image
    */
   public String toString(){
-    return "new CircleImage(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y + 
-        "), \nthis.color = " + this.color.toString() + 
+    return "new CircleImage(this.pinhole = " +
+        this.pinhole.toString() +
+        ", \nthis.color = " + this.color.toString() + 
         "\nthis.radius = " + this.radius + ")\n";
   }
   

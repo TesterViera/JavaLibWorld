@@ -149,9 +149,9 @@ public class FromFileImage extends WorldImage{
    * Produce a <code>String</code> representation of this from-file image
    */
   public String toString(){
-    return "new FromFileImage(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y +  
-        ")\nthis.fileName = " + this.fileName +")\n";
+    return "new FromFileImage(this.pinhole = " +
+        this.pinhole.toString() +
+        ", \nthis.fileName = " + this.fileName +")\n";
   }
  
   /**

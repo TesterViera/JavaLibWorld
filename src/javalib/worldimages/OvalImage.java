@@ -123,10 +123,10 @@ public class OvalImage extends WorldImage{
    * Produce a <code>String</code> representation of this oval image
    */
   public String toString(){
-    return "new OvalImage(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y + 
-        "), \nthis.color = " + this.color.toString() + 
-        "\nthis.width = " + width + ", this.height = " + height +")\n";
+    return "new OvalImage(this.pinhole = " +
+        this.pinhole.toString() +
+        ", \nthis.color = " + this.color.toString() + 
+        ", \nthis.width = " + width + ", this.height = " + height +")\n";
   }
  
   /**

@@ -147,10 +147,10 @@ public class LineImage extends WorldImage{
    * Produce a <code>String</code> representation of this triangle image
    */
   public String toString(){
-    return "new LineImage(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y +  
-        "), \nthis.color = " + this.color.toString() + 
-        "\nthis.startPoint = (" + this.startPoint.x + ", " + this.startPoint.y +
+    return "new LineImage(this.pinhole = " +
+        this.pinhole.toString() +
+        ", \nthis.color = " + this.color.toString() + 
+        ", \nthis.startPoint = (" + this.startPoint.x + ", " + this.startPoint.y +
         "), \nthis.endPoint = (" + this.endPoint.x + ", " + this.endPoint.y +
         "))\n";
   }

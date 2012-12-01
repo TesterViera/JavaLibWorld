@@ -150,13 +150,13 @@ public class OverlayImagesXY extends WorldImage{
    * Produce a <code>String</code> representation of this overlay of images
    */
   public String toString(){
-    return "new OverlayImagesXY(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y + 
-        "), \nthis.color = " + this.color.toString() + 
-        "\nthis.dx = " + this.dx + 
+    return "new OverlayImagesXY(this.pinhole = " +
+        this.pinhole.toString() +
+        ", \nthis.color = " + this.color.toString() + 
+        ", \nthis.dx = " + this.dx + 
         ", this.dy = " + this.dy + "," +
         "\nthis.bot = " + this.bot.toString() + 
-        "\nthis.top = " + this.top.toString() + ")\n";
+        ", \nthis.top = " + this.top.toString() + ")\n";
   }
  
   /**

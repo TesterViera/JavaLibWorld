@@ -47,11 +47,11 @@ public class OverlayImages extends OverlayImagesXY{
    * Produce a <code>String</code> representation of this overlay of images
    */
   public String toString(){
-    return "new OverlayImages(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y + 
-        "), \nthis.color = " + this.color.toString() + 
-        "\nthis.bot = " + this.bot.toString() +  
-        "\nthis.top = " + this.top.toString() + ")\n";
+    return "new OverlayImages(this.pinhole = " +
+        this.pinhole.toString() +
+        ", \nthis.color = " + this.color.toString() + 
+        ", \nthis.bot = " + this.bot.toString() +  
+        ", \nthis.top = " + this.top.toString() + ")\n";
   }
  
   /**

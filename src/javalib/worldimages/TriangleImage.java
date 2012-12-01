@@ -155,10 +155,10 @@ public class TriangleImage extends WorldImage{
    * Produce a <code>String</code> representation of this triangle image
    */
   public String toString(){
-    return "new TriangleImage(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y +  
-        "), \nthis.color = " + this.color.toString() +
-        "\nthis.p1 = (" + this.p1.x + ", " + this.p1.y +
+    return "new TriangleImage(this.pinhole = " +
+        this.pinhole.toString() +
+        ", \nthis.color = " + this.color.toString() +
+        ", \nthis.p1 = (" + this.p1.x + ", " + this.p1.y +
         "), \nthis.p2 = (" + this.p2.x + ", " + this.p2.y +
         "), \nthis.p3 = (" + this.p3.x + ", " + this.p3.y +
         "))\n";

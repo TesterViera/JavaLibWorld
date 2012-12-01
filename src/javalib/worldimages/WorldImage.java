@@ -56,7 +56,8 @@ public abstract class WorldImage{
   abstract public void draw(Graphics2D g);
   
   /**
-   * Produce the image with the pinhole moved by the given (dx, dy)
+   * Produce the image with the pinhole moved by the given (dx, dy).
+   * Functional; does NOT modify this!
    * 
    * @param dx the horizontal offset
    * @param dy the vertical offset
@@ -64,12 +65,23 @@ public abstract class WorldImage{
   abstract public WorldImage getMovedImage(int dx, int dy);
   
   /**
-   * Produce the image with the pinhole moved to the given location
+   * Produce the image with the pinhole moved to the given location.
+   * Functional; does NOT modify this!
    * 
    * @param p the given location
    */
   abstract public WorldImage getMovedTo(Posn p);
   
+  /**
+   * Produce the image with the pinhole moved to the given location.
+   * Functional; does NOT modify this!
+   * 
+   * @param x, y   the coordinates of the given location
+   */
+  public WorldImage getMovedTo (int x, int y) {
+      return this.getMovedTo (new Posn (x, y));
+    }
+    
   /**
    * EFFECT:
    * Move the pinhole for this image by the given offset.
@@ -91,6 +103,17 @@ public abstract class WorldImage{
   public void moveTo(Posn p){
     this.pinhole.x = p.x;
     this.pinhole.y = p.y;
+  }
+  
+  /**
+   * EFFECT:
+   * Move the pinhole for this image to the given location.
+   * 
+   * @param x, y  the coordinates of the given location
+   */
+  public void moveTo(int x, int y){
+    this.pinhole.x = x;
+    this.pinhole.y = y;
   }
   
   /**

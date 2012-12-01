@@ -15,4 +15,8 @@ public class Posn {
     this.x = x;
     this.y = y;
   }
+  
+  public String toString () {
+      return "(" + this.x + ", " + this.y + ")";
+    }
 }

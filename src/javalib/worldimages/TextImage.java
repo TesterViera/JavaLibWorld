@@ -320,10 +320,10 @@ public class TextImage extends WorldImage{
    */
   public String toString(){
     char c = '"';
-    return "new TextImage(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y +  
-        "), \nthis.color = " + this.color.toString() + 
-        "\nthis.size = " + this.size + ", this.style = " + this.style +
+    return "new TextImage(this.pinhole = " +
+        this.pinhole.toString() +
+        ", \nthis.color = " + this.color.toString() + 
+        ", \nthis.size = " + this.size + ", this.style = " + this.style +
         ", this.alignment = " + this.alignment + 
         "\n" + c + this.text + c + ")\n";
   }
