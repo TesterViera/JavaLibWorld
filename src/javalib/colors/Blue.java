@@ -13,14 +13,16 @@ public class Blue implements IColor {
   /** An instance of this Color */
   private static Color myColor = new Color(0, 0, 255);
   
-  public Blue(){ }
+  public Blue(){ 
+    myColor = new Color (0, 0, 255);
+    }
   
   /**
    * Provide the <code>Color</code> represented by this class
-   * @return black color
+   * @return blue color
    */
   public Color thisColor(){
-    return myColor;
+    return new java.awt.Color (0, 0, 255);
   }
   
   /**

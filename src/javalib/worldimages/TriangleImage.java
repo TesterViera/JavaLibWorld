@@ -117,6 +117,9 @@ public class TriangleImage extends WorldImage{
     this.p2.y = this.p2.y + dy;
     this.p3.x = this.p3.x + dx;
     this.p3.y = this.p3.y + dy;
+    // sbloch, 12/2/2012: Note that poly doesn't refer to p1, p2, and p3, so mutating
+    // them has no effect on poly.  So we need...
+    // this.poly.translate(dx, dy);
   }
 
   /**
@@ -158,10 +161,10 @@ public class TriangleImage extends WorldImage{
     return "new TriangleImage(this.pinhole = " +
         this.pinhole.toString() +
         ", \nthis.color = " + this.color.toString() +
-        ", \nthis.p1 = (" + this.p1.x + ", " + this.p1.y +
-        "), \nthis.p2 = (" + this.p2.x + ", " + this.p2.y +
-        "), \nthis.p3 = (" + this.p3.x + ", " + this.p3.y +
-        "))\n";
+        ", \nthis.p1 = " + this.p1.toString() +
+        ", \nthis.p2 = " + this.p2.toString() +
+        ", \nthis.p3 = " + this.p3.toString() +
+        ")\n";
   }
  
   /**
@@ -176,10 +179,10 @@ public class TriangleImage extends WorldImage{
     return classNameString(indent, "TriangleImage") + 
         pinholeString(indent, this.pinhole) + 
         colorString(indent, this.color) + 
-        "\n" + indent + "this.p1 = (" + this.p1.x + ", " + this.p1.y +
-        "), \n" + indent + "this.p2 = (" + this.p2.x + ", " + this.p2.y +
-        "), \n" + indent + "this.p3 = (" + this.p3.x + ", " + this.p3.y +
-        "))\n";
+        "\n" + indent + "this.p1 = " + p1.toString() +
+        "\n" + indent + "this.p2 = " + p2.toString() +
+        "\n" + indent + "this.p3 = " + p3.toString() +
+        ")\n";
   }
   
   /**

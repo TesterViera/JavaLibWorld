@@ -1,5 +1,8 @@
-.project
-.classpath
-.settings
+*.project
+*.classpath
+*.settings
 bin/
 /target
+*.class
+*.ctxt
+*.bluej
