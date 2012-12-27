@@ -8,9 +8,11 @@ import javalib.worldimages.*;
 
 
 /**
- * Copyright 2012 Viera K. Proulx
+ * Copyright 2012 Viera K. Proulx, ported by Stephen Bloch
  * This program is distributed under the terms of the 
  * GNU Lesser General Public License (LGPL)
+ * 
+ * @version Ported to new API, Dec. 26, 2012
  */
 
 //-----------------------------------------------------------------------------
@@ -31,10 +33,9 @@ public class ExamplesWorld extends World{
   // just a red ball moving across the screen
   public WorldImage makeImage(){
     return 
-    new OverlayImages(new RectangleImage(this.pos, 60, 20, new Red()),
-      new OverlayImages(new TextImage(this.pos, "hello", 12, 0, new Blue()),
-        new LineImage(this.pos, new Posn(this.pos.x + 5, this.pos.y - 5), 
-            new Black())));
+        AImage.makeRectangle (60, 20, new Red()).moved(this.pos)
+            .overlay (AImage.makeText ("hello", 12, new Blue()).moved(this.pos),
+                      AImage.makeLine (this.pos, this.pos.addPosn(new Posn(5,-5))));
   }
 
   // test all kinds of actions using key events:
@@ -66,9 +67,8 @@ public class ExamplesWorld extends World{
     if (this.worldEnd)
       return 
       new WorldEnd(true, 
-          new OverlayImages(this.makeImage(),
-          new TextImage(new Posn(100, 40), 
-              "End of the World!!", 13, Color.red)));
+          this.makeImage()
+            .overlay (AImage.makeText ("End of the World!!", 13, Color.red).moved (100,40)));
     else
        return new WorldEnd(false, this.makeImage());
    }
