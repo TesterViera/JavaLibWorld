@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -11,14 +11,14 @@ import java.awt.image.BufferedImage;
  */
 public class FreezeImage extends RasterImage
 {
-    private Image base;
+    private WorldImage base;
     
     /**
      * Constructor for a frozen (memoized) image.
      * 
      * @param base    the existing image to freeze
      */
-    private FreezeImage (Image base)
+    private FreezeImage (WorldImage base)
     {
         this.base = base;
     }
@@ -28,7 +28,7 @@ public class FreezeImage extends RasterImage
      * 
      * @param base    the existing image to freeze
      */
-    static Image make (Image base)
+    static WorldImage make (WorldImage base)
     {
         if (base instanceof FreezeImage)
             return base;

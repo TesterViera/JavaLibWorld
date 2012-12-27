@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import java.net.URL;
 import java.net.URI;
@@ -23,7 +23,7 @@ public class FromURLImage extends RasterImage
      * 
      * @param urlString
      */
-    static Image make (String urlString)
+    static WorldImage make (String urlString)
     {
         try
         {

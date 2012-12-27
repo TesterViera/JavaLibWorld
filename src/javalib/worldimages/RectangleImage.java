@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import javalib.colors.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.geom.*;
  * @author Stephen Bloch
  * @version Dec. 5, 2012
  */
-public class RectangleImage extends RectangularImage
+class RectangleImage extends RectangularImage
 {    
     /**
      * The full constructor for a RectangleImage.
@@ -20,56 +20,93 @@ public class RectangleImage extends RectangularImage
      * @param height
      * @param color
      */
-    public RectangleImage (int width, int height, Color color, Mode mode) {
+    protected RectangleImage (int width, int height, Color color, Mode mode) {
         super (width, height, color, mode);
     }
     
     /**
-     * Pseudo-constructor
+     * The full pseudo-constructor
      * 
      * @param width
      * @param height
      * @param color
      * @param mode
      */
-    public static RectangleImage make (int width, int height, Color color, Mode mode)
+    static RectangleImage make (int width, int height, Color color, Mode mode)
     {
         return new RectangleImage (width, height, color, mode);
     }
     
     /**
-     * Another constructor that takes in an <code>{@link IColor}IColor</code>.
+     * Pseudo-constructor with an IColor
      * 
      * @param width
      * @param height
      * @param color
      * @param mode
      */
-    public RectangleImage (int width, int height, IColor color, Mode mode) {
-        super(width, height, color, mode);
+    static RectangleImage make (int width, int height, IColor color, Mode mode)
+    {
+        return new RectangleImage (width, height, color.thisColor(), mode);
     }
     
     /**
-     * Pseudo-constructor
+     * Pseudo-constructor with a default color
+     * 
+     * @param width
+     * @param height
+     * @param mode
+     */
+    static RectangleImage make (int width, int height, Mode mode)
+    {
+        return new RectangleImage (width, height, Color.black, mode);
+    }
+    
+    /**
+     * Pseudo-constructor with a Color and a default mode.
      * 
      * @param width
      * @param height
      * @param color
      */
-    public static RectangleImage make (int width, int height, IColor color, Mode mode)
+    static RectangleImage make (int width, int height, Color color)
     {
-        return new RectangleImage (width, height, color, mode);
+        return new RectangleImage (width, height, color, Mode.OUTLINED);
     }
     
-    public RectangularImage replaceDimensions (int width, int height) {
+    /**
+     * Pseudo-constructor with an IColor and a default mode.
+     * 
+     * @param width
+     * @param height
+     * @param color
+     */
+    static RectangleImage make (int width, int height, IColor color)
+    {
+        return new RectangleImage (width, height, color.thisColor(), Mode.OUTLINED);
+    }
+    
+    /**
+     * Pseudo-constructor with a default color and mode.
+     * 
+     * @param width
+     * @param height
+     */
+    static RectangleImage make (int width, int height)
+    {
+        return new RectangleImage (width, height, Color.black, Mode.OUTLINED);
+    }
+    
+    
+    RectangularImage replaceDimensions (int width, int height) {
         return new RectangleImage (getWidth(), getHeight(), this.getColor(), this.getMode());
     }
     
-    public ColoredImage replaceColor (Color newColor) {
+    ColoredImage replaceColor (Color newColor) {
         return new RectangleImage (this.getWidth(), this.getHeight(), newColor, this.getMode());
     }
     
-    public ColoredImage replaceMode (Mode newMode)
+    ColoredImage replaceMode (Mode newMode)
     {
         return new RectangleImage (this.getWidth(), this.getHeight(), this.getColor(), newMode);
     }

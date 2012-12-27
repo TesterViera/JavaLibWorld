@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 import javalib.colors.*;
 import java.awt.Color;
 
@@ -9,7 +9,7 @@ import java.awt.Color;
  * @author Stephen Bloch
  * @version Dec. 24, 2012
  */
-public abstract class ColoredImage extends AImage
+abstract class ColoredImage extends AImage
 {
     private Color color;
     private Mode mode;
@@ -62,9 +62,9 @@ public abstract class ColoredImage extends AImage
      * @param newColor
      * @return a new image just like this one but with a different color
      */
-    public abstract ColoredImage replaceColor (Color newColor);
+    abstract ColoredImage replaceColor (Color newColor);
     
-    public ColoredImage replaceColor (IColor newColor) {
+    ColoredImage replaceColor (IColor newColor) {
         return this.replaceColor (newColor.thisColor());
     }
     
@@ -76,7 +76,7 @@ public abstract class ColoredImage extends AImage
      * @param newMode
      * @return a new image just like this one but with a different mode
      */
-    public abstract ColoredImage replaceMode (Mode newMode);
+    abstract ColoredImage replaceMode (Mode newMode);
     
     public boolean equals (Object other) {
         return super.equals(other) &&

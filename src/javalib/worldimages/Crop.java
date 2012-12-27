@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 
 /**
@@ -9,7 +9,7 @@ package javalib.sbimages;
  */
 public class Crop extends AImage
 {
-    private Image base;
+    private WorldImage base;
     private int left, right, top, bottom;
 
     /**
@@ -18,7 +18,7 @@ public class Crop extends AImage
      * @param base     the image to crop
      * @param left, right, top, bottom   the borders to crop to
      */
-    static Image make (Image base, int left, int right, int top, int bottom)
+    static WorldImage make (WorldImage base, int left, int right, int top, int bottom)
     {
         if (left <= base.getLeft() &&
             right >= base.getRight() &&
@@ -35,7 +35,7 @@ public class Crop extends AImage
      * @param base     the image to crop
      * @param left, right, top, bottom   the borders to crop to
      */
-    Crop(Image base, int left, int right, int top, int bottom)
+    Crop(WorldImage base, int left, int right, int top, int bottom)
     {
         this.base = base;
         this.left = Math.max(base.getLeft(), left);

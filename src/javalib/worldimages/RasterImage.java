@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import java.awt.image.RenderedImage;
 import java.awt.Graphics2D;
@@ -20,7 +20,7 @@ public class RasterImage extends AImage
      * 
      * @param rendering
      */
-    RasterImage (RenderedImage rendering)
+    protected RasterImage (RenderedImage rendering)
     {
         this.rendering = rendering;
     }
@@ -28,9 +28,19 @@ public class RasterImage extends AImage
     /**
      * Default constructor so subclasses can start without a rendering and fill it in later.
      */
-    RasterImage ()
+    protected RasterImage ()
     {
         this.rendering = null; // let's be explicit about this
+    }
+    
+    /**
+     * Pseudo-constructor.
+     * 
+     * @param rendering
+     */
+    static RasterImage make (RenderedImage rendering)
+    {
+        return new RasterImage (rendering);
     }
     
     /**

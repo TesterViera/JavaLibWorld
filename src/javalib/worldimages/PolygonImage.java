@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import javalib.colors.*;
 
@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author adapted by Stephen Bloch from Viera Proulx's TriangleImage class
  * @since Dec 24 2012
  */
-public class PolygonImage extends ColoredImage{
+class PolygonImage extends ColoredImage{
   protected Polygon poly;
   protected int[] xcoord, ycoord;
   private int left, top, right, bottom;
@@ -21,12 +21,11 @@ public class PolygonImage extends ColoredImage{
   /**
    * A full constructor for this Polygon image.
    * 
-   * @param p1 the first point of this Polygon
-   * @param p2 the second point of this Polygon
-   * @param p3 the third point of this Polygon
    * @param color the color for this image
+   * @param mode either FILLED or OUTLINED
+   * @param points the vertices of this Polygon
    */ 
-  public PolygonImage(Color color, Mode mode, Posn... points){
+  protected PolygonImage(Color color, Mode mode, Posn... points){
     super(color, mode);
     this.xcoord = new int[points.length];
     this.ycoord = new int[points.length];
@@ -40,6 +39,32 @@ public class PolygonImage extends ColoredImage{
     
     this.computeBounds();
   }
+  
+    static PolygonImage make(Color color, Mode mode, Posn... points)
+    {
+      return new PolygonImage (color, mode, points);
+    }
+    static PolygonImage make(IColor color, Mode mode, Posn... points)
+    {
+        return new PolygonImage (color.thisColor(), mode, points);
+    }
+    static PolygonImage make(Mode mode, Posn... points)
+    {
+        return new PolygonImage (Color.black, mode, points);
+    }
+    static PolygonImage make(Color color, Posn... points)
+    {
+      return new PolygonImage (color, Mode.OUTLINED, points);
+    }
+        static PolygonImage make(IColor color, Posn... points)
+    {
+        return new PolygonImage (color.thisColor(), Mode.OUTLINED, points);
+    }
+    static PolygonImage make(Posn... points)
+    {
+        return new PolygonImage (Color.black, Mode.OUTLINED, points);
+    }
+    
   
   private void computeBounds()
   {
@@ -91,11 +116,10 @@ public class PolygonImage extends ColoredImage{
       return this.top;
   }
     
-    public int getBottom ()
-    {
-        return this.bottom;
-    }
-    
+  public int getBottom ()
+  {
+      return this.bottom;
+  }
  
   public void draw(Graphics2D g){
     // save the current paint
@@ -118,12 +142,12 @@ public class PolygonImage extends ColoredImage{
   public ColoredImage replaceColor (Color newColor)
   {
       return new PolygonImage (newColor, this.getMode(), this.xcoord, this.ycoord);
-    }
+  }
     
-    public ColoredImage replaceMode (Mode newMode)
-    {
-        return new PolygonImage (this.getColor(), newMode, this.xcoord, this.ycoord);
-    }
+  public ColoredImage replaceMode (Mode newMode)
+  {
+      return new PolygonImage (this.getColor(), newMode, this.xcoord, this.ycoord);
+  }
   
   /**
    * Is this <code>PolygonImage</code> same as the given object?

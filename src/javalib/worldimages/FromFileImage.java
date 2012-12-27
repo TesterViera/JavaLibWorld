@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -36,7 +36,7 @@ public class FromFileImage extends RasterImage{
    * 
    * @param fileName
    */
-  static Image make (String fileName)
+  static WorldImage make (String fileName)
   {
       if (isApplet)
       {

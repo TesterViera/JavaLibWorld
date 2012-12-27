@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import javalib.colors.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.geom.*;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class EllipseImage extends RectangularImage
+class EllipseImage extends RectangularImage
 {    
     /**
      * The full constructor for an EllipseImage.
@@ -20,7 +20,7 @@ public class EllipseImage extends RectangularImage
      * @param height
      * @param color
      */
-    public EllipseImage (int width, int height, Color color, Mode mode) {
+    protected EllipseImage (int width, int height, Color color, Mode mode) {
         super (width, height, color, mode);
     }
     
@@ -30,40 +30,83 @@ public class EllipseImage extends RectangularImage
      * @param width
      * @param height
      * @param color
+     * @param mode
      */
-    public static EllipseImage make (int width, int height, Color color, Mode mode)
+  static EllipseImage make (int width, int height, Color color, Mode mode)
     {
         return new EllipseImage (width, height, color, mode);
     }
     
     /**
-     * Another constructor that takes in an <code>{@link IColor}IColor</code>.
+     * Pseudo-constructor.
+     * 
+     * @param width
+     * @param height
+     * @param color
+     * @param mode
+     */
+    static EllipseImage make (int width, int height, IColor color, Mode mode)
+    {
+        return new EllipseImage (width, height, color.thisColor(), mode);
+    }
+    
+    /**
+     * Another pseudo-constructor with a default color.
+     * 
+     * @param width
+     * @param height
+     * @param mode
+     */
+    static EllipseImage make (int width, int height, Mode mode)
+    {
+        return new EllipseImage (width, height, Color.black, mode);
+    }
+    
+    /**
+     * Pseudo-constructor.
      * 
      * @param width
      * @param height
      * @param color
      */
-    public EllipseImage (int width, int height, IColor color, Mode mode) {
-        super(width, height, color, mode);
+    static EllipseImage make (int width, int height, Color color)
+    {
+        return new EllipseImage (width, height, color, Mode.OUTLINED);
     }
     
     /**
      * Pseudo-constructor.
+     * 
+     * @param width
+     * @param height
+     * @param color
      */
-    public static EllipseImage make (int width, int height, IColor color, Mode mode)
+    static EllipseImage make (int width, int height, IColor color)
     {
-        return new EllipseImage (width, height, color, mode);
+        return new EllipseImage (width, height, color.thisColor(), Mode.OUTLINED);
     }
     
-    public RectangularImage replaceDimensions (int width, int height) {
+    /**
+     * Another pseudo-constructor with a default color.
+     * 
+     * @param width
+     * @param height
+     */
+    static EllipseImage make (int width, int height)
+    {
+        return new EllipseImage (width, height, Color.black, Mode.OUTLINED);
+    }
+    
+    
+    RectangularImage replaceDimensions (int width, int height) {
         return new EllipseImage (width, height, this.getColor(), this.getMode());
     }
     
-    public ColoredImage replaceColor (Color color) {
+    ColoredImage replaceColor (Color color) {
         return new EllipseImage (this.getWidth(), this.getHeight(), color, this.getMode());
     }
     
-    public ColoredImage replaceMode (Mode mode)
+    ColoredImage replaceMode (Mode mode)
     {
         return new EllipseImage (this.getWidth(), this.getHeight(), this.getColor(), mode);
     }

@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 
 /**
@@ -22,14 +22,14 @@ import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 
 
-public class TextImage extends ColoredImage{
+class TextImage extends ColoredImage{
   
   /** the text to be shown */
   private String text;
   
   /** the size of the font to use: the default here is 13 */
   private float size;
-  private static final float defaultSize = 13.0f;
+  static final float defaultSize = 13.0f;
   
   private TextStyle style;
   
@@ -58,7 +58,7 @@ public class TextImage extends ColoredImage{
    * @param style the style of the font: (regular, bold, italic, italic/bold)
    * @param color the color for this image
    */ 
-  public TextImage(String text, float size, TextStyle style, Color color){
+  private TextImage(String text, float size, TextStyle style, Color color){
     super(color, Mode.FILLED);
     // bad things happen if we want to display a null String 
     // or a String of length 0
@@ -70,157 +70,55 @@ public class TextImage extends ColoredImage{
     this.setWidthHeight();
   }
   
-  public static TextImage make (String text, float size, TextStyle style, Color color)
+  static TextImage make (String text, float size, TextStyle style, Color color)
   {
       return new TextImage (text, size, style, color);
-    }
-  
-  /**
-   * A full constructor for this text image, taking an int size.
-   * 
-   * @param text the text to be shown
-   * @param size the size of the font to use
-   * @param style the style of the font: (regular, bold, italic, italic/bold)
-   * @param color the color for this image
-   */ 
-  public TextImage(String text, int size, TextStyle style, Color color){
-    this(text, (float)size, style, color);
   }
-  
-  public static TextImage make(String text, int size, TextStyle style, Color color){
-    return new TextImage (text, size, style, color);
+  static TextImage make (String text, float size, TextStyle style, IColor color)
+  {
+      return new TextImage (text, size, style, color.thisColor());
   }
-
-  /**
-   * A convenience constructor providing the default style (regular).
-   * 
-   * @param text the text to be shown
-   * @param size the size of the font to use
-   * @param color the color for this image
-   */
-  public TextImage(String text, float size, Color color){
-    this(text, size, TextStyle.NORMAL, color);
+  static TextImage make (String text, float size, TextStyle style)
+  {
+      return new TextImage (text, size, style, Color.black);
   }
-
-  public static TextImage make(String text, float size, Color color){
-    return new TextImage(text, size, color);
+  static TextImage make (String text, float size, Color color)
+  {
+      return new TextImage (text, size, TextStyle.REGULAR, color);
   }
-  
-  /**
-   * A convenience constructor providing the default style (regular).
-   * 
-   * @param text the text to be shown
-   * @param size the size of the font to use
-   * @param color the color for this image
-   */
-  public TextImage(String text, int size, Color color){
-    this(text, size, TextStyle.NORMAL, color);
+  static TextImage make (String text, float size, IColor color)
+  {
+      return new TextImage (text, size, TextStyle.REGULAR, color.thisColor());
   }
-
-  public static TextImage make(String text, int size, Color color){
-    return new TextImage(text, size, color);
+  static TextImage make (String text, float size)
+  {
+      return new TextImage (text, size, TextStyle.REGULAR, Color.black);
   }
-  
-  /**
-   * A convenience constructor providing the default style and size
-   * 
-   * @param text the text to be shown
-   * @param color the color for this image
-   */
-  public TextImage(String text, Color color){
-    this(text, defaultSize, TextStyle.NORMAL, color);
+  static TextImage make (String text, TextStyle style, Color color)
+  {
+      return new TextImage (text, TextImage.defaultSize, style, color);
   }
-
-  public static TextImage make(String text, Color color){
-    return new TextImage(text, defaultSize, color);
+  static TextImage make (String text, TextStyle style, IColor color)
+  {
+      return new TextImage (text, TextImage.defaultSize, style, color.thisColor());
   }
-  
-  /**
-   * A convenience constructor to supply the color in the form of
-   * <code>{@link IColor IColor}</code> and providing the default style 
-   * (regular).
-   * 
-   * @param text the text to be shown
-   * @param size the size of the font to use
-   * @param style the style of the font: (regular, bold, italic, italic/bold)
-   * @param color the color for this image
-   */
-  public TextImage(String text, float size, TextStyle style, IColor color){
-    this(text, size, style, color.thisColor());
+  static TextImage make (String text, TextStyle style)
+  {
+      return new TextImage (text, TextImage.defaultSize, style, Color.black);
   }
-
-  public static TextImage make(String text, float size, TextStyle style, IColor color){
-    return new TextImage(text, size, style, color);
+  static TextImage make (String text, Color color)
+  {
+      return new TextImage (text, TextImage.defaultSize, TextStyle.REGULAR, color);
   }
-
-  /**
-   * A convenience constructor to supply the color in the form of
-   * <code>{@link IColor IColor}</code> and providing the default style 
-   * (regular).
-   * 
-   * @param text the text to be shown
-   * @param size the size of the font to use
-   * @param style the style of the font: (regular, bold, italic, italic/bold)
-   * @param color the color for this image
-   */
-  public TextImage(String text, int size, TextStyle style, IColor color){
-    this(text, size, style, color.thisColor());
+  static TextImage make (String text, IColor color)
+  {
+      return new TextImage (text, TextImage.defaultSize, TextStyle.REGULAR, color.thisColor());
   }
-
-  public static TextImage make(String text, int size, TextStyle style, IColor color){
-    return new TextImage (text, size, style, color);
+  static TextImage make (String text)
+  {
+      return new TextImage (text, TextImage.defaultSize, TextStyle.REGULAR, Color.black);
   }
-
-  /**
-   * A convenience constructor to supply the color in the form of
-   * <code>{@link IColor IColor}</code> and providing the default style 
-   * (regular).
-   * 
-   * @param text the text to be shown
-   * @param size the size of the font to use
-   * @param color the color for this image
-   */
-  public TextImage(String text, float size, IColor color){
-    this(text, size, TextStyle.NORMAL, color);
-  }
-
-  public static TextImage make(String text, float size, IColor color){
-    return new TextImage (text, size, color);
-  }
-
-  /**
-   * A convenience constructor to supply the color in the form of
-   * <code>{@link IColor IColor}</code> and providing the default style 
-   * (regular).
-   * 
-   * @param text the text to be shown
-   * @param size the size of the font to use (the default is 13)
-   * @param color the color for this image
-   */
-  public TextImage(String text, int size, IColor color){
-    this(text, size, TextStyle.NORMAL, color);
-  }
-
-  public static TextImage make(String text, int size, IColor color){
-    return new TextImage (text, size, color);
-  }
-
-  /**
-   * A convenience constructor to supply the color in the form of
-   * <code>{@link IColor IColor}</code> and providing the default style 
-   * (regular).
-   * 
-   * @param text the text to be shown
-   * @param color the color for this image
-   */
-  public TextImage(String text, IColor color){
-    this(text, defaultSize, TextStyle.NORMAL, color);
-  }
-  
-  public static TextImage make(String text, IColor color){
-    return new TextImage (text, defaultSize, color);
-  }
-  
+    
   /** 
    * Draw this image in the provided <code>Graphics2D</code> context.
    * 
@@ -347,17 +245,17 @@ public class TextImage extends ColoredImage{
   public int hashCode(){
     return super.hashCode() +
         this.getColor().hashCode() +
-        (int)this.size +
+        (int)(this.size) +
         this.style.hashCode() +
         this.text.hashCode(); 
   }
   
-  public ColoredImage replaceColor (Color color)
+  ColoredImage replaceColor (Color color)
   {
       return new TextImage (this.text, this.size, this.style, color);
     }    
     
-    public ColoredImage replaceMode (Mode newMode)
+    ColoredImage replaceMode (Mode newMode)
     {
         // do nothing, as text is always FILLED
         return this;

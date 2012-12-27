@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 
 /**

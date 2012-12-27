@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 
 /**
@@ -22,7 +22,7 @@ public class WorldEnd{
   public boolean worldEnds;
   
   /** the last image to display when the world ends */
-  public Image lastImage;
+  public WorldImage lastImage;
   
   /**
    * The standard full constructor.
@@ -30,7 +30,7 @@ public class WorldEnd{
    * @param lastImage the last image to display when the world ends
    * (ignored if the world goes on)
    */
-  public WorldEnd(boolean worldEnds, Image lastImage){
+  public WorldEnd(boolean worldEnds, WorldImage lastImage){
     this.worldEnds = worldEnds;
     this.lastImage = lastImage;
   }

@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -12,7 +12,7 @@ import java.awt.geom.Point2D;
  */
 public class LinearImage extends AImage
 {
-    private Image base;
+    private WorldImage base;
     private AffineTransform transform;
     private int top, left, bottom, right;
 
@@ -22,7 +22,7 @@ public class LinearImage extends AImage
      * @param base    the image to translate
      * @param translation  how far to move it
      */
-    LinearImage(AffineTransform transform, Image base)
+    LinearImage(AffineTransform transform, WorldImage base)
     {
         this.base = base;
         this.transform = transform;
@@ -129,7 +129,7 @@ public class LinearImage extends AImage
      * @param dy
      * @return a new image just like this one but translated
      */
-    public Image getTranslated(int dx, int dy) {
+    public WorldImage getTranslated(int dx, int dy) {
         if (dx == 0 && dy == 0) {
             return this;
         }
@@ -145,7 +145,7 @@ public class LinearImage extends AImage
      * 
      * @param degrees
      */
-    public Image getRotated (int degrees)
+    public WorldImage getRotated (int degrees)
     {
         while (degrees < 0)
         {
@@ -180,7 +180,7 @@ public class LinearImage extends AImage
      * 
      * @param degrees
      */
-    public Image getRotated (double degrees)
+    public WorldImage getRotated (double degrees)
     {
             AffineTransform temp = AffineTransform.getRotateInstance (Math.PI * degrees / 180.0);
             temp.concatenate (this.transform);
@@ -192,9 +192,9 @@ public class LinearImage extends AImage
      * 
      * @param xFactor
      * @param yFactor
-     * @return a new Image scaled by xFactor in the x dimension and yFactor in the y dimension
+     * @return a new WorldImage scaled by xFactor in the x dimension and yFactor in the y dimension
      */
-    public Image getScaled (double xFactor, double yFactor)
+    public WorldImage getScaled (double xFactor, double yFactor)
     {
         AffineTransform temp = AffineTransform.getScaleInstance (xFactor, yFactor);
         temp.concatenate (this.transform);

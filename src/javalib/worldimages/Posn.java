@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 
 /**
@@ -9,8 +9,8 @@ package javalib.sbimages;
  * @since August 2, 2007
  */
 public class Posn {
-  private int x;
-  private int y;
+  public int x;
+  public int y;
   
   public static final Posn origin = new Posn(0,0);
 

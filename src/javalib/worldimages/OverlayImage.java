@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 // import java.awt.geom.AffineTransform;
 
 
@@ -10,7 +10,7 @@ package javalib.sbimages;
  */
 public class OverlayImage extends AImage
 {
-    private Image back, front;
+    private WorldImage back, front;
 
     /**
      * Constructor for objects of class OverlayImage
@@ -18,13 +18,24 @@ public class OverlayImage extends AImage
      * @param back   an image to be drawn "in the background"
      * @param front  an image to be drawn "in the foreground"
      */
-    public OverlayImage(Image back, Image front)
+    private OverlayImage(WorldImage back, WorldImage front)
     {
         // initialise instance variables
         super();
         this.back = back;
         this.front = front;
     }    
+    
+    /**
+     * Pseudo-constructor
+     * 
+     * @param back
+     * @param front
+     */
+    static OverlayImage make (WorldImage back, WorldImage front)
+    {
+        return new OverlayImage (back, front);
+    }
         
     public boolean equals (Object other)
     {
@@ -43,7 +54,7 @@ public class OverlayImage extends AImage
      * 
      * @return the background image
      */
-    public Image getBack ()
+    public WorldImage getBack ()
     {
         return this.back;
     }
@@ -53,7 +64,7 @@ public class OverlayImage extends AImage
      * 
      * @return the foreground image
      */
-    public Image getFront ()
+    public WorldImage getFront ()
     {
         return this.front;
     }

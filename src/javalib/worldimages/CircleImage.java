@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 
 import javalib.colors.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.geom.*;
  * @author Stephen Bloch
  * @version Dec. 2, 2012
  */
-public class CircleImage extends ColoredImage
+class CircleImage extends EllipseImage
 {    
     private int radius;
     
@@ -22,8 +22,8 @@ public class CircleImage extends ColoredImage
      * @param color
      * @param mode
      */
-    public CircleImage (int radius, Color color, Mode mode) {
-        super (color, mode);
+    private CircleImage (int radius, Color color, Mode mode) {
+        super (2*radius, 2*radius, color, mode);
         this.radius = radius;
     }
     
@@ -34,47 +34,90 @@ public class CircleImage extends ColoredImage
      * @param color
      * @param mode
      */
-    public static CircleImage make (int radius, Color color, Mode mode)
+    static CircleImage make (int radius, Color color, Mode mode)
     {
         return new CircleImage (radius, color, mode);
     }
     
-    /**
-     * Another constructor that takes in an <code>{@link IColor}IColor</code>.
-     * 
-     * @param radius
-     * @param color
-     */
-    public CircleImage (int radius, IColor color, Mode mode) {
-        this(radius, color.thisColor(), mode);
-    }
-    
-    /**
+   /**
      * Pseudo-constructor.
      */
-    public static CircleImage make (int radius, IColor color, Mode mode)
+    static CircleImage make (int radius, IColor color, Mode mode)
     {
-        return new CircleImage (radius, color, mode);
-    }
-        
-    public static Image makeCentered (Posn center, int radius, Color color, Mode mode) {
-        return new CircleImage (radius, color, mode)
-                .getTranslated (center.getX()-radius, center.getY()-radius);
+        return new CircleImage (radius, color.thisColor(), mode);
     }
     
-    public static Image makeCentered (Posn center, int radius, IColor color, Mode mode) {
+    /**
+     * Another pseudo-constructor, with a default color.
+     */
+    static CircleImage make (int radius, Mode mode)
+    {
+        return new CircleImage (radius, Color.black, mode);
+    }
+    
+    /**
+     * Another pseudo-constructor, with a Color and a default mode.
+     */
+    static CircleImage make (int radius, Color color)
+    {
+        return new CircleImage (radius, color, Mode.OUTLINED);
+    }
+    
+    /**
+     * Another pseudo-constructor, with an IColor and a default mode.
+     */
+    static CircleImage make (int radius, IColor color)
+    {
+        return new CircleImage (radius, color.thisColor(), Mode.OUTLINED);
+    }
+    
+    /**
+     * Another pseudo-constructor, with default color and mode.
+     */
+    static CircleImage make (int radius)
+    {
+        return new CircleImage (radius, Color.black, Mode.OUTLINED);
+    }
+        
+    static WorldImage makeCentered (Posn center, int radius, Color color, Mode mode) {
+        return new CircleImage (radius, color, mode)
+                .moved (center.getX()-radius, center.getY()-radius);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius, IColor color, Mode mode) {
         return makeCentered (center, radius, color.thisColor(), mode);
     }
     
-    public CircleImage replaceRadius (int newRadius) {
+    static WorldImage makeCentered (Posn center, int radius, Mode mode)
+    {
+        return makeCentered (center, radius, Color.black, mode);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius, Color color)
+    {
+        return makeCentered (center, radius, color, Mode.OUTLINED);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius, IColor color)
+    {
+        return makeCentered (center, radius, color.thisColor(), Mode.OUTLINED);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius)
+    {
+        return makeCentered (center, radius, Color.black, Mode.OUTLINED);
+    }
+    
+    
+    CircleImage replaceRadius (int newRadius) {
         return new CircleImage(newRadius, this.getColor(), this.getMode());
     }
     
-    public ColoredImage replaceColor (Color newColor) {
+    ColoredImage replaceColor (Color newColor) {
         return new CircleImage(this.getRadius(), newColor, this.getMode());
     }
 
-    public ColoredImage replaceMode (Mode newMode) {
+    ColoredImage replaceMode (Mode newMode) {
         return new CircleImage(this.getRadius(), this.getColor(), newMode);
     }
     
@@ -98,36 +141,6 @@ public class CircleImage extends ColoredImage
     public int hashCode () {
         return super.hashCode() + this.radius;
     }
-                                
-  /** 
-   * Draw this image in the provided <code>Graphics2D</code> context.
-   * 
-   * @param g the provided <code>Graphics2D</code> context
-   */
-  public void draw(Graphics2D g){
-    if (this.getWidth() <= 0)
-      return;
-    if (this.getHeight() <= 0)
-      return;
-    
-    // save the current paint
-    Paint oldPaint = g.getPaint();
-    // set the paint to the given color
-    g.setPaint(this.getColor());  
-    // draw the object
-    Ellipse2D shape = new Ellipse2D.Double(this.getLeft(), this.getTop(),
-                                           this.getWidth(), this.getHeight());
-    if (this.getMode() == Mode.FILLED)
-    {
-        g.fill (shape);
-    }
-    else if (this.getMode() == Mode.OUTLINED)
-    {
-        g.draw (shape);
-    }
-    // reset the original paint
-    g.setPaint(oldPaint);   
-  }
   
     public String toIndentedString (String indent) {
         String newIndent = indent + "  ";

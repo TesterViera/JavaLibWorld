@@ -1,4 +1,4 @@
-package javalib.sbimages;
+package javalib.worldimages;
 import java.awt.Color;
 import javalib.colors.*;
 
@@ -9,7 +9,7 @@ import javalib.colors.*;
  * @author Stephen Bloch
  * @version Dec. 2, 2012
  */
-public abstract class RectangularImage extends ColoredImage
+abstract class RectangularImage extends ColoredImage
 {
     private int width, height;
     
@@ -48,7 +48,7 @@ public abstract class RectangularImage extends ColoredImage
      * @param height
      * @return a new image just like this one but with different dimensions.
      */
-    public abstract RectangularImage replaceDimensions (int width, int height);
+    abstract RectangularImage replaceDimensions (int width, int height);
     
     /**
      * Functional setter for width.
@@ -56,7 +56,7 @@ public abstract class RectangularImage extends ColoredImage
      * @param width
      * @return a new image just like this one but with different width.
      */
-    public RectangularImage replaceWidth (int width) {
+    RectangularImage replaceWidth (int width) {
         return this.replaceDimensions (width, this.height);
     }
     
@@ -66,7 +66,7 @@ public abstract class RectangularImage extends ColoredImage
      * @param height
      * @return a new image just like this one but with different height.
      */
-    public RectangularImage replaceHeight (int height) {
+    RectangularImage replaceHeight (int height) {
         return this.replaceDimensions (this.width, height);
     }
     
