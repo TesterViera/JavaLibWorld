@@ -213,7 +213,7 @@ public class AppletCanvas extends JPanel {
     new ColorConvertOp(imread.cmodel.getColorSpace(), 
                buffer.getColorModel().getColorSpace(), null);
     // draw the given image at the given location
-    g.drawImage(imread.image, colorOp, nw.x, nw.y);   
+    g.drawImage(imread.image, colorOp, nw.getX(), nw.getY());   
       
     // repaint the panel
     repaint();        

@@ -1,4 +1,4 @@
-package javalib.appletsoundworld;
+package appletsoundworld;
 
 import javalib.worldimages.*;
 import javalib.worldcanvas.*;

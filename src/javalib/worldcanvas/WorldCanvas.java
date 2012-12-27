@@ -136,7 +136,7 @@ public class WorldCanvas {
    * @param nw the NW corner for the image placement
    */
   public boolean drawImage(String fileName, Posn nw){
-    ((CanvasPanel)panel).drawImage(fileName, nw.x, nw.y);
+    ((CanvasPanel)panel).drawImage(fileName, nw.getX(), nw.getY());
     return true;
   }  
 
@@ -149,9 +149,9 @@ public class WorldCanvas {
    * @param nw the NW corner for the image placement
    */
   public boolean drawImage(ImageMaker image, Posn nw){
-    ((CanvasPanel)panel).drawImagePixels(image, nw.x, nw.y);
+    ((CanvasPanel)panel).drawImagePixels(image, nw.getX(), nw.getY());
 
-    //((CanvasPanel)panel).drawImage(image, nw.x, nw.y);
+    //((CanvasPanel)panel).drawImage(image, nw.getX(), nw.getY());
     return true;
   }
 
@@ -266,14 +266,14 @@ public class WorldCanvas {
     sm1.show();
 
     nextStep("Canvas shown - should be blank - add red and blue disk");
-    sm1.drawImage(new CircleImage(new Posn(50, 50), 20, new Red()));
-    sm1.drawImage(new CircleImage(new Posn(150, 50), 50, new Blue()));
+    sm1.drawImage(AImage.makeCenteredCircle(new Posn(50, 50), 20, new Red(), Mode.OUTLINED));
+    sm1.drawImage(AImage.makeCenteredCircle(new Posn(150, 50), 50, new Blue(), Mode.OUTLINED));
 
     nextStep("Show the canvas again - it should not do anything");
     sm1.show();
 
     nextStep("Draw a green disk");
-    sm1.drawImage(new CircleImage(new Posn(50, 150), 50, new Green()));
+    sm1.drawImage(AImage.makeCenteredCircle(new Posn(50, 150), 50, new Green(), Mode.OUTLINED));
 
     nextStep("Close the Canvas");
     sm1.close();
@@ -282,7 +282,7 @@ public class WorldCanvas {
     sm1.show();
 
     nextStep("Paint one disks on the canvas");   
-    sm1.drawImage(new CircleImage(new Posn(50, 150), 25, new Black()));
+    sm1.drawImage(AImage.makeCenteredCircle(new Posn(50, 150), 25, new Black(), Mode.OUTLINED));
 
     nextStep("Construct a second canvas with the name Smiley");
     WorldCanvas sm2 = new WorldCanvas(200, 200, "Smiley");
@@ -291,17 +291,17 @@ public class WorldCanvas {
     sm2.show();
 
     nextStep("Paint two disks on the Smiley canvas");   
-    sm2.drawImage(new CircleImage(new Posn(50, 50), 20, new Red()));
-    sm2.drawImage(new CircleImage(new Posn(150, 150), 50, new Blue()));
+    sm2.drawImage(AImage.makeCenteredCircle(new Posn(50, 50), 20, new Red(), Mode.OUTLINED));
+    sm2.drawImage(AImage.makeCenteredCircle(new Posn(150, 150), 50, new Blue(), Mode.OUTLINED));
 
     nextStep("Manually close the 'Canvas' window" + 
         "and see if we can bring it back to life");   
     sm1.show();
 
     nextStep("The first canvas should be shown - cleared");    
-    sm1.drawImage(new CircleImage(new Posn(50, 50), 30, new Red()));
-    sm1.drawImage(new CircleImage(new Posn(150, 50), 30, new Blue()));
-    sm1.drawImage(new CircleImage(new Posn(50, 150), 30, new Green()));
+    sm1.drawImage(AImage.makeCenteredCircle(new Posn(50, 50), 30, new Red(), Mode.OUTLINED));
+    sm1.drawImage(AImage.makeCenteredCircle(new Posn(150, 50), 30, new Blue(), Mode.OUTLINED));
+    sm1.drawImage(AImage.makeCenteredCircle(new Posn(50, 150), 30, new Green(), Mode.OUTLINED));
     nextStep("The first canvas has three disks drawn"); 
 
     System.out.println("Close both canvas windows to end the program");      

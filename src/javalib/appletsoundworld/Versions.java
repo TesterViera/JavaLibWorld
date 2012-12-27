@@ -1,4 +1,4 @@
-package javalib.appletsoundworld;
+package appletsoundworld;
 
 
 /**
