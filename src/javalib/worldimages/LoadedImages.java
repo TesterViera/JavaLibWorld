@@ -12,5 +12,6 @@ import java.awt.image.RenderedImage;
 public class LoadedImages
 {
     private LoadedImages () { }
-    public static HashMap<String,RenderedImage> table = new HashMap();
+    public static HashMap<String,RenderedImage> table =
+	new HashMap<String,RenderedImage> ();
 }
