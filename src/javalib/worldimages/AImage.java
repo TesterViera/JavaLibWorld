@@ -565,4 +565,42 @@ public abstract class AImage implements WorldImage
     {
         return this.freeze().save(filename);        
     }
+
+    /**
+     * Build a rectangular image pixel by pixel.
+     *
+     * @param width   the width in pixels of the desired image
+     * @param height  the height in pixels of the desired image
+     * @param builder an ImageBuilder specifying how to choose colors
+     * @param extra   an arbitrary Object to be passed to each call of the builder
+     * @since Dec. 27, 2012
+     */
+    public static WorldImage build (int width, int height, ImageBuilder b, Object extra)
+    {
+	return RasterImage.build (width, height, b, extra);
+    }
+    
+    /**
+     * Build a rectangular image pixel by pixel.  "extra" defaults to null.
+     *
+     * @param width   the width in pixels of the desired image
+     * @param height  the height in pixels of the desired image
+     * @param builder an ImageBuilder specifying how to choose colors
+     * @since Dec. 27, 2012
+     */
+    public static WorldImage build (int width, int height, ImageBuilder b)
+    {
+	return build (width, height, b, null);
+    }
+
+    public WorldImage map (ImageMap map, Object extra)
+    {
+    	return this.freeze().map (map, extra);
+    }
+
+    public WorldImage map (ImageMap map)
+    {
+    	return this.map (map, null);
+    }
+
 }

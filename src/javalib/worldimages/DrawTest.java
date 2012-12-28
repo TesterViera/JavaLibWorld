@@ -5,12 +5,14 @@ import tester.*;
 
 import javalib.worldcanvas.WorldCanvas;
 import javalib.colors.*;
+import java.awt.Color;
 
 /**
- * Testing class SBImageAdapterTest.
+ * A bunch of test cases that draw examples on the screen.  Always passes;
+ * need a human eye to look at them and confirm that they look right.
  * 
  * @author Stephen Bloch
- * @version Dec. 5, 2012
+ * @version Dec. 28, 2012
  */
 public class DrawTest extends junit.framework.TestCase
 {
@@ -124,9 +126,10 @@ public class DrawTest extends junit.framework.TestCase
         // Operators on images: translate, rotate, scale, reflect, overlay, overlayXY,
         // above, beside, aboveCentered, besideCentered, crop
         
-        showSingleImage (
-                AImage.makeRectangle(100, 100, new Blue(), Mode.FILLED)
-                    .overlay(AImage.makeCenteredCircle (new Posn(50,50), 30, new Red(), Mode.FILLED)));
+        WorldImage redDiskOnBlue =
+            AImage.makeRectangle(100, 100, new Blue(), Mode.FILLED)
+                    .overlay(AImage.makeCenteredCircle (new Posn(50,50), 30, new Red(), Mode.FILLED));
+        showSingleImage (redDiskOnBlue);
         // should be a red disk on a blue square background
         
         showSingleImage (
@@ -232,5 +235,39 @@ public class DrawTest extends junit.framework.TestCase
         
         showSingleImage (AImage.makeRectangle(89, 55, new Blue(), Mode.FILLED)
                             .place(AImage.makeFromFile("Images/shark.png"), 0, 0));
+                            
+        WorldImage gradient1 = AImage.build (100, 100,
+            new ImageBuilder () {
+                public Color pixelColor (int x, int y, Object other)
+                {
+                    Posn dimensions = (Posn)other;
+                    return new Color (255 * x / dimensions.x, 255 * y / dimensions.y, 0, 255);
+                }
+            }
+            , new Posn(100,100));
+        showSingleImage (gradient1);
+        
+        ImageMap killRed = new ImageMap () {
+            public Color pixelColor (int x, int y, Color oldColor, Object other)
+            {
+                // ignore x, y, other
+                return new Color (0, oldColor.getGreen(), oldColor.getBlue(), oldColor.getAlpha());
+            }
+        };
+        showSingleImage (bloch.map(killRed));
+        showSingleImage (redDiskOnBlue.map(killRed));
+        
+        ImageMap replaceWithWhite = new ImageMap () {
+            public Color pixelColor (int x, int y, Color oldColor, Object other)
+            {
+                Color target = (Color)other;
+                return oldColor.equals(target) ? Color.white : oldColor;
+            }
+        };
+        showSingleImage (redDiskOnBlue.map(replaceWithWhite, Color.blue));
+        showSingleImage (redDiskOnBlue.map(replaceWithWhite, Color.red));
+        showSingleImage (redDiskOnBlue.map(replaceWithWhite, Color.yellow));
     }
+    
+    
 }

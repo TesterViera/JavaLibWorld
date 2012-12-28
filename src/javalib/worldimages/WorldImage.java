@@ -267,9 +267,33 @@ public interface WorldImage
     public WorldImage freeze();
     
     /**
+     * create a rectangular image pixel by pixel from an existing image.
+     *
+     * @param map    an ImageMap encapsulating a function from Color to
+     *               Color
+     * @param extra  an arbitrary addtional argument to pass to the function
+     * @return a new image the same size and shape as this
+     * @since  Dec. 28, 2012
+     */
+    public WorldImage map (ImageMap map, Object extra);
+    
+    /**
+     * create a rectangular image pixel by pixel from an existing image.
+     * In this entrypoint, the "extra" parameter defaults to null.
+     *
+     * @param map    an ImageMap encapsulating a function from Color to
+     *               Color
+     * @return a new image the same size and shape as this
+     * @since  Dec. 28, 2012
+     */
+    public WorldImage map (ImageMap map);
+
+
+    /**
      * Save a WorldImage to a .png file.
      * 
      * @param filename
      */
     public boolean save(String filename);
+
 }
