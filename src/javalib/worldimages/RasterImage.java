@@ -149,7 +149,8 @@ public class RasterImage extends AImage
         int height = this.getHeight();
 
         Raster srcRaster = this.rendering.getData();
-        boolean hasAlpha = (srcRaster.getNumBands()==4);
+        boolean hasAlpha = this.rendering.getColorModel().hasAlpha();
+                           // (srcRaster.getNumBands()==4);
         
         BufferedImage buffer = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
         WritableRaster dstRaster = buffer.getRaster();
