@@ -9,16 +9,16 @@ package javalib.worldimages;
  */
 public abstract class SampleImages
 {
-    public static final WorldImage bloch = AImage.makeFromFile ("Images/bloch.jpg");
-    public static final WorldImage hieroglyphics = AImage.makeFromFile ("Images/hieroglyphics.png");
-    public static final WorldImage hacker = AImage.makeFromFile ("Images/mad_hacker.png");
-    public static final WorldImage book = AImage.makeFromFile ("Images/qbook.png");
-    public static final WorldImage stickFigure = AImage.makeFromFile ("Images/stick-figure.png");
-    public static final WorldImage schemeLogo = AImage.makeFromFile ("Images/schemelogo.png");
-    public static final WorldImage calendar = AImage.makeFromFile ("Images/calendar.png");
-    public static final WorldImage fish = AImage.makeFromFile ("Images/fish.png");
-    public static final WorldImage greenFish = AImage.makeFromFile ("Images/green-fish.png");
-    public static final WorldImage pinkFish = AImage.makeFromFile ("Images/pink-fish.png");
-    public static final WorldImage shark = AImage.makeFromFile ("Images/shark.png");
-    public static final WorldImage family = AImage.makeFromFile ("Images/family.png");
+    public static final WorldImage bloch = AImage.makeFromFile ("javalib/worldimages/Images/bloch.jpg");
+    public static final WorldImage hieroglyphics = AImage.makeFromFile ("javalib/worldimages/Images/hieroglyphics.png");
+    public static final WorldImage hacker = AImage.makeFromFile ("javalib/worldimages/Images/mad_hacker.png");
+    public static final WorldImage book = AImage.makeFromFile ("javalib/worldimages/Images/qbook.png");
+    public static final WorldImage stickFigure = AImage.makeFromFile ("javalib/worldimages/Images/stick-figure.png");
+    public static final WorldImage schemeLogo = AImage.makeFromFile ("javalib/worldimages/Images/schemelogo.png");
+    public static final WorldImage calendar = AImage.makeFromFile ("javalib/worldimages/Images/calendar.png");
+    public static final WorldImage fish = AImage.makeFromFile ("javalib/worldimages/Images/fish.png");
+    public static final WorldImage greenFish = AImage.makeFromFile ("javalib/worldimages/Images/green-fish.png");
+    public static final WorldImage pinkFish = AImage.makeFromFile ("javalib/worldimages/Images/pink-fish.png");
+    public static final WorldImage shark = AImage.makeFromFile ("javalib/worldimages/Images/shark.png");
+    public static final WorldImage family = AImage.makeFromFile ("javalib/worldimages/Images/family.png");
 }
