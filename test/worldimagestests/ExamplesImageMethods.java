@@ -44,8 +44,8 @@ public class ExamplesImageMethods implements IExamples{
             "\nthis.color = java.awt.Color[r=255,g=0,b=0]" + 
         "\nthis.radius = 4)\n");
     t.checkExpect(this.circle1, this.circle2);
-    t.checkFail(this.circle1, this.circle3, "fails in pinhole.x");
-    t.checkFail(this.circle1, this.circle4, "fails in pinhole.y");
+    t.checkFail(this.circle1, this.circle3, "fails in x");
+    t.checkFail(this.circle1, this.circle4, "fails in y");
     t.checkFail(this.circle1, this.circle5, "fails in radius");
     t.checkFail(this.circle1, this.circle6, "fails in color");
     t.checkExpect(this.circle1.hashCode(), this.circle2.hashCode());
@@ -64,6 +64,9 @@ public class ExamplesImageMethods implements IExamples{
     
     t.checkExpect(this.circle5.getWidth(), 10);
     t.checkExpect(this.circle5.getHeight(), 10);
+    
+    t.checkExpect (this.circle1.getCenter(), new Posn(2,3));
+    t.checkExpect (this.circle4.getCenter(), new Posn(2,4));
   }
 
   //------------ DiskImage class --------------------------------------------//
@@ -82,8 +85,8 @@ public class ExamplesImageMethods implements IExamples{
             "\nthis.color = java.awt.Color[r=255,g=0,b=0]" + 
         "\nthis.radius = 4)\n");
     t.checkExpect(this.disk1, this.disk2);
-    t.checkFail(this.disk1, this.disk3, "fails in pinhole.x");
-    t.checkFail(this.disk1, this.disk4, "fails in pinhole.y");
+    t.checkFail(this.disk1, this.disk3, "fails in x");
+    t.checkFail(this.disk1, this.disk4, "fails in y");
     t.checkFail(this.disk1, this.disk5, "fails in radius");
     t.checkFail(this.disk1, this.disk6, "fails in color");
     t.checkExpect(this.disk1.hashCode(), this.disk2.hashCode());
@@ -105,6 +108,8 @@ public class ExamplesImageMethods implements IExamples{
     t.checkExpect(this.disk5.getWidth(), 10);
     t.checkExpect(this.disk5.getHeight(), 10);
 
+    t.checkExpect (this.disk1.getCenter(), new Posn(2,3));
+    t.checkExpect (this.disk4.getCenter(), new Posn(2,4));
   }
   
   //------------ EllipseImage class -----------------------------------------//
@@ -124,8 +129,8 @@ public class ExamplesImageMethods implements IExamples{
             "\nthis.color = java.awt.Color[r=0,g=255,b=0]" + 
         "\nthis.width = 4, this.height = 5)\n");
     t.checkExpect(this.ellipse1, this.ellipse2);
-    t.checkFail(this.ellipse1, this.ellipse3, "fails in pinhole.x");
-    t.checkFail(this.ellipse1, this.ellipse4, "fails in pinhole.y");
+    t.checkFail(this.ellipse1, this.ellipse3, "fails in x");
+    t.checkFail(this.ellipse1, this.ellipse4, "fails in y");
     t.checkFail(this.ellipse1, this.ellipse5, "fails in width");
     t.checkFail(this.ellipse1, this.ellipse6, "fails in height");
     t.checkFail(this.ellipse1, this.ellipse7, "fails in color");
@@ -148,6 +153,9 @@ public class ExamplesImageMethods implements IExamples{
     
     t.checkExpect(this.ellipse6.getWidth(), 4);
     t.checkExpect(this.ellipse6.getHeight(), 6);
+    
+    t.checkExpect (AImage.makeEllipse(4, 5, new Green()).getCenter(), new Posn(2,3));
+    t.checkExpect (this.ellipse1.getCenter(), new Posn(4,6));
   }
   
   //------------ FrameImage class -----------------------------------------//
@@ -191,6 +199,8 @@ public class ExamplesImageMethods implements IExamples{
    
     t.checkExpect(this.frame6.getWidth(), 4);
     t.checkExpect(this.frame6.getHeight(), 6);
+    
+    t.checkExpect (this.frame5.getCenter(), new Posn(4,5));
   }
   
   //------------ OvalImage class -----------------------------------------//
@@ -234,6 +244,8 @@ public class ExamplesImageMethods implements IExamples{
     
     t.checkExpect(this.oval6.getWidth(), 4);
     t.checkExpect(this.oval6.getHeight(), 6);
+    
+    t.checkExpect (this.oval7.getCenter(), new Posn(4,5));
   }
   
   //------------ RectangleImage class ---------------------------------------//
@@ -277,6 +289,8 @@ public class ExamplesImageMethods implements IExamples{
    
     t.checkExpect(this.rectangle6.getWidth(), 4);
     t.checkExpect(this.rectangle6.getHeight(), 6);
+    
+    t.checkExpect (this.rectangle3.getCenter(), new Posn(3,5));
   }
   
   //------------ LineImage class --------------------------------------------//
@@ -323,6 +337,8 @@ public class ExamplesImageMethods implements IExamples{
     
     t.checkExpect(this.line6.getWidth(), 2);
     t.checkExpect(this.line6.getHeight(), 3);
+    
+    t.checkExpect (this.line10.getCenter(), new Posn(4,7));
   }
   
   //------------ TriangleImage class ----------------------------------------//
@@ -385,6 +401,10 @@ public class ExamplesImageMethods implements IExamples{
     
     t.checkExpect(this.triangle8.getWidth(), 4);
     t.checkExpect(this.triangle8.getHeight(), 5);
+    
+    t.checkExpect (this.triangle1.getCenter(), new Posn(4,5));
+    // note getCenter does NOT return the centroid of the vertices, but rather the center
+    // of the x/y-aligned bounding rectangle!
   }
   
   //------------ TextImage class --------------------------------------------//
@@ -444,6 +464,8 @@ public class ExamplesImageMethods implements IExamples{
    
     t.checkExpect(this.text1.getWidth(), 16);
     t.checkExpect(this.text1.getHeight(), 6);
+    
+    t.checkExpect (this.text1.getCenter(), new Posn(10, 6));
   }
   
   //------------ OverlayImages class ----------------------------------------//
@@ -485,6 +507,9 @@ public class ExamplesImageMethods implements IExamples{
     
     t.checkExpect(this.overlay1.getWidth(), 8);
     t.checkExpect(this.overlay1.getHeight(), 8);
+    
+    t.checkExpect (this.overlay1.getCenter(), new Posn(3,4));
+    // bounding box is from (0,1) to (6,8)
   }
   
   //------------ OverlayImages class ----------------------------------------//
@@ -524,8 +549,11 @@ public class ExamplesImageMethods implements IExamples{
     t.checkExpect(this.overlayXY1.moved(0, 1), this.overlayXY11);
     t.checkExpect(this.overlayXY10.normalized().moved(2, 4), this.overlayXY11);
     
-    t.checkExpect(this.overlayXY1.getWidth(), 8);
-    t.checkExpect(this.overlayXY1.getHeight(), 8);
+    t.checkExpect(this.overlayXY1.getWidth(), 11);
+    t.checkExpect(this.overlayXY1.getHeight(), 10);
+    
+    t.checkExpect (this.overlayXY1.getCenter(), new Posn(5,6));
+    // bounding box is from (0,1) to (11,11)
   }
 
   //------------ OverlayImages class ----------------------------------------//

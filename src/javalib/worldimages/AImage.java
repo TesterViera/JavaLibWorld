@@ -26,6 +26,14 @@ import java.awt.image.BufferedImage;
  */
 public abstract class AImage implements WorldImage
 {      
+
+   public Posn getCenter ()
+   {
+       int x = (this.getRight() + this.getLeft()) / 2;
+       int y = (this.getTop() + this.getBottom()) / 2;
+       return new Posn (x, y);
+    }
+    
    public int getWidth ()
    {
        return this.getRight() - this.getLeft();

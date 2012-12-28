@@ -68,6 +68,13 @@ public interface WorldImage
     abstract public int getHeight();
 
     /**
+     * Find the approximate center of this image.
+     * 
+     * @return a Posn
+     */
+    abstract public Posn getCenter();
+    
+    /**
      * Produce a <code>String</code> that represents this image.
      * 
      * Define this in all concrete subclasses.
