@@ -1,7 +1,5 @@
 package javalib.tunes;
 
-import javalib.worldimages.DiskImage;
-
 
 /**
  * Copyright 2010 Viera K. Proulx
