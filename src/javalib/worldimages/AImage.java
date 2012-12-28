@@ -610,5 +610,15 @@ public abstract class AImage implements WorldImage
     {
     	return this.map (map, null);
     }
+    
+    /**
+     * Record whether or not we're in an applet.
+     * 
+     * @param flag
+     */
+    public static void isApplet (boolean flag)
+    {
+        FromFileImage.setIsApplet (flag);
+    }
 
 }

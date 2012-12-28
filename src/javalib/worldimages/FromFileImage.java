@@ -32,6 +32,16 @@ public class FromFileImage extends RasterImage{
   private File inputFile;
   
   /**
+   * Record whether we're in an applet.
+   * 
+   * @param flag   true if we're in an applet, false if we're not.
+   */
+  static void setIsApplet (boolean flag)
+  {
+      FromFileImage.isApplet = flag;
+  }
+  
+  /**
    * Pseudo-constructor for objects of class FromFileImage
    * 
    * @param fileName
