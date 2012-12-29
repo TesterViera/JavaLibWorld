@@ -25,8 +25,22 @@ import java.awt.image.BufferedImage;
  * @version Dec. 26, 2012
  */
 public abstract class AImage implements WorldImage
-{      
-
+{  
+    public void show ()
+    {
+        final int MINWIDTH = 50;
+        final int MINHEIGHT = 50;
+        final int MAXWIDTH = 1000;
+        final int XPAD = 1;
+        final int YPAD = 1;
+        final int MAXHEIGHT = 800;
+        int width = Math.min(MAXWIDTH, Math.max (MINWIDTH, this.getRight() + XPAD));
+        int height = Math.min(MAXHEIGHT, Math.max (MINHEIGHT, this.getBottom() + YPAD));
+        javalib.worldcanvas.WorldCanvas c = new javalib.worldcanvas.WorldCanvas (width, height);
+        
+        boolean drawn = c.drawImage (this) && c.show();
+    }
+    
    public Posn getCenter ()
    {
        int x = (this.getRight() + this.getLeft()) / 2;
@@ -585,7 +599,7 @@ public abstract class AImage implements WorldImage
      */
     public static WorldImage build (int width, int height, ImageBuilder b, Object extra)
     {
-	return RasterImage.build (width, height, b, extra);
+    return RasterImage.build (width, height, b, extra);
     }
     
     /**
@@ -598,17 +612,17 @@ public abstract class AImage implements WorldImage
      */
     public static WorldImage build (int width, int height, ImageBuilder b)
     {
-	return build (width, height, b, null);
+    return build (width, height, b, null);
     }
 
     public WorldImage map (ImageMap map, Object extra)
     {
-    	return this.freeze().map (map, extra);
+        return this.freeze().map (map, extra);
     }
 
     public WorldImage map (ImageMap map)
     {
-    	return this.map (map, null);
+        return this.map (map, null);
     }
     
     /**

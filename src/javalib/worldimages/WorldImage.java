@@ -10,6 +10,13 @@ package javalib.worldimages;
 public interface WorldImage 
 {   
     /**
+     * Display an image in a canvas.
+     * 
+     * @since Dec. 29, 2012
+     */
+    abstract public void show ();
+    
+    /**
      * Is this the same as another WorldImage?
      * 
      * Define this at every level that has instance variables.

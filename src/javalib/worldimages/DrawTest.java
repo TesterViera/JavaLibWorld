@@ -29,6 +29,7 @@ public class DrawTest extends junit.framework.TestCase
         Tester.run (new DrawTest());
     }
 
+    /*
     public static void showSingleImage (WorldImage ii)
     {
         if (ii == null) return;
@@ -38,6 +39,7 @@ public class DrawTest extends junit.framework.TestCase
         
         boolean drawn = c.drawImage (ii) && c.show();
     }
+    */
     
     public void testOtherStuff (Tester t)
     {
@@ -55,26 +57,30 @@ public class DrawTest extends junit.framework.TestCase
         // Circle, Disk, Triangle, Text,
         // FilledPoly, FilledTriangle, PolyLine, OutlinedTriangle, Line
         
-        showSingleImage (AImage.makeRectangle (30,50, new Black(), Mode.FILLED));
+        AImage.makeRectangle (30,50, new Black(), Mode.FILLED).show();
         // should be black, 30 wide by 50 high, at top left corner.
-        showSingleImage (AImage.makeRectangle (40, 40, java.awt.Color.blue, Mode.OUTLINED));
+        AImage.makeRectangle (40, 40, java.awt.Color.blue, Mode.OUTLINED).show();
         // should be blue, 40x40 square, at top left corner.
-        showSingleImage (AImage.makeRectangle (50, 20, new Green(), Mode.FILLED).moved(100,50));
+        AImage.makeRectangle (50, 20, new Green(), Mode.FILLED).moved(100,50).show();
         // should be green, 50x20, with top-left corner at (100,50).
-        showSingleImage (AImage.makeRectangle (80, 60, new Red(), Mode.OUTLINED)
-                            .moved(50,100));
+        AImage.makeRectangle (80, 60, new Red(), Mode.OUTLINED)
+                            .moved(50,100)
+                            .show();
         // should be a red outlined box, 80x60, with top-left corner at (50, 100).
-        showSingleImage (AImage.makeEllipse (50, 30, new Yellow(), Mode.FILLED)
-                            .moved(50, 30));
+        AImage.makeEllipse (50, 30, new Yellow(), Mode.FILLED)
+                            .moved(50, 30)
+                            .show();
         // should be... you get the idea
-        showSingleImage (AImage.makeEllipse (20, 80, new Blue(), Mode.OUTLINED)
-                            .moved(80, 20));
-        showSingleImage (AImage.makeCircle (30, new Red(), Mode.FILLED)
-                            .moved(new Posn(50, 30)));
+        AImage.makeEllipse (20, 80, new Blue(), Mode.OUTLINED)
+                            .moved(80, 20)
+                            .show();
+        AImage.makeCircle (30, new Red(), Mode.FILLED)
+                            .moved(new Posn(50, 30))
+                            .show();
         // should have its top-left corner at (50,30)
-        showSingleImage (AImage.makeCenteredCircle (new Posn(50, 30), 30, new Blue(), Mode.OUTLINED));
+        AImage.makeCenteredCircle (new Posn(50, 30), 30, new Blue(), Mode.OUTLINED).show();
         // should have its center at (50,30)
-        showSingleImage (AImage.makeCenteredCircle (new Posn(50,30), 30, new Green(), Mode.FILLED));
+        AImage.makeCenteredCircle (new Posn(50,30), 30, new Green(), Mode.FILLED).show();
         
        
         WorldImage tri = AImage.makeTriangle (new Posn(100,30),
@@ -82,13 +88,13 @@ public class DrawTest extends junit.framework.TestCase
                                          new Posn(120,110),
                                          java.awt.Color.green,
                                          Mode.FILLED);
-        showSingleImage (tri);
+        tri.show();
         
-        showSingleImage (AImage.makeTriangle (new Posn(30, 100),
-                                              new Posn(100, 80),
-                                              new Posn(110, 120),
-                                              java.awt.Color.blue, 
-                                              Mode.OUTLINED));
+        AImage.makeTriangle (new Posn(30, 100),
+                             new Posn(100, 80),
+                             new Posn(110, 120),
+                             java.awt.Color.blue, 
+                             Mode.OUTLINED).show();
 
         
         WorldImage pent1 = new PolygonImage (java.awt.Color.pink,
@@ -98,7 +104,7 @@ public class DrawTest extends junit.framework.TestCase
                                      new Posn(150, 90),
                                      new Posn(50, 90),
                                      new Posn(40, 50));
-        showSingleImage (pent1);
+        pent1.show();
         
         WorldImage pent2 = new PolygonImage (java.awt.Color.blue,
                                      Mode.OUTLINED,
@@ -107,16 +113,16 @@ public class DrawTest extends junit.framework.TestCase
                                      new Posn(150, 90),
                                      new Posn(50, 90),
                                      new Posn(40, 50));
-        showSingleImage (pent2);
+        pent2.show();
 
         WorldImage hello = TextImage.make ("hello there", java.awt.Color.blue);
-        showSingleImage (hello);
+        hello.show();
 
-        showSingleImage (AImage.makeLine (new Posn(100, 15), new Posn(50, 100), new Green()));
+        AImage.makeLine (new Posn(100, 15), new Posn(50, 100), new Green()).show();
         
-        showSingleImage (SampleImages.greenFish);
-        showSingleImage (SampleImages.pinkFish.moved(200, 250));
-        showSingleImage (SampleImages.shark.moved(350, 400));
+        SampleImages.greenFish.show();
+        SampleImages.pinkFish.moved(200, 250).show();
+        SampleImages.shark.moved(350, 400).show();
     }
     
     public void testOperators (Tester t)
@@ -130,29 +136,29 @@ public class DrawTest extends junit.framework.TestCase
         WorldImage redDiskOnBlue =
             AImage.makeRectangle(100, 100, new Blue(), Mode.FILLED)
                     .overlay(AImage.makeCenteredCircle (new Posn(50,50), 30, new Red(), Mode.FILLED));
-        showSingleImage (redDiskOnBlue);
+        redDiskOnBlue.show();
         // should be a red disk on a blue square background
         
-        showSingleImage (
-            AImage.makeRectangle (100, 50, new Blue(), Mode.FILLED).moved(50,0)
-                .overlay(AImage.makeEllipse (100, 50, new Red(), Mode.FILLED)));
+        AImage.makeRectangle (100, 50, new Blue(), Mode.FILLED).moved(50,0)
+                .overlay(AImage.makeEllipse (100, 50, new Red(), Mode.FILLED))
+                .show();
         // should be a blue rectangle whose left half is overlapped by a red oval.
         
-        showSingleImage (
-            AImage.makeRectangle (100, 50, new Blue(),Mode.FILLED)
-                .moved(50,0)
-                .aboveCentered(
-                    AImage.makeEllipse(50, 100, new Red(),Mode.FILLED)
-                    .moved(400, 100)));
+        AImage.makeRectangle (100, 50, new Blue(),Mode.FILLED)
+            .moved(50,0)
+            .aboveCentered(
+                AImage.makeEllipse(50, 100, new Red(),Mode.FILLED)
+                .moved(400, 100))
+            .show();
         // should be a wide blue rectangle stacked on top of a tall red oval
         // completely ignores both locations
         
-        showSingleImage (
-            AImage.makeRectangle (100, 300, new Blue(),Mode.FILLED)
-                .besideCentered(
+        AImage.makeRectangle (100, 300, new Blue(),Mode.FILLED)
+              .besideCentered(
                     AImage.makeCircle (50, new Red(), Mode.FILLED)
                     .aboveCentered(
-                        AImage.makeCircle(100, new Green(), Mode.FILLED))));
+                        AImage.makeCircle(100, new Green(), Mode.FILLED)))
+              .show();
         // should be a vertical blue box on the left, a small red disk above a larger green disk on the right
         
        
@@ -161,15 +167,15 @@ public class DrawTest extends junit.framework.TestCase
                         .aboveCentered(AImage.makeCircle (20, new Black(), Mode.OUTLINED),
                                        AImage.makeCircle (30, new Black(), Mode.OUTLINED));
         WorldImage labelledSnowman = label.aboveCentered(snowman);
-        showSingleImage (labelledSnowman);
+        labelledSnowman.show();
         // System.out.println ("Labelled snowman: " + labelledSnowman);
         
-        showSingleImage (snowman.getCropped (20, 40, 20, 200));  // works
+        snowman.getCropped (20, 40, 20, 200).show();
         
-        showSingleImage (labelledSnowman.getCropped (10, 40, 10, 200));  // strange
-        showSingleImage (labelledSnowman.getScaled (1.3));  // works
+        labelledSnowman.getCropped (10, 40, 10, 200).show();
+        labelledSnowman.getScaled (1.3).show();
         
-        showSingleImage (labelledSnowman.getScaled (0.5, 0.8));  // works
+        labelledSnowman.getScaled (0.5, 0.8).show();
 
         WorldImage tri = AImage.makeTriangle (new Posn(100,30),
                                          new Posn(80,100),
@@ -180,62 +186,56 @@ public class DrawTest extends junit.framework.TestCase
         WorldImage labelledTri = AImage.makeText ("A green triangle:", 18, TextStyle.ITALIC, java.awt.Color.blue)
             .aboveCentered(tri);
        
-       showSingleImage (labelledTri);
-       // System.out.println ("Labelled triangle: " + labelledTri);
+       labelledTri.show();
        
        WorldImage croppedTri = labelledTri.getCropped (10, 90, 10, 90);
-       showSingleImage (croppedTri);
-       // System.out.println ("Cropped triangle: " + croppedTri);
+       croppedTri.show();
        
        WorldImage xTri = labelledTri.getXReflection();
-       showSingleImage (xTri);
-       // System.out.println ("X-reflected triangle: " + xTri);
+       xTri.show();
        
        WorldImage yTri = labelledTri.getYReflection();
-       showSingleImage (yTri);
-       // System.out.println ("Y-reflected triangle: " + yTri);
+       yTri.show();
         
         WorldImage backwardSnowman = labelledSnowman.getXReflection();
-        showSingleImage (backwardSnowman);
-        System.out.println ("Backwards snowman: " + backwardSnowman);
+        backwardSnowman.show();
         
         WorldImage invertedSnowman = labelledSnowman.getYReflection();
-        showSingleImage (invertedSnowman);
-        System.out.println ("Inverted snowman: " + invertedSnowman);
+        invertedSnowman.show();
         
-        // showSingleImage (labelledSnowman.rotated (35)); // part of it disappears off the screen
+        labelledSnowman.rotated (35).show(); // part of it disappears off the screen
         
-        showSingleImage (labelledSnowman.rotated (35).normalized()); // should be visible
+        labelledSnowman.rotated (35).normalized().show();
         
-        showSingleImage (labelledSnowman.rotatedInPlace (35));
+        labelledSnowman.rotatedInPlace (35).show();
         
-        // showSingleImage (snowman.rotated (-90)); // disappears off the screen
+        snowman.rotated (-90).show(); // disappears off the screen
         
-        showSingleImage (snowman.rotated (-90).normalized()); // should be visible
+        snowman.rotated (-90).normalized().show();
         
-        showSingleImage (snowman.rotatedInPlace (-90));
+        snowman.rotatedInPlace (-90).show();
         
         
         WorldImage bloch = AImage.makeFromURL ("http://picturingprograms.com/pictures/bloch.jpg");
-        showSingleImage (bloch);
-        showSingleImage (bloch.rotatedInPlace (45));
-        showSingleImage (bloch.getXReflection());
-        showSingleImage (bloch.getYReflection());
+        bloch.show();
+        bloch.rotatedInPlace (45).show();
+        bloch.getXReflection().show();
+        bloch.getYReflection().show();
         
         WorldImage twoBlochs = bloch.beside(bloch);
-        showSingleImage (twoBlochs);
+        twoBlochs.show();
 
         WorldImage threeBlochs = bloch.aboveCentered(twoBlochs).freeze();
         
-        showSingleImage (threeBlochs);
-        showSingleImage (threeBlochs);
+        threeBlochs.show();
         
         System.out.println ("Saving threeBlochs: " + threeBlochs.save("threeblochs.png"));
         
-        showSingleImage (AImage.makeFromFile ("threeblochs.png").getYReflection());
+        AImage.makeFromFile ("threeblochs.png").getYReflection().show();
         
-        showSingleImage (AImage.makeRectangle(89, 55, new Blue(), Mode.FILLED)
-                            .place(SampleImages.shark, 0, 0));
+        AImage.makeRectangle(89, 55, new Blue(), Mode.FILLED)
+              .place(SampleImages.shark, 0, 0)
+              .show();
                             
         WorldImage gradient1 = AImage.build (100, 100,
             new ImageBuilder () {
@@ -246,7 +246,7 @@ public class DrawTest extends junit.framework.TestCase
                 }
             }
             , new Posn(100,100));
-        showSingleImage (gradient1);
+        gradient1.show();
         
         ImageMap killRed = new ImageMap () {
             public Color pixelColor (int x, int y, Color oldColor, Object other)
@@ -255,8 +255,8 @@ public class DrawTest extends junit.framework.TestCase
                 return new Color (0, oldColor.getGreen(), oldColor.getBlue(), oldColor.getAlpha());
             }
         };
-        showSingleImage (bloch.map(killRed));
-        showSingleImage (redDiskOnBlue.map(killRed));
+        bloch.map(killRed).show();
+        redDiskOnBlue.map(killRed).show(); // should be a black disk on blue rect
         
         ImageMap replaceWithWhite = new ImageMap () {
             public Color pixelColor (int x, int y, Color oldColor, Object other)
@@ -265,9 +265,9 @@ public class DrawTest extends junit.framework.TestCase
                 return oldColor.equals(target) ? Color.white : oldColor;
             }
         };
-        showSingleImage (redDiskOnBlue.map(replaceWithWhite, Color.blue));
-        showSingleImage (redDiskOnBlue.map(replaceWithWhite, Color.red));
-        showSingleImage (redDiskOnBlue.map(replaceWithWhite, Color.yellow));
+        redDiskOnBlue.map(replaceWithWhite, Color.blue).show(); // should be just a red disk
+        redDiskOnBlue.map(replaceWithWhite, Color.red).show(); // should be a white disk on blue rect
+        redDiskOnBlue.map(replaceWithWhite, Color.yellow).show(); // should be unchanged
     }
     
     
