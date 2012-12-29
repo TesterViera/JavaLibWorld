@@ -24,8 +24,8 @@ public enum TextStyle
     {
         switch (this) {
             case NORMAL : return 0;
-            case ITALIC : return 1;
-            case BOLD : return 2;
+            case BOLD : return 1;
+            case ITALIC : return 2;
             case BOLD_ITALIC : return 3;
             default: return -1; // should never happen
         }
