@@ -50,6 +50,7 @@ public class FromURLImage extends RasterImage
     FromURLImage(URL url)
     {
         super();
+        if (url == null) return;
         this.url = url;
         this.urlString = url.toString(); // should be normalized and encoded by now.
         

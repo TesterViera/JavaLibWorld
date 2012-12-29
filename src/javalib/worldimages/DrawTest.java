@@ -31,6 +31,7 @@ public class DrawTest extends junit.framework.TestCase
 
     public static void showSingleImage (WorldImage ii)
     {
+        if (ii == null) return;
         int width = Math.min(1000, ii.getRight() + 50);
         int height = Math.min(800, ii.getBottom() + 50);
         WorldCanvas c = new WorldCanvas (width, height);
@@ -40,8 +41,9 @@ public class DrawTest extends junit.framework.TestCase
     
     public void testOtherStuff (Tester t)
     {
-          WorldImage text1 = AImage.makeText("hello", 6, TextStyle.BOLD, new Black()).moved(2,3);
-          WorldImage fromFile1 = AImage.makeFromFile ("Images/shark.png").moved(20,30);
+          // WorldImage text1 = AImage.makeText("hello", 6, TextStyle.BOLD, new Black()).moved(2,3);
+          // WorldImage fromFile1 = AImage.makeFromFile ("Images/shark.png").moved(20,30);
+          // text1 = text1;
     }
     
     public void testPrimitives (Tester t)
@@ -52,7 +54,6 @@ public class DrawTest extends junit.framework.TestCase
         // Primitive shapes: Rectangle, Frame, Ellipse, Oval,
         // Circle, Disk, Triangle, Text,
         // FilledPoly, FilledTriangle, PolyLine, OutlinedTriangle, Line
-        
         
         showSingleImage (AImage.makeRectangle (30,50, new Black(), Mode.FILLED));
         // should be black, 30 wide by 50 high, at top left corner.
@@ -113,9 +114,9 @@ public class DrawTest extends junit.framework.TestCase
 
         showSingleImage (AImage.makeLine (new Posn(100, 15), new Posn(50, 100), new Green()));
         
-        showSingleImage (AImage.makeFromFile ("Images/green-fish.png"));
-        showSingleImage (AImage.makeFromFile ("Images/pink-fish.png").moved(200, 250));
-        showSingleImage (AImage.makeFromFile ("Images/shark.png").moved(350, 400));
+        showSingleImage (SampleImages.greenFish);
+        showSingleImage (SampleImages.pinkFish.moved(200, 250));
+        showSingleImage (SampleImages.shark.moved(350, 400));
     }
     
     public void testOperators (Tester t)
@@ -234,7 +235,7 @@ public class DrawTest extends junit.framework.TestCase
         showSingleImage (AImage.makeFromFile ("threeblochs.png").getYReflection());
         
         showSingleImage (AImage.makeRectangle(89, 55, new Blue(), Mode.FILLED)
-                            .place(AImage.makeFromFile("Images/shark.png"), 0, 0));
+                            .place(SampleImages.shark, 0, 0));
                             
         WorldImage gradient1 = AImage.build (100, 100,
             new ImageBuilder () {
