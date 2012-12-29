@@ -347,6 +347,17 @@ public abstract class AImage implements WorldImage
         return this.moved (dxdy.getX(), dxdy.getY());
     }
     
+    public WorldImage centerMoved (int x, int y)
+    {
+        Posn center = this.getCenter();
+        return this.moved(x-center.x, y-center.y);
+    }
+    
+    public WorldImage centerMoved (Posn xy)
+    {
+        return this.moved(xy.minus(this.getCenter()));
+    }
+    
     /**
      * Get a version of this image translated to have its top-left corner at (0,0).
      */

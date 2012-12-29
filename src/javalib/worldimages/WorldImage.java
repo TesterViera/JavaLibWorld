@@ -122,6 +122,17 @@ public interface WorldImage
      */
     abstract public WorldImage moved (int dx, int dy);
     abstract public WorldImage moved (Posn dxdy);
+    
+    /**
+     * Produce the image with its center translated to the specified (x,y)
+     * Functional; does NOT modify this!
+     * 
+     * @param x  the new x coordinate of the center
+     * @param y  the new y coordinate of the center
+     * @since Dec. 29, 2012
+     */
+    abstract public WorldImage centerMoved (int x, int y);
+    abstract public WorldImage centerMoved (Posn xy);
 
     /**
      * Produce a "normalized" version of this image, with top-left corner at (0,0).

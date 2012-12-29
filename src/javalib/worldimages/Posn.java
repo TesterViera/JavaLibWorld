@@ -48,7 +48,7 @@ public class Posn {
      * @since Dec. 2, 2012
      * @author Stephen Bloch
      */
-  public Posn getMovedPosn (int dx, int dy) {
+  public Posn moved (int dx, int dy) {
       return new Posn (this.x + dx, this.y + dy);
     }
     
@@ -61,8 +61,8 @@ public class Posn {
    * @since Dec. 12, 2012
    * @author Stephen Bloch
    */
-  public Posn addPosn (Posn other) {
-      return this.getMovedPosn (other.x, other.y);
+  public Posn plus (Posn other) {
+      return this.moved (other.x, other.y);
     }
   
   /**
@@ -74,8 +74,8 @@ public class Posn {
    * @since Dec. 12, 2012
    * @author Stephen Bloch
    */
-  public Posn subPosn (Posn other) {
-      return this.getMovedPosn (- other.x, - other.y);
+  public Posn minus (Posn other) {
+      return this.moved (- other.x, - other.y);
     }
     
   public boolean equals (Object other) {
