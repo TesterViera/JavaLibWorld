@@ -516,7 +516,7 @@ public abstract class AImage implements WorldImage
         for (WorldImage other : others)
         {
             result = OverlayImage.make (result,
-                other.moved (0, other.getTop()-result.getBottom()));
+                other.moved (0, result.getBottom() - other.getTop()));
         }
         return result;
     }
