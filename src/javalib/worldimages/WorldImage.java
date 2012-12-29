@@ -166,7 +166,7 @@ public interface WorldImage
      * @param factor
      * @return a new WorldImage which is factor times as large as this one.
      */
-    public WorldImage getScaled (double factor);
+    public WorldImage scaled (double factor);
 
     /**
      * get a non-uniformly scaled copy of the image.
@@ -175,17 +175,17 @@ public interface WorldImage
      * @param yFactor
      * @return a new WorldImage scaled by xFactor in the x dimension and yFactor in the y dimension
      */
-    public WorldImage getScaled (double xFactor, double yFactor);
+    public WorldImage scaled (double xFactor, double yFactor);
 
     /**
      * get a horizontally-reflected copy of the image.
      */
-    public WorldImage getXReflection ();
+    public WorldImage xReflected ();
     
     /**
      *  get a vertically-reflected copy of the image.
      */
-    public WorldImage getYReflection ();
+    public WorldImage yReflected ();
 
     /**
      * Overlay other images on this one, retaining their locations.
@@ -270,7 +270,7 @@ public interface WorldImage
      * @param bottom
      * @return a new WorldImage which is a rectangular portion of this one
      */
-    public WorldImage getCropped (int left, int right, int top, int bottom);
+    public WorldImage cropped (int left, int right, int top, int bottom);
     
     /**
      * get a WorldImage just like this one, but with a memoized raster rendering.
@@ -278,7 +278,7 @@ public interface WorldImage
      * To be used as a "hint" for large, complex images that are likely to be
      * displayed many times before being modified.
      */
-    public WorldImage freeze();
+    public WorldImage frozen();
     
     /**
      * create a rectangular image pixel by pixel from an existing image.

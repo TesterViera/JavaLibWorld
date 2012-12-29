@@ -404,36 +404,36 @@ public abstract class AImage implements WorldImage
         return this.moved(cx, cy).rotated(degrees).moved(-cx,-cy);
     }
     
-    public WorldImage getScaled (double factor)
+    public WorldImage scaled (double factor)
     {
-        return this.getScaled (factor, factor);
+        return this.scaled (factor, factor);
     }
 
-    public WorldImage getScaled (double xFactor, double yFactor)
+    public WorldImage scaled (double xFactor, double yFactor)
     {
         return new LinearImage (
             AffineTransform.getScaleInstance (xFactor, yFactor),
             this);
     }
     
-    public WorldImage getXReflection ()
+    public WorldImage xReflected ()
     {
         int oldLeft = this.getLeft();
         int oldRight = this.getRight();
         // if we just scale it, new left edge will be at -oldRight,
         // so translate this back to where old left edge was.
         
-        return this.getScaled (-1.0, 1.0).moved(oldLeft + oldRight, 0);
+        return this.scaled (-1.0, 1.0).moved(oldLeft + oldRight, 0);
     }
     
-    public WorldImage getYReflection ()
+    public WorldImage yReflected ()
     {
         int oldTop = this.getTop();
         int oldBottom = this.getBottom();
         // if we just scale it, new top edge will be at -oldBottom,
         // so translate this back to where old top edge was.
         
-        return this.getScaled (1.0, -1.0).moved(0, oldTop + oldBottom);
+        return this.scaled (1.0, -1.0).moved(0, oldTop + oldBottom);
     }
         
     public WorldImage overlay (WorldImage... others)
@@ -507,7 +507,7 @@ public abstract class AImage implements WorldImage
         int cx = (front.getRight() + front.getLeft())/2;
         int cy = (front.getTop() + front.getBottom())/2;
         
-        return this.overlayXY(front, x-cx, y-cy).getCropped (left, right, top, bottom);
+        return this.overlayXY(front, x-cx, y-cy).cropped (left, right, top, bottom);
     }
 
     public WorldImage above (WorldImage... others)
@@ -573,19 +573,19 @@ public abstract class AImage implements WorldImage
     }
     
 
-    public WorldImage getCropped (int left, int right, int top, int bottom)
+    public WorldImage cropped (int left, int right, int top, int bottom)
     {
         return Crop.make(this, left, right, top, bottom);
     }
     
-    public WorldImage freeze ()
+    public WorldImage frozen ()
     {
         return FreezeImage.make (this);
     }
     
     public boolean save(String filename)
     {
-        return this.freeze().save(filename);        
+        return this.frozen().save(filename);        
     }
 
     /**
@@ -617,7 +617,7 @@ public abstract class AImage implements WorldImage
 
     public WorldImage map (ImageMap map, Object extra)
     {
-        return this.freeze().map (map, extra);
+        return this.frozen().map (map, extra);
     }
 
     public WorldImage map (ImageMap map)

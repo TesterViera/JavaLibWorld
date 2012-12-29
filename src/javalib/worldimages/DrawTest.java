@@ -170,12 +170,12 @@ public class DrawTest extends junit.framework.TestCase
         labelledSnowman.show();
         // System.out.println ("Labelled snowman: " + labelledSnowman);
         
-        snowman.getCropped (20, 40, 20, 200).show();
+        snowman.cropped (20, 40, 20, 200).show();
         
-        labelledSnowman.getCropped (10, 40, 10, 200).show();
-        labelledSnowman.getScaled (1.3).show();
+        labelledSnowman.cropped (10, 40, 10, 200).show();
+        labelledSnowman.scaled (1.3).show();
         
-        labelledSnowman.getScaled (0.5, 0.8).show();
+        labelledSnowman.scaled (0.5, 0.8).show();
 
         WorldImage tri = AImage.makeTriangle (new Posn(100,30),
                                          new Posn(80,100),
@@ -188,19 +188,19 @@ public class DrawTest extends junit.framework.TestCase
        
        labelledTri.show();
        
-       WorldImage croppedTri = labelledTri.getCropped (10, 90, 10, 90);
+       WorldImage croppedTri = labelledTri.cropped (10, 90, 10, 90);
        croppedTri.show();
        
-       WorldImage xTri = labelledTri.getXReflection();
+       WorldImage xTri = labelledTri.xReflected();
        xTri.show();
        
-       WorldImage yTri = labelledTri.getYReflection();
+       WorldImage yTri = labelledTri.yReflected();
        yTri.show();
         
-        WorldImage backwardSnowman = labelledSnowman.getXReflection();
+        WorldImage backwardSnowman = labelledSnowman.xReflected();
         backwardSnowman.show();
         
-        WorldImage invertedSnowman = labelledSnowman.getYReflection();
+        WorldImage invertedSnowman = labelledSnowman.yReflected();
         invertedSnowman.show();
         
         labelledSnowman.rotated (35).show(); // part of it disappears off the screen
@@ -219,19 +219,19 @@ public class DrawTest extends junit.framework.TestCase
         WorldImage bloch = AImage.makeFromURL ("http://picturingprograms.com/pictures/bloch.jpg");
         bloch.show();
         bloch.rotatedInPlace (45).show();
-        bloch.getXReflection().show();
-        bloch.getYReflection().show();
+        bloch.xReflected().show();
+        bloch.yReflected().show();
         
         WorldImage twoBlochs = bloch.beside(bloch);
         twoBlochs.show();
 
-        WorldImage threeBlochs = bloch.aboveCentered(twoBlochs).freeze();
+        WorldImage threeBlochs = bloch.aboveCentered(twoBlochs).frozen();
         
         threeBlochs.show();
         
         System.out.println ("Saving threeBlochs: " + threeBlochs.save("threeblochs.png"));
         
-        AImage.makeFromFile ("threeblochs.png").getYReflection().show();
+        AImage.makeFromFile ("threeblochs.png").yReflected().show();
         
         AImage.makeRectangle(89, 55, new Blue(), Mode.FILLED)
               .place(SampleImages.shark, 0, 0)
