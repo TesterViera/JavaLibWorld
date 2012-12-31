@@ -128,6 +128,12 @@ public interface WorldImage extends ISame<WorldImage>
      * @param dy the vertical offset
      */
     abstract public WorldImage moved (int dx, int dy);
+
+    /**
+     * Produce the image translated by the given (dx, dy).
+     * 
+     * @param dxdy
+     */
     abstract public WorldImage moved (Posn dxdy);
     
     /**
@@ -138,6 +144,13 @@ public interface WorldImage extends ISame<WorldImage>
      * @since Dec. 29, 2012
      */
     abstract public WorldImage centerMoved (int x, int y);
+
+    /**
+     * Produce the image with its center translated to the specified (x,y)
+     * 
+     * @param xy    the new center
+     * @since Dec. 29, 2012
+     */
     abstract public WorldImage centerMoved (Posn xy);
 
     /**
@@ -148,29 +161,44 @@ public interface WorldImage extends ISame<WorldImage>
     abstract public WorldImage normalized();
     
     /**
-     * Get a version of this image rotated by a specified number of degrees.
+     * Get a version of this image rotated by a specified number of degrees around (0,0).
      * 
      * @param degrees
      */
     abstract public WorldImage rotated (int degrees);
 
     /**
-     * Get a version of this image rotated by a specified number of degrees.
+     * Get a version of this image rotated by a specified number of degrees around (0,0).
      * This version of the method takes in a double.
      * 
      * @param degrees   a double, in this version
      */
-    public WorldImage rotated (double degrees);
+    abstract public WorldImage rotated (double degrees);
 
     /**
-     * Get a version of this image rotated by a specified number of degrees.
+     * Get a version of this image rotated by a specified number of degrees around a specified point.
+     * 
+     * @param degrees
+     * @param anchor    the fixpoint of the rotation
+     */
+    abstract public WorldImage rotatedAround (int degrees, Posn anchor);
+    
+    /**
+     * Get a version of this image rotated by a specified number of degrees around a specified point.
+     * 
+     * @param degrees
+     * @param anchor    the fixpoint of the rotation
+     */
+    abstract public WorldImage rotatedAround (double degrees, Posn anchor);
+    /**
+     * Get a version of this image rotated by a specified number of degrees around its center.
      * 
      * @param degrees   an int, in this version
      */
     abstract public WorldImage rotatedInPlace (int degrees);
 
     /**
-     * Get a version of this image rotated by a specified number of degrees around the center of the bounding box.
+     * Get a version of this image rotated by a specified number of degrees around its center.
      * 
      * @param degrees   a double, in this version.
      */

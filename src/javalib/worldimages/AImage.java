@@ -352,7 +352,7 @@ public abstract class AImage implements WorldImage
             return this;
         }
         else {
-            return new LinearImage (AffineTransform.getTranslateInstance(dx, dy), this);
+            return LinearImage.make (AffineTransform.getTranslateInstance(dx, dy), this);
         }
     }
     
@@ -379,53 +379,87 @@ public abstract class AImage implements WorldImage
         return this.moved(-this.getLeft(), -this.getTop());
     }
 
-    public WorldImage rotated (int degrees)
+    private int normalizeDegrees (int degrees)
     {
-        while (degrees < 0)  // realistically, loop will almost never happen more than once.
+        int answer = degrees;
+        while (answer < 0)
         {
-            degrees += 360;
+            answer += 360;
         }
-        while (degrees >= 360) // realistically, loop will almost never happen more than once.
+        while (answer >= 360)
         {
-            degrees -= 360;
+            answer -= 360;
         }
+        return answer;
+    }
+    
+    public WorldImage rotated (int degrees) // overridden in LinearImage
+    {
+        degrees = normalizeDegrees (degrees);
         if (degrees == 0)
         {
             return this;
         }
         else if (degrees % 90 == 0)
         {
-            return new LinearImage (
+            return LinearImage.make (
                 AffineTransform.getQuadrantRotateInstance (degrees / 90),
                 this);
         }
         else
         {
-            return new LinearImage(AffineTransform.getRotateInstance(Math.PI * degrees / 180.0), this);
+            return LinearImage.make (
+                AffineTransform.getRotateInstance(Math.PI * degrees / 180.0),
+                this);
         }
     }
     
-    public WorldImage rotated (double degrees)
+    public WorldImage rotated (double degrees) // overridden in LinearImage
     {
         // since rotation is a double, don't bother with the exact comparisons
         // for multiples of 90
-        return new LinearImage(AffineTransform.getRotateInstance(Math.PI * degrees / 180.0), this);
+        return LinearImage.make (
+            AffineTransform.getRotateInstance(Math.PI * degrees / 180.0),
+            this);
     }
 
+    public WorldImage rotatedAround (int degrees, Posn anchor) // overridden in LinearImage
+    {
+        degrees = normalizeDegrees (degrees);
+        if (degrees == 0)
+        {
+            return this;
+        }
+        else if (degrees % 90 == 0)
+        {
+            return LinearImage.make (
+                AffineTransform.getQuadrantRotateInstance (degrees / 90, anchor.x, anchor.y),
+                this);
+        }
+        else
+        {
+            return LinearImage.make (
+                AffineTransform.getRotateInstance(Math.PI * degrees / 180.0, anchor.x, anchor.y),
+                this);
+        }
+    }
+
+    public WorldImage rotatedAround (double degrees, Posn anchor)
+    {
+        return LinearImage.make (
+            AffineTransform.getRotateInstance(Math.PI * degrees / 180.0,
+                                              anchor.x, anchor.y),
+            this);
+    }
+    
     public WorldImage rotatedInPlace (int degrees)
     {
-        int cx = (this.getLeft() + this.getRight())/2;
-        int cy = (this.getTop() + this.getBottom())/2;
-        
-        return this.moved(-cx, -cy).rotated(degrees).moved(cx, cy);
+        return this.rotatedAround (degrees, this.getCenter());
     }
     
     public WorldImage rotatedInPlace (double degrees)
     {
-        int cx = (this.getLeft() + this.getRight())/2;
-        int cy = (this.getTop() + this.getBottom())/2;
-        
-        return this.moved(cx, cy).rotated(degrees).moved(-cx,-cy);
+        return this.rotatedAround (degrees, this.getCenter());
     }
     
     public WorldImage scaled (double factor)
@@ -435,7 +469,7 @@ public abstract class AImage implements WorldImage
 
     public WorldImage scaled (double xFactor, double yFactor)
     {
-        return new LinearImage (
+        return LinearImage.make (
             AffineTransform.getScaleInstance (xFactor, yFactor),
             this);
     }

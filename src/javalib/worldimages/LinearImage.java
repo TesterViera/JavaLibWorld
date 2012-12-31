@@ -29,6 +29,39 @@ public class LinearImage extends AImage
         this.setBBox();
     }
     
+    /**
+     * Pseudo-constructor for objects of class LinearImage.
+     * 
+     * <p>The main purpose of the pseudo-constructor is to collapse multiple successive linear
+     * transforms into one, so we don't get a bunch of deeply-nested LinearImages.</p>
+     * 
+     * <p>This isn't just an optimization: it affects the calculation of the bounding box.
+     * If two or more LinearImages are nested, the bounding box of the outer one is calculated
+     * from the four corners of the bounding box of the inner one, which are in turn calculated
+     * from the four corners of the bounding box of the inner one's base.  The visible effect of
+     * this is that when you repeatedly rotate a single image, the accumulated errors cause it
+     * to spiral out of control.  With LinearImages collapsed, the same could still happen
+     * (e.g. if there were a Crop or an Overlay between each pair of LinearImages), but it's
+     * much less likely.</p>
+     * 
+     * @param base     the image to transform
+     * @param transform what to do to it
+     */
+    static WorldImage make (AffineTransform transform, WorldImage base)
+    {
+        if (base instanceof LinearImage) // avoid piling up nested LinearImages
+        {
+            LinearImage theBase = (LinearImage)base;
+            AffineTransform temp = new AffineTransform(transform);
+            temp.concatenate(theBase.transform);
+            return new LinearImage (temp, theBase.base);
+        }
+        else
+        {
+            return new LinearImage (transform, base);
+        }
+    }
+    
     private void setBBox()
     {
         Point2D topLeft = new Point2D.Float (this.base.getLeft(), this.base.getTop());
@@ -131,84 +164,5 @@ public class LinearImage extends AImage
         ",\n" + newIndent + "this.transform = " + this.transform.toString() +
         ",\n" + newIndent + this.cornerString() +
         ")";
-    }
-    
-    /**
-     * Get a translated copy of this image.
-     * 
-     * @param dx
-     * @param dy
-     * @return a new image just like this one but translated
-     */
-    public WorldImage getTranslated(int dx, int dy) {
-        if (dx == 0 && dy == 0) {
-            return this;
-        }
-        else {
-            AffineTransform temp = AffineTransform.getTranslateInstance(dx,dy);
-            temp.concatenate(this.transform);
-            return new LinearImage (temp, this.base);
-        }
-    }
-    
-    /**
-     * Get a version of this image rotated by a specified number of degrees.
-     * 
-     * @param degrees
-     */
-    public WorldImage getRotated (int degrees)
-    {
-        while (degrees < 0)
-        {
-            degrees += 360;
-        }
-        while (degrees >= 360)
-        {
-            degrees -= 360;
-        }
-        if (degrees == 0)
-        {
-            return this;
-        }
-        else if (degrees % 90 == 0)
-        {
-            AffineTransform temp = AffineTransform.getQuadrantRotateInstance(degrees / 90);
-            temp.concatenate(this.transform);
-            return new LinearImage (temp, this.base);
-        }
-        else
-        {
-            AffineTransform temp = AffineTransform.getRotateInstance (Math.PI * degrees / 180.0);
-            temp.concatenate (this.transform);
-            return new LinearImage(temp, this.base);
-        }
-    }
-    
-    /**
-     * Get a version of this image rotated by a specified number of degrees.
-     * This version of the method takes in a double, and doesn't bother checking
-     * for exact multiples of 90 degrees.
-     * 
-     * @param degrees
-     */
-    public WorldImage getRotated (double degrees)
-    {
-            AffineTransform temp = AffineTransform.getRotateInstance (Math.PI * degrees / 180.0);
-            temp.concatenate (this.transform);
-            return new LinearImage(temp, this.base);
-    }
-
-    /**
-     * get a non-uniformly scaled copy of the image.
-     * 
-     * @param xFactor
-     * @param yFactor
-     * @return a new WorldImage scaled by xFactor in the x dimension and yFactor in the y dimension
-     */
-    public WorldImage getScaled (double xFactor, double yFactor)
-    {
-        AffineTransform temp = AffineTransform.getScaleInstance (xFactor, yFactor);
-        temp.concatenate (this.transform);
-        return new LinearImage (temp, this.base);
     }
 }
