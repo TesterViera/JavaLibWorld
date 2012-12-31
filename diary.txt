@@ -105,3 +105,61 @@ picture of me by 1 degree every .01 second.
 It's still a pain negotiating between WorldImage and Image; I would
 prefer to just REPLACE WorldImage, but I haven't confirmed that the rest
 of javalib would compile and run.
+
+Dec. 29, 2012: Since much of the point of this course is test-driven
+design, I need to make really sure checkExpect works properly.  This is
+a bit more complicated because there are at least two different notions
+of equality for WorldImages: are they the same as expression trees?, and
+do they render the same?  The former implies the latter, but not
+conversely.  For example,
+	WorldImage rect1 = AImage.makeRectangle (50, 30, Color.red, Mode.FILLED);
+	WorldImage rect2 = AImage.makeRectangle (50, 60, Color.red, Mode.FILLED);
+	checkExpect (rect1.above(rect1), rect2);
+should pass, even though the two expressions are decidedly not the same
+as trees.
+
+I had already put an "equals" method into most of the classes that
+basically did tree equivalence (although I didn't have test cases for
+it).  So I decided to implement "renders-the-same" equality through the
+"same" method: WorldImage extends ISame.  To compare most images, I
+"freeze" them, make sure the frozen version is rendered, then compare
+the rasters pixel by pixel.  And I got this working: the test
+	checkExpect (rect1.above(rect1).same(rect2), true);
+passed.  But if I wrote the same test as
+	checkExpect (rect1.above(rect1), rect2);
+it failed.  It turns out that the Tester code recognizes WorldImages and
+some of its subclasses as special, and applies "equals" to them rather
+than "same".  (It also does the same for Canvas and the Tunes package.)
+
+So I renamed my "equals" method as "treeEquals", and renamed "same" as
+"equals" (changing signatures as necessary), and it still didn't work.
+It turns out that the Tester code does some other clever optimizations:
+once it has determined that two objects aren't the same class, they
+obviously aren't "same", so it returns false immediately rather than
+actually calling any comparison method on them at all.  This is
+fundamentally incompatible with the notion of "same" meaning "has the
+same rendering".
+
+What now?  The least intrusive answer is to write a publicly-visible
+"looksSame" method, and have student test cases look like
+	checkExpect (rect1.above(rect1).looksSame(rect2), true);
+This would require minimal changes to the Tester library (although still
+some, because the Tester library has the list of WorldImage subclasses
+hard-coded, and that list has changed in the past two weeks).
+
+The more user-friendly (and long-term more elegant) answer is to take
+out those two optimizations from Tester, and use "same" as I had
+originally intended.  If WorldImage, Canvas, and Tunes want a custom
+comparison operator, they can implement ISame just like anybody else.
+
+But as it turns out, I don't think any of those classes have their own
+definitions of equals() OR same().  Which means that if these
+optimizations weren't there, the tester would use its default "deep"
+comparison; presumably the special case is to avoid this expense.
+But the same could have been accomplished by writing a same() method
+for those classes, couldn't it?
+
+Dec. 30, 2012: I'm trying the "more user-friendly" solution described
+above.  I've taken out a couple of optimizations in tester.Inspector,
+and put in a same() method that tells whether two images render the
+same.  Seems to be working so far; need more test cases.

@@ -5,21 +5,21 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
- * Implementation stuff that all images in my version should share.
+ * <p>Implementation stuff that all images in my version should share.</p>
  * 
- * All images have a bounding box, which you can get with getLeft(), getTop(),
- * getRight(), getBottom().
+ * <p>All images have a bounding box, which you can get with <code>getLeft()</code>,
+ * <code>getTop()</code>, <code>getRight()</code>, <code>getBottom()</code>.</p>
  * 
- * Most of this class is factory methods for various kinds of images.
+ * <p>Most of this class is factory methods for various kinds of images.
  * In many case, a factory method has to be written six times, with different
- * combinations of Color and Mode arguments.  Sometimes Java really annoys me....
+ * combinations of Color and Mode arguments.  Sometimes Java really annoys me....</p>
  * 
- * Convention: the "makeWhatever" methods in AImage are public, and there's a version for
+ * <p>Convention: the "makeWhatever" methods in AImage are public, and there's a version for
  * each reasonable combination of missing parameters; these simply call the corresponding
  * "make" method in the appropriate class.  The "make" methods in each concrete
  * class are package-private, and there's a version for each reasonable combination of
  * missing parameters; these all call the constructor.  The constructor (in most cases)
- * is protected, and there's only one version.
+ * is protected, and there's only one version.</p>
  * 
  * @author Stephen Bloch
  * @version Dec. 26, 2012
@@ -97,11 +97,24 @@ public abstract class AImage implements WorldImage
     public int getLeft () {
         return 0; // default
     }
-        
+    
     public boolean equals (Object other) {
         return this.sameClass(other);
     }
-    
+
+    /**
+     * Do two WorldImages appear the same?
+     * 
+     * If they're equal as expression trees, they certainly appear the same.
+     * Failing this, render both of them and compare the pixel maps.
+     */
+    public boolean same (WorldImage other)
+    {
+        return this.equals(other) ||
+               this.frozen().same(other.frozen());
+    }
+
+
     protected static int rotate (int x, int bits) {
         return x << bits + x >>> (32-bits);
     }
@@ -589,7 +602,7 @@ public abstract class AImage implements WorldImage
         return Crop.make(this, left, right, top, bottom);
     }
     
-    public WorldImage frozen ()
+    public RasterImage frozen ()
     {
         return FreezeImage.make (this);
     }
@@ -635,7 +648,7 @@ public abstract class AImage implements WorldImage
     {
         return this.map (map, null);
     }
-    
+
     /**
      * Record whether or not we're in an applet.
      * 

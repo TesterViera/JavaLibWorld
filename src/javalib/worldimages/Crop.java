@@ -81,4 +81,18 @@ public class Crop extends AImage
     {
         return this.bottom;
     }
+    
+    public boolean equals (Object other)
+    {
+        if (super.equals(other))
+        {
+            Crop otherCrop = (Crop)other;
+            return this.base.equals(otherCrop.base) &&
+                   this.left == otherCrop.left &&
+                   this.right == otherCrop.right &&
+                   this.top == otherCrop.top &&
+                   this.bottom == otherCrop.bottom;
+        }
+        else return false;
+    }
 }

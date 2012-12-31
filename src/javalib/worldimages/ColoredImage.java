@@ -78,11 +78,12 @@ abstract class ColoredImage extends AImage
      */
     abstract ColoredImage replaceMode (Mode newMode);
     
-    public boolean equals (Object other) {
+    public boolean equals (Object other)
+    {
         return super.equals(other) &&
                this.getColor().equals(((ColoredImage)other).getColor()) &&
                this.getMode().equals(((ColoredImage)other).getMode());
-        }
+    }
     
     public int hashCode () {
         return super.hashCode() + this.color.hashCode() + this.mode.hashCode();

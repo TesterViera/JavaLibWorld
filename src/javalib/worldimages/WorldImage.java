@@ -1,4 +1,5 @@
 package javalib.worldimages;
+import tester.ISame;
 
 
 /**
@@ -7,7 +8,7 @@ package javalib.worldimages;
  * @author Stephen BLoch
  * @version Dec. 2, 2012
  */
-public interface WorldImage 
+public interface WorldImage extends ISame<WorldImage>
 {   
     /**
      * Display an image in a canvas.
@@ -17,7 +18,7 @@ public interface WorldImage
     abstract public void show ();
     
     /**
-     * Is this the same as another WorldImage?
+     * Is this the same as another WorldImage, as expression trees?
      * 
      * Define this at every level that has instance variables.
      * 
@@ -26,9 +27,17 @@ public interface WorldImage
     abstract public boolean equals (Object other);
     
     /**
+     * Is this the same as another WorldImage, in the sense of appearing identical?
+     * 
+     * @param other   the object to compare with this
+     */
+    abstract public boolean same (WorldImage other);
+    
+    /**
      * Get a hash code for the WorldImage.
      * 
-     * Define this at every level that has instance variables.
+     * Needs to agree with equals().  In our case, "equals" means they render identically,
+     * so hashCode needs to be based on the pixels of the rendering.  See RasterImage.
      */
     abstract public int hashCode ();
     
@@ -84,9 +93,9 @@ public interface WorldImage
     /**
      * Produce a <code>String</code> that represents this image.
      * 
-     * Define this in all concrete subclasses.
-     * Convention: The result of toString() will neither begin nor end with a newline,
-     * although there may be newlines in the middle.
+     * <p>Define this in all concrete subclasses.</p>
+     * <p>Convention: The result of toString() will neither begin nor end with a newline,
+     * although there may be newlines in the middle.</p>
      * 
      * @return the <code>String</code> representation of this image
      * @since Dec. 2, 2012
@@ -94,12 +103,11 @@ public interface WorldImage
     abstract public String toString ();
 
     /**
-     * Produce a <code>String</code> that represents this image, 
-     * indented by the given <code>indent</code>.
+     * Produce a <code>String</code> that represents this image, indented by the given <code>indent</code>.
      * 
-     * Define this in all concrete subclasses.
-     * Convention: The result of toIndentedString() will neither begin nor end with a newline;
-     * the specified indent will immediately follow each internal newline.     * 
+     * <p>Define this in all concrete subclasses.</p>
+     * <p>Convention: The result of toIndentedString() will neither begin nor end with a newline;
+     * the specified indent will immediately follow each internal newline.</p> 
      * 
      * @param indent the given prefix representing the desired indentation
      * @return the <code>String</code> representation of this image
@@ -115,7 +123,6 @@ public interface WorldImage
     
     /**
      * Produce the image translated by the given (dx, dy).
-     * Functional; does NOT modify this!
      * 
      * @param dx the horizontal offset
      * @param dy the vertical offset
@@ -125,7 +132,6 @@ public interface WorldImage
     
     /**
      * Produce the image with its center translated to the specified (x,y)
-     * Functional; does NOT modify this!
      * 
      * @param x  the new x coordinate of the center
      * @param y  the new y coordinate of the center
@@ -152,22 +158,21 @@ public interface WorldImage
      * Get a version of this image rotated by a specified number of degrees.
      * This version of the method takes in a double.
      * 
-     * @param degrees
+     * @param degrees   a double, in this version
      */
     public WorldImage rotated (double degrees);
 
     /**
      * Get a version of this image rotated by a specified number of degrees.
      * 
-     * @param degrees
+     * @param degrees   an int, in this version
      */
     abstract public WorldImage rotatedInPlace (int degrees);
 
     /**
-     * Get a version of this image rotated by a specified number of degrees.
-     * This version of the method takes in a double.
+     * Get a version of this image rotated by a specified number of degrees around the center of the bounding box.
      * 
-     * @param degrees
+     * @param degrees   a double, in this version.
      */
     public WorldImage rotatedInPlace (double degrees);
 
@@ -175,7 +180,7 @@ public interface WorldImage
      * get a uniformly scaled copy of the image.
      * 
      * @param factor
-     * @return a new WorldImage which is factor times as large as this one.
+     * @return a new WorldImage which is <em>factor</em> times as large as this one.
      */
     public WorldImage scaled (double factor);
 
@@ -184,7 +189,7 @@ public interface WorldImage
      * 
      * @param xFactor
      * @param yFactor
-     * @return a new WorldImage scaled by xFactor in the x dimension and yFactor in the y dimension
+     * @return a new WorldImage scaled by <em>xFactor</em> in the x dimension and <em>yFactor</em> in the y dimension
      */
     public WorldImage scaled (double xFactor, double yFactor);
 
@@ -202,7 +207,7 @@ public interface WorldImage
      * Overlay other images on this one, retaining their locations.
      * 
      * @param others    one or more images to overlay on this one.
-     * @return a new WorldImage
+     * @return          a new WorldImage
      */
     public abstract WorldImage overlay (WorldImage... others);
     
@@ -210,7 +215,7 @@ public interface WorldImage
      * Overlay other images on this one, ignoring location of all but centering them.
      * 
      * @param others    one or more images to overlay on this one.
-     * @return a new WorldImage
+     * @return          a new WorldImage
      */
     public abstract WorldImage overlayCentered (WorldImage... others);
 
@@ -225,8 +230,7 @@ public interface WorldImage
     public WorldImage overlayXY (WorldImage front, int dx, int dy);
     
     /**
-     * Place another image onto this one, retaining the location of this one but translating
-     * the foreground so its center is at the specified location.  Crops to this image.
+     * Place another image onto this one, retaining the location of this one but translating the foreground so its center is at the specified location.  Crops to this image.
      * 
      * @param front    the foreground image (to be translated)
      * @param x        where to put the center of the foreground image
@@ -235,9 +239,9 @@ public interface WorldImage
      */
     public WorldImage place (WorldImage front, int x, int y);
     /**
-     * Concatenate two or more images vertically, retaining their x locations
-     * but moving the others vertically so each one's top edge aligns with
-     * the bottom of the previous one.
+     * Concatenate two or more images vertically.
+     * Retains x coords but moves the arguments vertically so each one's top edge
+     * aligns with the bottom of the previous one.
      * 
      * @param others    the images to concatenate below this, starting from the top
      */
@@ -255,7 +259,7 @@ public interface WorldImage
     
     /**
      * Concatenate two or more images horizontally.
-     * Ignores the translations of both images; matches the left edge of each
+     * Ignores the locations of both images; matches the left edge of each
      * with the right edge of the previous one, and centers vertically.
      * 
      * @param others    the images to concatenate to the right of this, starting from the left
@@ -264,14 +268,14 @@ public interface WorldImage
     public abstract WorldImage besideCentered (WorldImage... others);
     
     /**
-     * Concatenate two or more images horizontally, retaining their y locations
-     * but moving the others horizontally so each one's left edge aligns with
-     * the right edge of the previous one.
+     * Concatenate two or more images horizontally.
+     * Retains y locations but moves arguments horizontally so each one's left edge
+     * aligns with the right edge of the previous one.
      */
     public abstract WorldImage beside (WorldImage... others);
     
     /**
-     * get a new WorldImage by cropping this one to a rectangular window.
+     * Get a new WorldImage by cropping this one to a rectangular window.
      * Each pixel in the result is in the same location as the corresponding pixel
      * in the original was.
      * 
@@ -284,15 +288,15 @@ public interface WorldImage
     public WorldImage cropped (int left, int right, int top, int bottom);
     
     /**
-     * get a WorldImage just like this one, but with a memoized raster rendering.
+     * Get a WorldImage just like this one, but with a memoized raster rendering.
      * 
      * To be used as a "hint" for large, complex images that are likely to be
      * displayed many times before being modified.
      */
-    public WorldImage frozen();
+    public RasterImage frozen();
     
     /**
-     * create a rectangular image pixel by pixel from an existing image.
+     * Create a rectangular image pixel by pixel from an existing image.
      *
      * @param map    an ImageMap encapsulating a function from Color to
      *               Color
@@ -303,7 +307,7 @@ public interface WorldImage
     public WorldImage map (ImageMap map, Object extra);
     
     /**
-     * create a rectangular image pixel by pixel from an existing image.
+     * Create a rectangular image pixel by pixel from an existing image.
      * In this entrypoint, the "extra" parameter defaults to null.
      *
      * @param map    an ImageMap encapsulating a function from Color to

@@ -17,10 +17,10 @@ public class LinearImage extends AImage
     private int top, left, bottom, right;
 
     /**
-     * Constructor for objects of class Translate
+     * Constructor for objects of class LinearImage
      * 
-     * @param base    the image to translate
-     * @param translation  how far to move it
+     * @param base    the image to transform
+     * @param transform  what to do to it
      */
     LinearImage(AffineTransform transform, WorldImage base)
     {
@@ -51,6 +51,17 @@ public class LinearImage extends AImage
                               Math.max(rbl.getX(), rbr.getX()));
     }
 
+    public boolean equals (Object other)
+    {
+        if (super.equals (other))
+        {
+            LinearImage otherLI = (LinearImage)other;
+            return this.base.equals(otherLI.base) &&
+                   this.transform.equals(otherLI.transform);                   
+        }
+        else return false;
+    }
+    
     /**
      * Getter for the translation field.
      * 
@@ -200,5 +211,4 @@ public class LinearImage extends AImage
         temp.concatenate (this.transform);
         return new LinearImage (temp, this.base);
     }
-
 }

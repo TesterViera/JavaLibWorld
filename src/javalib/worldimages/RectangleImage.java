@@ -150,5 +150,4 @@ class RectangleImage extends RectangularImage
         ",\n" + newIndent + this.cornerString() +
         ")";
     }
-
 }

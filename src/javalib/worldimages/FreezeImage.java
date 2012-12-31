@@ -28,15 +28,23 @@ public class FreezeImage extends RasterImage
      * 
      * @param base    the existing image to freeze
      */
-    static WorldImage make (WorldImage base)
+    static RasterImage make (WorldImage base)
     {
-        if (base instanceof FreezeImage)
-            return base;
+        if (base instanceof RasterImage)
+            return (RasterImage)base;
         else
             return new FreezeImage (base);
     }
     
-    private void renderIfNecessary()
+    public boolean equals (Object other)
+    {
+        return super.equals (other) &&
+               this.base.equals (((FreezeImage)other).base);
+               // note that if super.treeEquals(other), they must be the same class,
+               // so since this is a FreezeImage, other must be too, so the cast should work.
+    }
+    
+    protected void renderIfNecessary()
     {
         if (this.rendering == null)
         {

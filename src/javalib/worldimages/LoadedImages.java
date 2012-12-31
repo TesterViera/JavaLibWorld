@@ -1,7 +1,7 @@
 package javalib.worldimages;
 
 import java.util.HashMap;
-import java.awt.image.RenderedImage;
+import java.awt.image.BufferedImage;
 
 /**
  * Singleton class to hold a table of already-loaded images.
@@ -12,6 +12,6 @@ import java.awt.image.RenderedImage;
 public class LoadedImages
 {
     private LoadedImages () { }
-    public static HashMap<String,RenderedImage> table =
-	new HashMap<String,RenderedImage> ();
+    public static HashMap<String,BufferedImage> table =
+	new HashMap<String,BufferedImage> ();
 }

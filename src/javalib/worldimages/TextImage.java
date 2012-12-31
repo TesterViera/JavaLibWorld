@@ -228,21 +228,23 @@ class TextImage extends ColoredImage{
    */
   public boolean equals(Object o)
   {
-      if (super.equals(o)) {
+      if (super.equals(o))
+      {
           TextImage that = (TextImage)o;
           return this.size == that.size
             && this.style == that.style
             && this.text.equals(that.text)
             ;
-        }
-    else 
-      return false;
+      }
+      else 
+          return false;
   }
   
   /**
    * The hashCode to match the equals method
    */
-  public int hashCode(){
+  public int hashCode()
+  {
     return super.hashCode() +
         this.getColor().hashCode() +
         (int)(this.size) +
