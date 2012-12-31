@@ -48,12 +48,15 @@ public class FromFileImage extends RasterImage{
    */
   static WorldImage make (String fileName)
   {
-      if (isApplet)
-      {
-          return new FromURLImage (FromFileImage.class.getResource("/" + fileName));
-      }
-      else try {
-          return new FromFileImage (new File (fileName));
+      try {
+          if (isApplet)
+          {
+            return new FromURLImage (FromFileImage.class.getResource("/" + fileName));
+          }
+          else
+          {
+              return new FromFileImage (new File (fileName));
+          }
         }
       catch (java.io.IOException e)
       {
@@ -61,6 +64,14 @@ public class FromFileImage extends RasterImage{
       }
   }
   
+    public boolean equals (Object other)
+    {
+        return super.equals (other) &&
+               this.fileName.equals(((FromFileImage)other).fileName);
+               // Note that if super.treeEquals(other), they must be the same class,
+               // so since this is a FromFileImage, other is too, so the cast should work.
+    }
+
   /**
    * A full constructor for this image created from the file input
    * 
@@ -96,13 +107,6 @@ public class FromFileImage extends RasterImage{
     return "new FromFileImage(this.fileName = \"" + this.fileName + 
         "\",\n" + newIndent + this.cornerString() +
         ")";
-  }
-  
-  /**
-   * Is this <code>FromFileImage</code> same as the given object?
-   */
-  public boolean equals(Object o){
-      return super.equals(o) && this.fileName.equals(((FromFileImage)o).fileName);
   }
   
   /**

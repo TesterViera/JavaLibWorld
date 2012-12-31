@@ -7,7 +7,7 @@ package javalib.worldimages;
  * @author Stephen Bloch
  * @version Dec. 28, 2012
  */
-public abstract class SampleImages
+public abstract class SampleImages 
 {
     private static int dummy = initEverything();
     // For some reason the following don't work as initializers, but they do work as assignments inside a method.
@@ -28,19 +28,24 @@ public abstract class SampleImages
 
     public static int initEverything ()
     {
-        bloch = new FromURLImage (find("Images/bloch.jpg"));
-        hieroglyphics = new FromURLImage (find("Images/hieroglyphics.png"));
-        hacker = new FromURLImage (find("Images/mad_hacker.png"));
-        book = new FromURLImage (find("Images/qbook.png"));
-        stickFigure = new FromURLImage (find("Images/stick-figure.png"));
-        schemeLogo = new FromURLImage (find("Images/schemelogo.png"));
-        calendar = new FromURLImage (find("Images/calendar.png"));
-        fish = new FromURLImage (find("Images/fish.png"));
-        greenFish = new FromURLImage (find("Images/green-fish.png"));
-        pinkFish = new FromURLImage (find("Images/pink-fish.png"));
-        shark = new FromURLImage (find("Images/shark.png"));
-        family = new FromURLImage (find("Images/family.png"));
-        
+        try {
+            bloch = new FromURLImage (find("Images/bloch.jpg"));
+            hieroglyphics = new FromURLImage (find("Images/hieroglyphics.png"));
+            hacker = new FromURLImage (find("Images/mad_hacker.png"));
+            book = new FromURLImage (find("Images/qbook.png"));
+            stickFigure = new FromURLImage (find("Images/stick-figure.png"));
+            schemeLogo = new FromURLImage (find("Images/schemelogo.png"));
+            calendar = new FromURLImage (find("Images/calendar.png"));
+            fish = new FromURLImage (find("Images/fish.png"));
+            greenFish = new FromURLImage (find("Images/green-fish.png"));
+            pinkFish = new FromURLImage (find("Images/pink-fish.png"));
+            shark = new FromURLImage (find("Images/shark.png"));
+            family = new FromURLImage (find("Images/family.png"));
+        }
+        catch (java.io.IOException e)
+        {
+            System.err.println ("Unable to initialize SampleImages: " + e);
+        }
         return 0;
     }
     

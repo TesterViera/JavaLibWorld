@@ -39,6 +39,10 @@ public class FromURLImage extends RasterImage
         {
             return null;
         }
+        catch (java.io.IOException e)
+        {
+            return null;
+        }
     }
     
     /**
@@ -46,8 +50,9 @@ public class FromURLImage extends RasterImage
      * 
      * @param url          the URL from which to get the image
      * @param urlString    
+     * @throws java.io.IOException if there's a problem opening the URL
      */
-    FromURLImage(URL url)
+    FromURLImage(URL url) throws java.io.IOException
     {
         super();
         if (url == null) return;
@@ -60,15 +65,18 @@ public class FromURLImage extends RasterImage
         }
         else
         {
-            try {
-                BufferedImage img = ImageIO.read (this.url);
-                LoadedImages.table.put(this.urlString, img);
-                this.setRendering (img);
-            }
-            catch (java.io.IOException e)
-            {
-            }
+            BufferedImage img = ImageIO.read (this.url);
+            LoadedImages.table.put(this.urlString, img);
+            this.setRendering (img);
         }
+    }
+    
+    public boolean equals (Object other)
+    {
+        return super.equals (other) &&
+               this.urlString.equals(((FromURLImage)other).urlString);
+               // Note that if super.treeEquals(other), they must be the same class,
+               // so since this is a FromURLImage, so is other, so the cast should work.
     }
     
     public String toIndentedString (String indent)
