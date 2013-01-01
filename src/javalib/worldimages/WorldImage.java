@@ -1,5 +1,6 @@
 package javalib.worldimages;
 import tester.ISame;
+import tester.Equivalence;
 
 
 /**
@@ -23,21 +24,36 @@ public interface WorldImage extends ISame<WorldImage>
      * Define this at every level that has instance variables.
      * 
      * @param other   the object to compare with this
+     * @return true iff the images are isomorphic expression trees, with equal fields.
      */
     abstract public boolean equals (Object other);
     
     /**
-     * Is this the same as another WorldImage, in the sense of appearing identical?
+     * Is this the same as another WorldImage, in the sense that they render the same?
      * 
-     * @param other   the object to compare with this
+     * <p>This is a weaker condition than <code>equals()</code>: it's quite possible for two
+     * distinct expression trees to render the same (<em>e.g.</em> two solid rectangles of
+     * the same color and width, stacked on top of one another, are <code>same()</code> as
+     * a single rectangle of that color and width and total height).  Note also that
+     * <code>same()</code> does not imply substitutability: two distinct expression trees
+     * can be <code>same()</code>, but scaling them both up by a factor of 3 might <em>not</em>
+     * be <code>same()</code>.</p>
+     * 
+     * @param other    the WorldImage to compare with this
+     * @return true iff the images' renderings are pixel-for-pixel identical
      */
     abstract public boolean same (WorldImage other);
     
     /**
+     * The equivalence operator that actually carries out pixel-for-pixel comparisons.
+     */
+    public static final Equivalence<WorldImage> LOOKS_SAME = LooksTheSame.it;
+    
+    /**
      * Get a hash code for the WorldImage.
      * 
-     * Needs to agree with equals().  In our case, "equals" means they render identically,
-     * so hashCode needs to be based on the pixels of the rendering.  See RasterImage.
+     * Needs to agree with equals().  In our case, "equals" means they're the same
+     * as expression trees.
      */
     abstract public int hashCode ();
     

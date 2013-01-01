@@ -75,7 +75,7 @@ public class FromURLImage extends RasterImage
     {
         return super.equals (other) &&
                this.urlString.equals(((FromURLImage)other).urlString);
-               // Note that if super.treeEquals(other), they must be the same class,
+               // Note that if super.equals(other), they must be the same class,
                // so since this is a FromURLImage, so is other, so the cast should work.
     }
     

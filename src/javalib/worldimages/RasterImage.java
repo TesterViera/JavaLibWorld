@@ -105,112 +105,14 @@ public class RasterImage extends AImage
     {
         return super.equals(other) // same class, etc.
                &&
-               this.sameRendering((RasterImage)other); // are the renderings pixel-for-pixel identical?
-               // Note that if super.treeEquals(other), they must among other things be the same class,
-               // so since this is a RasterImage, the other must be too, so the cast should work.
+               WorldImage.LOOKS_SAME.equivalent (this, (WorldImage)other);
     }
-    
-    /**
-     * Do this image and another image render the same?
-     * 
-     * @param other    another WorldImage
-     */
-    private boolean sameRendering (RasterImage other)
-    {
-        this.renderIfNecessary();
-        other.renderIfNecessary();
         
-        // boolean answer = this.rendering.equals(((RasterImage)other).rendering);
-        // doesn't work because BufferedImage.equals() doesn't do a deep comparison
-        boolean answer = equalBufferedImages (this.rendering, other.rendering);
-        
-        return answer;
-    }
-    
-    /**
-     * Are two WorldImages the same?
-     * 
-     * We decide this by rendering both of them and comparing the pixel maps.
-     */
-    public boolean same (WorldImage other)
-    {
-        if (other == null)
-            return false;
-        
-        if (other instanceof RasterImage)
-        {
-            return this.sameRendering((RasterImage)other);
-        }
-        else
-        {
-            RasterImage rendered = other.frozen();
-            boolean answer = this.sameRendering(rendered);
-            return answer;
-        }
-    }
-
-    /**
-     * Compare two BufferedImages for equal data, the way equals() should have done.
-     * 
-     * @param b1    a BufferedImage
-     * @param b2    another BufferedImage
-     * @return      true if they have the exact same data in their buffers
-     * @since 29 Dec, 2012
-     */
-    private static boolean equalBufferedImages (BufferedImage b1, BufferedImage b2)
-    {
-        // I'll ignore accelerationPriority.
-        // I hope I can ignore colorModel.
-        // I'm mostly interested in
-        // each.getData(), which is a Raster.  Within the Raster, I'm mostly interested in
-        // each.getDataBuffer(), which is a DataBuffer.
-        // A DataBuffer doesn't expose its underlying array(s), so one might need to loop
-        // over all the banks and all the elements, calling getElem() and comparing them.
-        if (b1 == b2) return true;
-        
-        Raster r1 = b1.getData();
-        Raster r2 = b2.getData();
-        if (r1 == r2) return true;
-        
-        DataBuffer db1 = r1.getDataBuffer();
-        DataBuffer db2 = r2.getDataBuffer();
-        if (db1 == db2) return true;
-        
-        int banks1 = db1.getNumBanks();
-        int banks2 = db2.getNumBanks();
-        if (banks1 != banks2)
-        {
-            banks1 = banks1;
-            return false;
-        }
-        
-        int size1 = db1.getSize();
-        int size2 = db2.getSize();
-        if (size1 != size2)
-        {
-            size1 = size1;
-            return false;
-        }
-        
-        for (int bank = 0; bank < banks1; ++bank)
-        {
-            for (int ii = 0; ii < size1; ++ii)
-            {
-                if (db1.getElem(bank, ii) != db2.getElem(bank, ii))
-                {   bank = bank;
-                    ii = ii;
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    
     public int hashCode ()
     {
         this.renderIfNecessary ();
         
-        return this.rendering.getData().getDataBuffer().hashCode();
+        return super.hashCode() + this.rendering.hashCode();
     }
     
     public int getRight ()

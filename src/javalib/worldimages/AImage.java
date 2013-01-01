@@ -101,19 +101,18 @@ public abstract class AImage implements WorldImage
     public boolean equals (Object other) {
         return this.sameClass(other);
     }
-
+    
     /**
      * Do two WorldImages appear the same?
      * 
      * If they're equal as expression trees, they certainly appear the same.
-     * Failing this, render both of them and compare the pixel maps.
+     * Failing that, render them both and compare the pixel maps.
      */
     public boolean same (WorldImage other)
     {
         return this.equals(other) ||
-               this.frozen().same(other.frozen());
+               WorldImage.LOOKS_SAME.equivalent(this, other);
     }
-
 
     protected static int rotate (int x, int bits) {
         return x << bits + x >>> (32-bits);

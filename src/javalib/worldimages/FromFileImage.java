@@ -68,7 +68,7 @@ public class FromFileImage extends RasterImage{
     {
         return super.equals (other) &&
                this.fileName.equals(((FromFileImage)other).fileName);
-               // Note that if super.treeEquals(other), they must be the same class,
+               // Note that if super.equals(other), they must be the same class,
                // so since this is a FromFileImage, other is too, so the cast should work.
     }
 

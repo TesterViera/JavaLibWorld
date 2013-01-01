@@ -40,7 +40,7 @@ public class FreezeImage extends RasterImage
     {
         return super.equals (other) &&
                this.base.equals (((FreezeImage)other).base);
-               // note that if super.treeEquals(other), they must be the same class,
+               // note that if super.equals(other), they must be the same class,
                // so since this is a FreezeImage, other must be too, so the cast should work.
     }
     

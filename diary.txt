@@ -163,3 +163,16 @@ Dec. 30, 2012: I'm trying the "more user-friendly" solution described
 above.  I've taken out a couple of optimizations in tester.Inspector,
 and put in a same() method that tells whether two images render the
 same.  Seems to be working so far; need more test cases.
+
+Dec. 31, 2012: Viera convinced me to do this through checkEquivalent
+instead, with a predefined equivalence-testing object named LOOKS_SAME.
+And that works nicely as long as I'm comparing WorldImages directly,
+but when I have a World that contains a field of type WorldImage, it
+falls apart.  I think I need to go back to same().
+
+In other news, I found a bug in the interaction between AImage and
+LinearImage that was causing successive linear transforms to nest rather
+than just composing the transform matrix.  I originally thought of that
+as just an optimization, but in fact it affects the calculation of
+bounding boxes, which leads to images wandering around through cascading
+errors.  So I fixed that, and the wandering is largely gone.
