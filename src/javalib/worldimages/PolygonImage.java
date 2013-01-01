@@ -87,7 +87,7 @@ class PolygonImage extends ColoredImage{
 
   /**
    * A protected constructor that takes in arrays of coordinates.
-   * Assumes both arrays are the same, and that neither will be mutated after the call.
+   * Assumes both arrays are the same size, and that neither will be mutated after the call.
    * 
    * @param color
    * @param xcoord   an array of the x coordinates of the vertices
