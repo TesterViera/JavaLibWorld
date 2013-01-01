@@ -26,7 +26,7 @@ public class DrawTest extends junit.framework.TestCase
      */
     public static void testEverything ()
     {
-        Tester.run (new DrawTest());
+        junit.framework.TestCase.assertTrue (Tester.run (new DrawTest()));
     }
 
     /*
