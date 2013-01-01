@@ -42,7 +42,7 @@ public class LooksTheSame implements Equivalence<WorldImage>
      * @return      true if they have the exact same data in their buffers
      * @since 29 Dec, 2012
      */
-    private static boolean equalBufferedImages (BufferedImage b1, BufferedImage b2)
+    static boolean equalBufferedImages (BufferedImage b1, BufferedImage b2)
     {
         // I'll ignore accelerationPriority.
         // I hope I can ignore colorModel.

@@ -105,7 +105,7 @@ public class RasterImage extends AImage
     {
         return super.equals(other) // same class, etc.
                &&
-               WorldImage.LOOKS_SAME.equivalent (this, (WorldImage)other);
+               LooksTheSame.equalBufferedImages (this.rendering, ((RasterImage)other).rendering);
     }
         
     public int hashCode ()
