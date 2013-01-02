@@ -75,11 +75,11 @@ public abstract class Animation<Model> extends World
     /**
      * User can override the following.
      */
-    public Model gotTick(Model oldModel) { return this.model; }
-    public Model gotKeyEvent(Model oldModel, String s) { return this.model; }
-    public Model gotMouseClicked(Model oldModel, Posn mouse) { return this.model; }
-    public Model gotMouseEntered(Model oldModel, Posn mouse) { return this.model; }
-    public Model gotMouseExited(Model oldModel, Posn mouse) { return this.model; }
-    public Model gotMousePressed(Model oldModel, Posn mouse) { return this.model; }
-    public Model gotMouseReleased(Model oldModel, Posn mouse) { return this.model; }
+    public Model gotTick(Model oldModel) { return oldModel; }
+    public Model gotKeyEvent(Model oldModel, String s) { return oldModel; }
+    public Model gotMouseClicked(Model oldModel, Posn mouse) { return oldModel; }
+    public Model gotMouseEntered(Model oldModel, Posn mouse) { return oldModel; }
+    public Model gotMouseExited(Model oldModel, Posn mouse) { return oldModel; }
+    public Model gotMousePressed(Model oldModel, Posn mouse) { return oldModel; }
+    public Model gotMouseReleased(Model oldModel, Posn mouse) { return oldModel; }
 }
