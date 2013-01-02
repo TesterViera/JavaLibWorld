@@ -54,7 +54,10 @@ public class LinearImage extends AImage
             LinearImage theBase = (LinearImage)base;
             AffineTransform temp = new AffineTransform(transform);
             temp.concatenate(theBase.transform);
-            return new LinearImage (temp, theBase.base);
+            if (temp.isIdentity())
+                return theBase.base;
+            else
+                return new LinearImage (temp, theBase.base);
         }
         else
         {
