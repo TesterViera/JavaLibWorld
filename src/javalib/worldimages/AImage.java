@@ -114,6 +114,13 @@ public abstract class AImage implements WorldImage
                WorldImage.LOOKS_SAME.equivalent(this, other);
     }
 
+    /**
+     * A utility function for producing hash codes.
+     * 
+     * @param x   a hashCode for some field
+     * @param bits how many bits to rotate it within a 32-bit int
+     * @return x rotated left by the specified number of bits (wrapping around to the low bits)
+     */
     protected static int rotate (int x, int bits) {
         return x << bits + x >>> (32-bits);
     }
