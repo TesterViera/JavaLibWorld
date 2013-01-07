@@ -32,7 +32,7 @@ import javax.swing.WindowConstants;
  * @author Viera K. Proulx
  * @since November 15 2007, March 17 2008, October 19 2009, February 4 2012
  */
-abstract public class World{
+abstract public class World implements Drawable {
 	
 	/** the canvas that displays the current world */
 	public WorldCanvas theCanvas;
@@ -507,7 +507,7 @@ abstract public class World{
 	
 	/**
 	 * EFFECT:
-   * <p>Invoke the user defined <code>makeImage</code> method, if this 
+     * <p>Invoke the user defined <code>makeImage</code> method, if this 
 	 * <code>{@link World World}</code> has been initialized 
 	 * via <code>bigBang</code> and did not stop or end, otherwise 
 	 * invoke the user defined <code>lastImage</code> method</p>

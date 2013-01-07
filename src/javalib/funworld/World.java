@@ -31,7 +31,7 @@ import javax.swing.WindowConstants;
  * @author Viera K. Proulx
  * @since November 15 2007, March 17 2008, October 19 2009, February 4 2012
  */
-abstract public class World implements UserWorld{
+abstract public class World implements UserWorld, Drawable{
 	
 	/** the canvas that displays the current world */
 	public WorldCanvas theCanvas;

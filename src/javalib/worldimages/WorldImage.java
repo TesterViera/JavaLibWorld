@@ -9,7 +9,7 @@ import tester.Equivalence;
  * @author Stephen Bloch
  * @version Dec. 2, 2012
  */
-public interface WorldImage extends ISame<WorldImage>
+public interface WorldImage extends ISame<WorldImage>, Drawable
 {   
     /**
      * Display an image in a canvas.

@@ -70,6 +70,11 @@ public abstract class AImage implements WorldImage
         return this.toIndentedString("");
     }
     
+    public WorldImage makeImage ()
+    {
+        return this;
+    }
+    
     /**
      * Is this the same class as some other object?
      * 
