@@ -661,9 +661,9 @@ public abstract class AImage implements WorldImage
      * @param extra   an arbitrary Object to be passed to each call of the builder
      * @since Dec. 27, 2012
      */
-    public static WorldImage build (int width, int height, ImageBuilder b, Object extra)
+    public static WorldImage build (int width, int height, ImageBuilder builder, Object extra)
     {
-    return RasterImage.build (width, height, b, extra);
+    return RasterImage.build (width, height, builder, extra);
     }
     
     /**
