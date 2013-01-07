@@ -6,7 +6,7 @@ import tester.Equivalence;
 /**
  * The API for an image.
  * 
- * @author Stephen BLoch
+ * @author Stephen Bloch
  * @version Dec. 2, 2012
  */
 public interface WorldImage extends ISame<WorldImage>
@@ -293,7 +293,7 @@ public interface WorldImage extends ISame<WorldImage>
     
     /**
      * Concatenate two or more images vertically.
-     * Ignores the translations of all images; matches the top edge of each
+     * Ignores the locations of all images; matches the top edge of each
      * with the bottom edge of the previous one, and centers horizontally.
      * 
      * @param others     the images to concatenate below this, starting from the top

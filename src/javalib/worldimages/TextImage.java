@@ -1,15 +1,6 @@
 package javalib.worldimages;
 
 
-/**
- * an image of some text
- * 
- * @author Stephen Bloch, mostly cribbed from Viera's TextImage class
- * <p>Copyright 2012 Viera K. Proulx</p>
- * <p>This program is distributed under the terms of the 
- * GNU Lesser General Public License (LGPL)</p>
- * @version Dec. 5, 2012
- */
 import javalib.colors.*;
 import javalib.worldcanvas.CanvasPanel;
 
@@ -22,6 +13,15 @@ import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 
 
+/**
+ * An image of some text.
+ * 
+ * @author Stephen Bloch, mostly cribbed from Viera's TextImage class
+ * <p>Copyright 2012 Viera K. Proulx</p>
+ * <p>This program is distributed under the terms of the 
+ * GNU Lesser General Public License (LGPL)</p>
+ * @version Dec. 5, 2012
+ */
 class TextImage extends ColoredImage{
   
   /** the text to be shown */
