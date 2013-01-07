@@ -35,7 +35,7 @@ public class ExamplesWorld extends World{
     return 
         AImage.makeRectangle (60, 20, new Red()).moved(this.pos)
             .overlay (AImage.makeText ("hello", 12, new Blue()).moved(this.pos),
-                      AImage.makeLine (this.pos, this.pos.addPosn(new Posn(5,-5))));
+                      AImage.makeLine (this.pos, this.pos.plus(new Posn(5,-5))));
   }
 
   // test all kinds of actions using key events:
