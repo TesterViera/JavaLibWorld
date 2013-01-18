@@ -6,10 +6,61 @@ import javalib.worldimages.Drawable;
 
 
 /**
- * The Animation class hides the common coding pattern of storing the model
- * as an instance variable and updating it at each event.
- * Not as much as I would like: if you write a subclass of Animation, you have to
- * write a constructor that starts with super(newModel).
+ * An easy-to-use class for model/view GUI programs.
+ * 
+ * The Animation class maintains the model as an instance variable and updates it at each event.
+ * To use it,
+ * <ol>
+ *  <li>Decide what type the "model" (<em>i.e.</em> the internal information that changes
+ *  while the program runs) should be.  Some common choices:
+ *   <ul>
+ *    <li><tt>WorldImage</tt> (for an animation that does purely graphical operations at each event)</li>
+ *    <li><tt>Integer</tt> (for an animation whose current state can be described by a single integer,
+ *    and whose changes are arithmetic operations)</li>
+ *    <li><tt>String</tt> (for an animation whose current state can be described by a string, and
+ *    whose changes are string operations)</li>
+ *    <li><tt>Posn</tt> (for an animation whose current state consists of an (x,y) coordinate pair, and
+ *    which might change either or both coordinates in response to events)</li>
+ *    <li>A user-defined class (if you need to keep track of more information than the above choices give you)</li>
+ *   </ul>
+ *  </li>
+ *  <li>Define a subclass of Animation&lt;<em>your model type</em>&gt;.  For example,
+ *  if you were using an <tt>Integer</tt> model, you could write
+ *  <pre>import javalib.funworld.*;
+ *  class MyAnimation extends Animation&lt;Integer&gt;
+ *  {
+ *      // constructors and methods will go here
+ *  }</pre></li>
+ *  <li>Add a constructor that takes in the specified type and calls <tt>super</tt> on it, <em>e.g.</em>
+ *  <pre>    public MyAnimation (Integer initial)
+ *      {
+ *          super(initial);
+ *          // maybe do other stuff here
+ *      }</pre>
+ *  </li>
+ *  <li>Add event-handlers as necessary.  For example, if you wanted to add 1 to the integer model at
+ *  every clock tick, you could write
+ *  <pre>    public Integer gotTick (Integer old)
+ *      {
+ *          return old + 1;
+ *      }</pre>
+ *  Of course, these methods should have test cases in an accompanying <tt>TestMyAnimation</tt> class.
+ *  </li>
+ *  <li>One event handler you'll <em>always</em> need is <code>makeImage</code>, which is how the
+ *  animation library decides what to show in the animation window.  For example, if you wanted to
+ *  display a blue disk whose radius was the integer model, you could write
+ *  <pre>    public WorldImage makeImage (Integer current)
+ *      {
+ *          return AImage.makeCircle(current, new Blue(), Mode.FILLED);
+ *      }<pre>
+ *  </li>
+ *  <li>Once all the event handlers pass all their test cases, you can try running the whole animation
+ *  with code like
+ *  <pre>new MyAnimation(5).bigBang (300, 200, 0.5);</pre>
+ *  which creates a <tt>MyAnimation</tt> object with initial model 5 and runs it in a 300x200
+ *  window, with the clock ticking every 0.5 second.
+ *  </li>
+ * </ol>
  * 
  * @author Stephen Bloch
  * @version Jan. 1, 2013
@@ -22,12 +73,23 @@ public abstract class Animation<Model> extends World
     /**
      * Get the current model.
      * 
+     * You shouldn't need to override this.  You shouldn't need to call it often either, since
+     * all the <tt>gotWhatever</tt> methods are given the current model as an argument
+     * anyway, but you can call it if you want.
+     * 
      * @return the current Model.
      */
     public Model getModel () { return this.model; }
     
     /**
      * Constructor for Animation<Model>.
+     * 
+     * If you're subclassing <tt>Animation</tt>, you need to write a constructor that looks like 
+     * <pre>public MyKindOfAnimation (Model newModel)
+     * {
+     *     super(newModel);
+     *     // other initialization can go here
+     * }</pre>
      * 
      * @param newModel the initial model for the Animation.
      */
@@ -125,6 +187,8 @@ public abstract class Animation<Model> extends World
     /**
      * A version of makeImage(Model) that defaults to using the current Model.
      * 
+     * You probably don't need to override this, but you can call it if you want.
+     * 
      * @see World.makeImage()
      */
     public WorldImage makeImage ()
@@ -133,8 +197,7 @@ public abstract class Animation<Model> extends World
     }
     
     /**
-     * Produce a WorldImage representation of the model.
-     * Users subclassing Animation <em>must</em> override this.
+     * Produce a WorldImage representation of the model; users subclassing Animation <em>must</em> override this.
      * 
      * @param oldModel   the current model
      * @return a WorldImage based on the current model

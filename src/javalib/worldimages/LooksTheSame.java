@@ -13,6 +13,9 @@ import java.awt.image.DataBuffer;
  */
 public class LooksTheSame implements Equivalence<WorldImage>
 {
+/**
+ * The single instance of class LooksTheSame.
+ */
     public static final LooksTheSame it = new LooksTheSame();
     
     private LooksTheSame () { }

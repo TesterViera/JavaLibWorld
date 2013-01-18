@@ -274,7 +274,9 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
     public WorldImage overlayXY (WorldImage front, int dx, int dy);
     
     /**
-     * Place another image onto this one, retaining the location of this one but translating the foreground so its center is at the specified location.  Crops to this image.
+     * Place another image onto this one, retaining the location of this one but translating the foreground so its center is at the specified location.
+     * 
+     * Crops to this image; that is, the result will not go beyond the bounds of the original image.
      * 
      * @param front    the foreground image (to be translated)
      * @param x        where to put the center of the foreground image
@@ -352,6 +354,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
     
     /**
      * Create a rectangular image pixel by pixel from an existing image.
+     * 
      * In this entrypoint, the "extra" parameter defaults to null.
      *
      * @param map    an ImageMap encapsulating a function from Color to

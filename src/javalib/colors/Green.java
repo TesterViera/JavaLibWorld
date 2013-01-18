@@ -2,7 +2,7 @@ package javalib.colors;
 
 import java.awt.Color;
 /**
- * To represent the black color -- in the style of
+ * To represent the green color -- in the style of
  * ProfessorJ <code>draw</code> package.
  * 
  * @author Viera K. Proulx

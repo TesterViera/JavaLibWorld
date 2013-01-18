@@ -3,6 +3,13 @@ package javalib.worldimages;
 
 import tester.*;
 import java.awt.Color;
+
+/**
+ * A bunch of test cases for various methods in AImage.
+ * 
+ * @author Stephen Bloch
+ * @version Dec. 28, 2012
+ */
 public class TestAImage extends junit.framework.TestCase
 {
     // Instance variables go here, typically examples to test.

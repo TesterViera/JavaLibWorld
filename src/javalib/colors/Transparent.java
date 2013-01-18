@@ -2,10 +2,10 @@ package javalib.colors;
 
 
 /**
- * Write a description of class Transparent here.
+ * To represent the entirely-transparent color.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Stephen Bloch
+ * @version Dec. 2012
  */
 public class Transparent implements IColor
 {
