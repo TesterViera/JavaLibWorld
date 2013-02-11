@@ -102,10 +102,14 @@ public class RasterImage extends AImage
     }
     
     public boolean equals (Object other)
-    {
-        return super.equals(other) // same class, etc.
-               &&
-               LooksTheSame.equalBufferedImages (this.rendering, ((RasterImage)other).rendering);
+    {   if (super.equals(other)) // same class, etc.
+        {
+            this.renderIfNecessary();
+            RasterImage otherR = (RasterImage)other;
+            otherR.renderIfNecessary();
+            return LooksTheSame.equalBufferedImages (this.rendering, otherR.rendering);
+        }
+        else return false;
     }
         
     public int hashCode ()
@@ -117,16 +121,19 @@ public class RasterImage extends AImage
     
     public int getRight ()
     {
+        this.renderIfNecessary();
         return this.rendering.getWidth();
     }
     
     public int getBottom ()
     {
+        this.renderIfNecessary();
         return this.rendering.getHeight();
     }
     
     public boolean save (String filename)
     {
+        this.renderIfNecessary();
         try
         {
             java.io.File outputfile = new java.io.File(filename);
@@ -157,8 +164,7 @@ public class RasterImage extends AImage
 
     public static WorldImage build (int width, int height, ImageBuilder b, Object extra)
     {
-        BufferedImage buffer = new BufferedImage (width, height,
-        BufferedImage.TYPE_INT_ARGB);
+        BufferedImage buffer = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
         // see DirectColorModel, SinglePixelPackedSampleModel
         WritableRaster raster = buffer.getRaster();
     /*
