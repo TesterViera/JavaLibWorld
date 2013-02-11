@@ -142,6 +142,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * 
      * @param dx the horizontal offset
      * @param dy the vertical offset
+     * @return a new WorldImage, just like this one but translated.
      */
     abstract public WorldImage moved (int dx, int dy);
 
@@ -149,6 +150,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * Produce the image translated by the given (dx, dy).
      * 
      * @param dxdy
+     * @return a new WorldImage, just like this one but translated.
      */
     abstract public WorldImage moved (Posn dxdy);
     
@@ -158,6 +160,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * @param x  the new x coordinate of the center
      * @param y  the new y coordinate of the center
      * @since Dec. 29, 2012
+     * @return a new WorldImage, just like this one but translated.
      */
     abstract public WorldImage centerMoved (int x, int y);
 
@@ -166,6 +169,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * 
      * @param xy    the new center
      * @since Dec. 29, 2012
+     * @return a new WorldImage, just like this one but translated.
      */
     abstract public WorldImage centerMoved (Posn xy);
 
@@ -180,6 +184,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * Get a version of this image rotated by a specified number of degrees around (0,0).
      * 
      * @param degrees
+     * @return a new WorldImage, just like this one but rotated.
      */
     abstract public WorldImage rotated (int degrees);
 
@@ -188,6 +193,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * This version of the method takes in a double.
      * 
      * @param degrees   a double, in this version
+     * @return a new WorldImage, just like this one but rotated.
      */
     abstract public WorldImage rotated (double degrees);
 
@@ -196,6 +202,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * 
      * @param degrees
      * @param anchor    the fixpoint of the rotation
+     * @return a new WorldImage, just like this one but rotated.
      */
     abstract public WorldImage rotatedAround (int degrees, Posn anchor);
     
@@ -204,12 +211,14 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * 
      * @param degrees
      * @param anchor    the fixpoint of the rotation
+     * @return a new WorldImage, just like this one but rotated.
      */
     abstract public WorldImage rotatedAround (double degrees, Posn anchor);
     /**
      * Get a version of this image rotated by a specified number of degrees around its center.
      * 
      * @param degrees   an int, in this version
+     * @return a new WorldImage, just like this one but rotated.
      */
     abstract public WorldImage rotatedInPlace (int degrees);
 
@@ -217,6 +226,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * Get a version of this image rotated by a specified number of degrees around its center.
      * 
      * @param degrees   a double, in this version.
+     * @return a new WorldImage, just like this one but rotated.
      */
     public WorldImage rotatedInPlace (double degrees);
 
@@ -239,11 +249,15 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
 
     /**
      * get a horizontally-reflected copy of the image.
+     * 
+     * @return a new WorldImage just like this one but reflected.
      */
     public WorldImage xReflected ();
     
     /**
      *  get a vertically-reflected copy of the image.
+     *  
+     * @return a new WorldImage just like this one but reflected.
      */
     public WorldImage yReflected ();
 
@@ -290,6 +304,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * aligns with the bottom of the previous one.
      * 
      * @param others    the images to concatenate below this, starting from the top
+     * @return a new WorldImage
      */
     public abstract WorldImage above (WorldImage... others);
     
@@ -317,6 +332,9 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * Concatenate two or more images horizontally.
      * Retains y locations but moves arguments horizontally so each one's left edge
      * aligns with the right edge of the previous one.
+     * 
+     * @param others    zero or more WorldImages
+     * @return a new WorldImage
      */
     public abstract WorldImage beside (WorldImage... others);
     
@@ -335,9 +353,10 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
     
     /**
      * Get a WorldImage just like this one, but with a memoized raster rendering.
-     * 
      * To be used as a "hint" for large, complex images that are likely to be
      * displayed many times before being modified.
+     * 
+     * @return a RasterImage that memoizes the rendering of this image
      */
     public RasterImage frozen();
     
@@ -369,6 +388,7 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      * Save a WorldImage to a .png file.
      * 
      * @param filename
+     * @return true if the file was saved successfully.
      */
     public boolean save(String filename);
 
