@@ -161,7 +161,34 @@ abstract public class World implements UserWorld, Drawable{
 		return this.bigBang(w, h, 0.0);
 	}
 	
+	/**
+	 * Start the world by creating a canvas whose size is that of the initial image,
+	 * and starting the timer at a given speed.
+	 * 
+	 * @param speed    the interval between clock ticks, in seconds
+	 * @return <code>true</code>
+	 * @since Feb. 10, 2013
+	 * @author Stephen Bloch
+	 */
+	public boolean bigBang (double speed)
+	{
+	    WorldImage firstImage = this.makeImage();
+	    return this.bigBang (firstImage.getWidth(), firstImage.getHeight(), speed);
+	}
 	
+	/**
+	 * Start the world by creating a canvas whose size is that of the initial image,
+	 * with no timer.
+	 * 
+	 * @return <code>true</code>
+	 * @since Feb. 10, 2013
+	 * @author Stephen Bloch
+	 */
+	public boolean bigBang ()
+	{
+	    return this.bigBang (0.0);
+	}
+	   
 	/**
 	 * Stop the world, close all listeners and the timer, draw the last 
 	 * <code>Scene</code>.
@@ -583,8 +610,8 @@ abstract public class World implements UserWorld, Drawable{
 			return true;
 		}
 		else{
-      this.theCanvas.clear();
-      this.theCanvas.drawImage(this.lastImage(s));
+            this.theCanvas.clear();
+            this.theCanvas.drawImage(this.lastImage(s));
 			return true;
 		}
 	}
