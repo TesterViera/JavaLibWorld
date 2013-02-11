@@ -571,6 +571,91 @@ public abstract class AImage implements WorldImage
     }
     
     
+    private static final double SIN60DEG = Math.sqrt(3.0)/2.0;
+    /**
+     * Produce an equilateral triangle with the specified side, color, and mode.
+     * 
+     * @param side    the length of each side of the triangle
+     * @param color   the color of the triangle
+     * @param mode    either Mode.FILLED or Mode.OUTLINED
+     * @author        Stephen Bloch
+     * @since         Feb. 7, 2013
+     */
+    public static WorldImage makeTriangle (double side, Color color, Mode mode)
+    {
+        int height = (int)(Math.round(side * SIN60DEG));
+        return makeTriangle (new Posn ((int)Math.round(side/2), 0),
+                             new Posn (0, height),
+                             new Posn ((int)Math.round(side), height),
+                             color,
+                             mode);
+    }
+    
+    /**
+     * Produce an equilateral triangle with the specified side, color, and mode.
+     * 
+     * @param side    the length of each side of the triangle
+     * @param color   the color of the triangle
+     * @param mode    either Mode.FILLED or Mode.OUTLINED
+     * @author        Stephen Bloch
+     * @since         Feb. 7, 2013
+     */
+    public static WorldImage makeTriangle (double side, IColor color, Mode mode)
+    {
+        return makeTriangle (side, color.thisColor(), mode);
+    }
+    
+    /**
+     * Produce an equilateral black triangle with the specified side and mode.
+     * 
+     * @param side    the length of each side of the triangle
+     * @param mode    either Mode.FILLED or Mode.OUTLINED
+     * @author        Stephen Bloch
+     * @since         Feb. 7, 2013
+     */
+    public static WorldImage makeTriangle (double side, Mode mode)
+    {
+        return makeTriangle (side, Color.black, mode);
+    }
+    
+    /**
+     * Produce an equilateral outlined triangle with the specified side and color.
+     * 
+     * @param side    the length of each side of the triangle
+     * @param color   the color of the triangle
+     * @author        Stephen Bloch
+     * @since         Feb. 7, 2013
+     */
+    public static WorldImage makeTriangle (double side, Color color)
+    {
+        return makeTriangle (side, color, Mode.OUTLINED);
+    }
+        
+    /**
+     * Produce an equilateral outlined triangle with the specified side and color.
+     * 
+     * @param side    the length of each side of the triangle
+     * @param color   the color of the triangle
+     * @author        Stephen Bloch
+     * @since         Feb. 7, 2013
+     */
+    public static WorldImage makeTriangle (double side, IColor color)
+    {
+        return makeTriangle (side, color.thisColor(), Mode.OUTLINED);
+    }
+    
+    /**
+     * Produce an equilateral black outlined triangle with the specified side.
+     * 
+     * @param side    the length of each side of the triangle
+     * @author        Stephen Bloch
+     * @since         Feb. 7, 2013
+     */
+    public static WorldImage makeTriangle (double side)
+    {
+        return makeTriangle (side, Color.black, Mode.OUTLINED);
+    }
+            
     /**
      * Produce a triangle with specified vertices.
      * 
@@ -598,7 +683,7 @@ public abstract class AImage implements WorldImage
         return new PolygonImage (color.thisColor(), mode, p1, p2, p3);
     }
     /**
-     * Produce a blacktriangle with specified vertices.
+     * Produce a black triangle with specified vertices.
      * 
      * @param p1   the coordinates of one vertex
      * @param p2   the coordinates of another vertex
@@ -1154,7 +1239,7 @@ public abstract class AImage implements WorldImage
      */
     public static WorldImage build (int width, int height, ImageBuilder builder)
     {
-    return build (width, height, b, null);
+    return build (width, height, builder, null);
     }
 
     public WorldImage map (ImageMap map, Object extra)
