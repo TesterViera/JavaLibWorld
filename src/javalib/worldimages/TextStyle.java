@@ -2,6 +2,8 @@ package javalib.worldimages;
 
 
 /**
+ * The available TextStyles are NORMAL (aka REGULAR), ITALIC, BOLD, and BOLD_ITALIC (aka ITALIC_BOLD).
+ * 
  * I really didn't like the idea of users passing in the numbers 0, 1, 2, or 3
  * to specify text styles, even if that's the way Graphics2D.drawText wants them.
  * And the ints actually bit me: since both the text style and the font size are
