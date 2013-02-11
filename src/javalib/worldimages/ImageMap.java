@@ -8,7 +8,7 @@ import java.awt.Color;
  * @author Stephen Bloch
  * @since Dec. 28, 2012
  */
-interface ImageMap
+public interface ImageMap
 {
     /**
      * Given information about a pixel in an existing image, determine the color of a pixel in a new image.

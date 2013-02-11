@@ -8,7 +8,7 @@ import java.awt.Color;
  * @author Stephen Bloch
  * @since Dec. 28, 2012
  */
-interface ImageBuilder
+public interface ImageBuilder
 {
     /**
      * Given the location of a pixel, determine what color it should be
