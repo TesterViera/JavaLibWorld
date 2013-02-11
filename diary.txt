@@ -176,3 +176,22 @@ than just composing the transform matrix.  I originally thought of that
 as just an optimization, but in fact it affects the calculation of
 bounding boxes, which leads to images wandering around through cascading
 errors.  So I fixed that, and the wandering is largely gone.
+
+Feb. 6, 2013: Several problems showed up in recent days.
+1) The template for an "animation class" (not actually part of javalib,
+but part of my BlueJ customization files) uses the method name toImage
+rather than makeImage.
+2) The "save" method in WorldImage works on images that were originally
+provided as rasters, but it crashes on constructed images.
+3) The ImageBuilder and ImageMap interfaces aren't public, so user code
+can't implement them, which makes "map" and "build" useless.
+4) There's no equilateral-triangle method; that would be convenient.
+
+The first and third are trivial fixes.  The fourth should be easy.  The
+second is debugging: I suspect that "freeze" isn't being told to
+rasterize and memoize the image before writing it to a file.  Anyway,
+I'll need to roll out all of these in a new release.
+
+Feb. 10, 2013: Fixed all of the problems described on Feb. 6.  Also
+added a version of bigBang that doesn't require width and height,
+and gave SampleImages.stickFigure a transparent background.
