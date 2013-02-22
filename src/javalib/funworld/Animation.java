@@ -111,6 +111,7 @@ public abstract class Animation<Model> extends World
         this.model = this.gotTick(this.model);
         return this;
     }
+
     /**
      * User shouldn't need to use or override this method,
      * unless you're doing something with the World more complicated
@@ -123,6 +124,7 @@ public abstract class Animation<Model> extends World
         this.model = this.gotKeyEvent(this.model, s);
         return this;
     }
+
     /**
      * User shouldn't need to use or override this method,
      * unless you're doing something with the World more complicated
@@ -135,6 +137,33 @@ public abstract class Animation<Model> extends World
         this.model = this.gotMouseClicked(this.model, mouse);
         return this;
     }
+
+    /**
+     * User shouldn't need to use or override this method,
+     * unless you're doing something with the World more complicated
+     * than just replacing the Model.
+     * 
+     * @override World.onMouseDragged()
+     */
+    public World onMouseDragged(Posn mouse)
+    {
+        this.model = this.gotMouseDragged(this.model, mouse);
+        return this;
+    }
+    
+    /**
+     * User shouldn't need to use or override this method,
+     * unless you're doing something with the World more complicated
+     * than just replacing the Model.
+     * 
+     * @override World.onMouseMoved()
+     */
+    public World onMouseMoved(Posn mouse)
+    {
+        this.model = this.gotMouseMoved(this.model, mouse);
+        return this;
+    }
+
     /**
      * User shouldn't need to use or override this method,
      * unless you're doing something with the World more complicated
@@ -214,6 +243,7 @@ public abstract class Animation<Model> extends World
      * @return           the new model
      */
     public Model gotTick(Model oldModel) { return oldModel; }
+
     /**
      * Produce the new model after a keyboard event.
      * Users subclassing Animation may override this;
@@ -224,6 +254,7 @@ public abstract class Animation<Model> extends World
      * @return           the new model
      */
     public Model gotKeyEvent(Model oldModel, String s) { return oldModel; }
+
     /**
      * Produce the new model after a mouse-click event.
      * Users subclassing Animation may override this;
@@ -234,6 +265,29 @@ public abstract class Animation<Model> extends World
      * @return           the new model
      */
     public Model gotMouseClicked(Model oldModel, Posn mouse) { return oldModel; }
+
+    /**
+     * Produce the new model after a mouse-move event.
+     * Users subclassing Animation may override this;
+     * if they don't, the default handler makes no change.
+     * 
+     * @param oldModel   the current model
+     * @param mouse      the location of the mouse
+     * @return           the new model
+     */
+    public Model gotMouseMoved(Model oldModel, Posn mouse) { return oldModel; }
+
+    /**
+     * Produce the new model after a mouse-drag event.
+     * Users subclassing Animation may override this;
+     * if they don't, the default handler makes no change.
+     * 
+     * @param oldModel   the current model
+     * @param mouse      the location of the mouse
+     * @return           the new model
+     */
+    public Model gotMouseDragged(Model oldModel, Posn mouse) { return oldModel; }
+
     /**
      * Produce the new model after the mouse enters the window.
      * Users subclassing Animation may override this;
@@ -244,6 +298,7 @@ public abstract class Animation<Model> extends World
      * @return           the new model
      */
     public Model gotMouseEntered(Model oldModel, Posn mouse) { return oldModel; }
+
     /**
      * Produce the new model after the mouse leaves the window.
      * Users subclassing Animation may override this;
@@ -254,6 +309,7 @@ public abstract class Animation<Model> extends World
      * @return           the new model
      */
     public Model gotMouseExited(Model oldModel, Posn mouse) { return oldModel; }
+
     /**
      * Produce the new model after the mouse is pressed (but not yet released).
      * Users subclassing Animation may override this;
@@ -264,6 +320,7 @@ public abstract class Animation<Model> extends World
      * @return           the new model
      */
     public Model gotMousePressed(Model oldModel, Posn mouse) { return oldModel; }
+
     /**
      * Produce the new model after the mouse is released.
      * Users subclassing Animation may override this;
