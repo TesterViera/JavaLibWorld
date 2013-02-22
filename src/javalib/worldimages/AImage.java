@@ -1251,6 +1251,11 @@ public abstract class AImage implements WorldImage
     {
         return this.map (map, null);
     }
+    
+    public Color getPixelColor (int x, int y)
+    {
+        return this.frozen().getPixelColor (x, y);
+    }
 
     /**
      * Record whether or not we're in an applet.

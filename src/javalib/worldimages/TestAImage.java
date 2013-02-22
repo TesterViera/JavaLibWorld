@@ -64,4 +64,22 @@ public class TestAImage extends junit.framework.TestCase
         // t.checkExpect (blueCirc, blueCirc.rotatedInPlace(-72), "comparing circle with circle rotated 72 degrees");
         // That one doesn't quite work.
     }
+    
+    public void testGetPixelColor (Tester t)
+    {
+        WorldImage rect = AImage.makeRectangle (5, 3, Color.yellow, Mode.FILLED);
+        Color transparent = new Color(0,0,0,0);
+        t.checkExpect (rect.getPixelColor(-1,0), transparent);
+        t.checkExpect (rect.getPixelColor(0,-2), transparent);
+        t.checkExpect (rect.getPixelColor(5,2), transparent);
+        t.checkExpect (rect.getPixelColor(1,4), transparent);
+        for (int x = 0; x < 5; ++x)
+            for (int y = 0; y < 3; ++y)
+                t.checkExpect (rect.getPixelColor(x,y), Color.yellow);
+        
+        WorldImage circ = AImage.makeCircle (5, Color.blue, Mode.FILLED);
+        t.checkExpect (circ.getPixelColor(5,5), Color.blue);
+        t.checkExpect (circ.getPixelColor(1,9), transparent);
+        t.checkExpect (circ.getPixelColor(2,8), Color.blue);
+    }
 }

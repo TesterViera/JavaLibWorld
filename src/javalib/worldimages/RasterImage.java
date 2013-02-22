@@ -22,6 +22,7 @@ public class RasterImage extends AImage
     // but in fact it IS always a BufferedImage, and I need to know that in order to compare two of them
     // because BufferedImage doesn't have a sensible equals() method.
     public static final AffineTransform id = AffineTransform.getTranslateInstance (0,0);
+    static final Color transparent = new Color(0,0,0,0);
     
     /**
      * Constructor that takes in an already-rendered image.
@@ -145,7 +146,6 @@ public class RasterImage extends AImage
             return false;
         }
     }
-
     private static void colorToIntArray (Color c, int[] components)
     {
         components[0] = c.getRed();
@@ -217,5 +217,22 @@ public class RasterImage extends AImage
             }
         }
         return new RasterImage (buffer);
+    }
+
+
+    public Color getPixelColor (int x, int y)
+    {
+        this.renderIfNecessary();
+        int width = this.getWidth();
+        int height = this.getHeight();
+        if (x < 0 || y < 0 || x >= width || y >= height)
+            return transparent;
+        
+        Raster srcRaster = this.rendering.getData();
+        boolean hasAlpha = this.rendering.getColorModel().hasAlpha();
+        int[] colorComponents = new int[4];
+        if (! hasAlpha) colorComponents[3] = 255;
+        srcRaster.getPixel (x, y, colorComponents);
+        return intArrayToColor (colorComponents);
     }
 }

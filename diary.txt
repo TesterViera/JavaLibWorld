@@ -195,3 +195,13 @@ I'll need to roll out all of these in a new release.
 Feb. 10, 2013: Fixed all of the problems described on Feb. 6.  Also
 added a version of bigBang that doesn't require width and height,
 and gave SampleImages.stickFigure a transparent background.
+
+Feb. 13, 2013: Added gotMouseMoved and gotMouseDragged hooks to the
+Animation class (and corresponding hooks to World) in funworld.
+
+Feb. 14, 2013: We don't have getPixelColor in this library, so although students can
+write pixel-to-pixel color-changing maps, they can't write something that looks at
+other locations in a given image, with which they could write their own reflections,
+or "fuzz", etc.  Add it.
+
+Feb. 21, 2013: Added getPixelColor.

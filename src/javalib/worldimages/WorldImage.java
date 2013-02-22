@@ -1,6 +1,7 @@
 package javalib.worldimages;
 import tester.ISame;
 import tester.Equivalence;
+import java.awt.Color;
 
 
 /**
@@ -392,4 +393,13 @@ public interface WorldImage extends ISame<WorldImage>, Drawable
      */
     public boolean save(String filename);
 
+    /**
+     * Get the color of a specified pixel of an image.
+     * 
+     * @param x    the x coordinate
+     * @param y    the y coordinate
+     * @return     the Color of the specified pixel.
+     * @since      Feb. 21, 2013
+     */
+    public Color getPixelColor (int x, int y);
 }
