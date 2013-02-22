@@ -3,6 +3,7 @@ package javalib.funworld;
 import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 import javalib.worldimages.Drawable;
+import javalib.worldimages.WorldEnd;
 
 
 /**
@@ -214,6 +215,16 @@ public abstract class Animation<Model> extends World
     }
     
     /**
+     * User shouldn't need to use or override this method.
+     * 
+     * @see World.worldEnds()
+     */
+    public WorldEnd worldEnds ()
+    {
+        return this.worldEnds (this.model);
+    }
+    
+    /**
      * A version of makeImage(Model) that defaults to using the current Model.
      * 
      * You probably don't need to override this, but you can call it if you want.
@@ -331,4 +342,16 @@ public abstract class Animation<Model> extends World
      * @return           the new model
      */
     public Model gotMouseReleased(Model oldModel, Posn mouse) { return oldModel; }
+    
+    /**
+     * Decide whether the animation should end yet, and if so, what the window
+     * should look like.
+     * 
+     * @param oldModel   the current model
+     * @return           a WorldEnd object, which comprises
+     *      a boolean, telling whether the animation should end, and
+     *      a WorldImage, the final contents of the animation window.
+     */
+    public WorldEnd worldEnds (Model oldModel) { return this.worldEnds (); }
+    
 }
