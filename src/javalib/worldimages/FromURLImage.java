@@ -21,6 +21,10 @@ public class FromURLImage extends RasterImage
     /**
      * Pseudo-constructor for objects of class FromURLImage
      * 
+     * @TODO: Do something more intelligent with exceptions than just return null,
+     * so students get an informative error message as soon as they try to create
+     * an image from a bad URL or one that points to a missing or corrupted file.
+     * 
      * @param urlString
      */
     static WorldImage make (String urlString)

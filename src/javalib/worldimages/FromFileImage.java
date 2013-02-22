@@ -44,6 +44,10 @@ public class FromFileImage extends RasterImage{
   /**
    * Pseudo-constructor for objects of class FromFileImage
    * 
+   * @TODO: do something more intelligent with exceptions than just return null, so
+   * students get a meaningful error message as soon as they try to create an image
+   * from a missing or corrupted file.
+   * 
    * @param fileName
    */
   static WorldImage make (String fileName)
