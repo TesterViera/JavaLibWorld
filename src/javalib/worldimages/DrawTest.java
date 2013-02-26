@@ -268,6 +268,15 @@ public class DrawTest extends junit.framework.TestCase
         redDiskOnBlue.map(replaceWithWhite, Color.blue).show(); // should be just a red disk
         redDiskOnBlue.map(replaceWithWhite, Color.red).show(); // should be a white disk on blue rect
         redDiskOnBlue.map(replaceWithWhite, Color.yellow).show(); // should be unchanged
+        
+        try {
+            redDiskOnBlue.map (replaceWithWhite, new Posn(3,4)).show(); // should fail
+            t.checkExpect (true, false, "map (replaceWithWhite, new Posn) should have failed");
+        }
+        catch (ClassCastException e) { 
+            System.out.println ("Got a ClassCastException, as expected.");
+        }
+            
     }
     
     
