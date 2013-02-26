@@ -238,10 +238,10 @@ public class DrawTest extends junit.framework.TestCase
               .show();
                             
         WorldImage gradient1 = AImage.build (100, 100,
-            new ImageBuilder () {
-                public Color pixelColor (int x, int y, Object other)
+            new ImageBuilder<Posn> () {
+                public Color pixelColor (int x, int y, Posn dimensions)
                 {
-                    Posn dimensions = (Posn)other;
+                    // Posn dimensions = (Posn)other;
                     return new Color (255 * x / dimensions.x, 255 * y / dimensions.y, 0, 255);
                 }
             }
@@ -258,10 +258,10 @@ public class DrawTest extends junit.framework.TestCase
         bloch.map(killRed).show();
         redDiskOnBlue.map(killRed).show(); // should be a black disk on blue rect
         
-        ImageMap replaceWithWhite = new ImageMap () {
-            public Color pixelColor (int x, int y, Color oldColor, Object other)
+        ImageMap<Color> replaceWithWhite = new ImageMap<Color> () {
+            public Color pixelColor (int x, int y, Color oldColor, Color target)
             {
-                Color target = (Color)other;
+                // Color target = (Color)other;
                 return oldColor.equals(target) ? Color.white : oldColor;
             }
         };

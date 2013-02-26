@@ -7,8 +7,9 @@ import java.awt.Color;
  *
  * @author Stephen Bloch
  * @since Dec. 28, 2012
+ * @version Feb. 25, 2013
  */
-public interface ImageBuilder
+public interface ImageBuilder<OtherInfo>
 {
     /**
      * Given the location of a pixel, determine what color it should be
@@ -18,5 +19,5 @@ public interface ImageBuilder
      * @param other an arbitrary piece of extra information provided by the caller of "build"
      * @return a Color to be used in the pixel of the resulting image
      */
-   public Color pixelColor (int x, int y, Object other);
+   public Color pixelColor (int x, int y, OtherInfo other);
 }
