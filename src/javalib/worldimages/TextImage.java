@@ -178,11 +178,12 @@ class TextImage extends ColoredImage{
     this.height = bounds.height;
     this.width = bounds.width;
     
-    
+    /*
     System.out.println("Bounds: x = " + bounds.getX() +
                        "  y = " + bounds.getX() +
                        "  width = " + bounds.getWidth() +
                        "  height = " + bounds.getHeight());
+    */
   }
 
   /**
