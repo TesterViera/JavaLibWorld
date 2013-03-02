@@ -4,6 +4,7 @@ import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 import javalib.worldimages.Drawable;
 import javalib.worldimages.WorldEnd;
+import javalib.worldimages.AImage;
 
 
 /**
@@ -352,6 +353,10 @@ public abstract class Animation<Model> extends World
      *      a boolean, telling whether the animation should end, and
      *      a WorldImage, the final contents of the animation window.
      */
-    public WorldEnd worldEnds (Model oldModel) { return this.worldEnds (); }
+    public WorldEnd worldEnds (Model oldModel)
+    {
+        final WorldEnd defaultAnswer = new WorldEnd (false, AImage.makeRectangle(0,0));
+        return defaultAnswer;
+    }
     
 }
