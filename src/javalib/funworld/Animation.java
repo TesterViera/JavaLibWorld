@@ -39,6 +39,13 @@ import javalib.worldimages.AImage;
  *          super(initial);
  *          // maybe do other stuff here
  *      }</pre>
+ *  Alternatively, if your animation should always start with the same initial value, you can write a
+ *  constructor that takes in nothing, <em>e.g.</em>
+ *  <pre>    public MyAnimation ()
+ *      {
+ *          super(0);
+ *          // maybe do other stuff here
+ *      }</pre>
  *  </li>
  *  <li>Add event-handlers as necessary.  For example, if you wanted to add 1 to the integer model at
  *  every clock tick, you could write
@@ -65,7 +72,7 @@ import javalib.worldimages.AImage;
  * </ol>
  * 
  * @author Stephen Bloch
- * @version Jan. 1, 2013
+ * @version March 5, 2013
  */
 public abstract class Animation<Model> extends World
 {
@@ -262,7 +269,11 @@ public abstract class Animation<Model> extends World
      * if they don't, the default handler makes no change.
      * 
      * @param oldModel   the current model
-     * @param s          the key that was pressed
+     * @param s          the key that was pressed <br>
+     *  This will be either a single character (for letters, numbers, punctuation) or
+     *  one of the following:
+     *  "backspace", "tab", "newline", "escape", "page up", "page down", "end", "home",
+     *  "left", "up", "right", "down", "delete", or "f1" through "f12"
      * @return           the new model
      */
     public Model gotKeyEvent(Model oldModel, String s) { return oldModel; }
@@ -346,7 +357,8 @@ public abstract class Animation<Model> extends World
     
     /**
      * Decide whether the animation should end yet, and if so, what the window
-     * should look like.
+     * should look like.  Users subclassing Animation may override this;
+     * if they don't, the default handler says "no, don't end the world."
      * 
      * @param oldModel   the current model
      * @return           a WorldEnd object, which comprises
