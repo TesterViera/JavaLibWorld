@@ -39,6 +39,12 @@ abstract public class World implements UserWorld, Drawable{
     /** true if 'bigBang' started the world and it did not end, did not stop */
     private transient boolean worldExists = false;
     
+    /** how many ticks there have been so far **/
+    private transient int tickCount = 0;
+    
+    /** how much wall-clock time since the animation started **/
+    private transient long startTime;
+    
     /** the timer for this world */
     protected transient MyTimer mytime;
     
@@ -136,6 +142,9 @@ abstract public class World implements UserWorld, Drawable{
         while(tmp - start < 1000){
             tmp = System.currentTimeMillis();
         }
+        
+        // Now that we're done waiting for things to install, record the "start time".
+        this.startTime = System.currentTimeMillis();
         
         // and add the timer -- start it if speed is greater than 0
         this.mytime = new MyTimer(this, speed);
@@ -265,6 +274,7 @@ abstract public class World implements UserWorld, Drawable{
      * @return <code>{@link World World}</code> after the tick event
      */
     protected synchronized World processTick(){
+        this.tickCount++;
         try{
             if (this.worldExists && !this.stopTimer){
                 this.lastWorld = this.worldEnds();
@@ -300,6 +310,30 @@ abstract public class World implements UserWorld, Drawable{
         return this;
     }
     
+    /**
+     * Getter for tickCount.
+     * 
+     * @return the number of ticks so far.
+     * @since Mar. 7, 2013
+     * @author Stephen Bloch
+     */
+    public int getTickCount ()
+    {
+        return this.tickCount;
+    }
+    
+    /**
+     * Getter for elapsed time.
+     * 
+     * @return the number of seconds so far.
+     * @since Mar. 7, 2013
+     * @author Stephen Bloch and Lee Stemkoski
+     */
+    public double getElapsedTime ()
+    {
+        long ms = System.currentTimeMillis() - this.startTime;
+        return (double)ms / 1000.0;
+    }
     
     /**
      * The method invoked by the key adapter on selected key events.
@@ -703,6 +737,54 @@ abstract public class World implements UserWorld, Drawable{
             this.theCanvas.drawImage(this.lastImage(s));
             return true;
         }
+    }
+    
+    /**
+     * Get the initially-specified width.
+     * 
+     * @return the width initially specified in the bigBang call, or if not specified, the width of the first image.
+     * @since Mar. 7, 2013
+     * @author Stephen Bloch
+     */
+    public int getWidth ()
+    {
+        return this.theCanvas.getWidth();
+    }
+    
+    /**
+     * Get the initially-specified height.
+     * 
+     * @return the height initially specified in the bigBang call, or if not specified, the height of the first image.
+     * @since Mar. 7, 2013
+     * @author Stephen Bloch
+     */
+    public int getHeight ()
+    {
+        return this.theCanvas.getHeight();
+    }
+    
+    /**
+     * Get the current width of the animation window (which may have been adjusted by the user).
+     * 
+     * @return an int
+     * @since Mar. 7, 2013
+     * @author Stephen Bloch
+     */
+    public int getCurrentWidth ()
+    {
+        return this.theCanvas.getCurrentWidth();
+    }
+    
+    /**
+     * Get the current height of the animation window (which may have been adjusted by the user).
+     * 
+     * @return an int
+     * @since Mar. 7, 2013
+     * @author Stephen Bloch
+     */
+    public int getCurrentHeight ()
+    {
+        return this.theCanvas.getCurrentHeight();
     }
     
     /**

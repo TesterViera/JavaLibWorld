@@ -50,7 +50,9 @@ public class TypingExample extends Animation<String>
     
     public String gotTick (String current)
     {
-        System.out.println (new Posn(this.getCurrentWidth(), this.getCurrentHeight()));
+        System.out.println ("After " + this.getTickCount() + " ticks and " +
+                            this.getElapsedTime() + " seconds, window dimensions are " +
+                            new Posn(this.getCurrentWidth(), this.getCurrentHeight()));
         return current;
     }
     
