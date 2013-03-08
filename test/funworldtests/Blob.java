@@ -32,7 +32,8 @@ class Blob{
     /** produce the image of this blob at its current location and color */
     WorldImage blobImage(){
         //return new DiskImage(this.center, this.radius, this.col);
-        return AImage.makeFromFile("Images/small-shark.png")
+        return SampleImages.shark
+            .scaled(0.5)
             .overlayCentered(AImage.makeCircle(this.radius, this.col, Mode.OUTLINED));
     }
     
