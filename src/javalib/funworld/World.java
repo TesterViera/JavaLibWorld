@@ -31,7 +31,7 @@ import javax.swing.WindowConstants;
  * @author Viera K. Proulx
  * @since November 15 2007, March 17 2008, October 19 2009, February 4 2012
  */
-abstract public class World implements UserWorld, Drawable{
+abstract public class World implements Drawable{
     
     /** the canvas that displays the current world */
     public WorldCanvas theCanvas;
@@ -724,6 +724,7 @@ abstract public class World implements UserWorld, Drawable{
      * via <code>bigBang</code> and did not stop or end, otherwise 
      * invoke the user defined <code>lastImage</code> method,
      * 
+     * @param s     a String to be passed on to <code>lastImage</code>
      * @return <code>true</code>
      */
     protected synchronized boolean drawWorld(String s){
@@ -799,6 +800,7 @@ abstract public class World implements UserWorld, Drawable{
    * <P>User defined method to draw the <code>{@link World World}</code>.</P>
    * <P>Override this method in the game world class</P>
    * 
+   * @param s     a String that <code>endOfWorld</code> can use to communicate to <code>lastImage</code>
    * @return the image that represents the last world to be drawn
    */
     public WorldImage lastImage(String s){
