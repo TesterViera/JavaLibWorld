@@ -209,3 +209,17 @@ Feb. 21, 2013: Added getPixelColor.
 Feb. 25, 2013: Templatized ImageMap and ImageBuilder so if you know in
 advance what type of "extra" information they'll be given, you can write
 them without explicit casts.
+
+April 13, 2013: Trying to write a bullsEye method on IntLists.  What's
+the right answer for the base case?  I wanted to use a 0x0 image, but
+that's crashing.  Make sure the library supports 0-sized images.
+
+Correction: the WorldImage library is fine with 0-sized images, but
+Tester barfs on them.
+
+May 22, 2013: Fixed a bug in Tester that I had introduced Dec. 30: it
+was comparing fields of two objects under the invalid assumption that
+they were the same class.  As a side effect, this seems to fix the
+problem of April 13 as well: I can say
+	t.checkExpect(something, AImage.makeCircle(0,Color.white,Mode.filled));
+and it doesn't crash.
