@@ -11,8 +11,20 @@ public enum Mode
 {
     FILLED, OUTLINED;
     
+    /**
+     * A synonym for FILLED.
+     */
     public static final Mode SOLID = FILLED;
+    /**
+     * A synonym for FILLED.
+     */
     public static final Mode filled = FILLED;
+    /**
+     * A synonym for FILLED.
+     */
     public static final Mode solid = FILLED;
+    /**
+     * A synonym for OUTLINED.
+     */
     public static final Mode outlined = OUTLINED;
 }

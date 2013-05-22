@@ -19,8 +19,23 @@ public enum TextStyle
 {
     NORMAL, ITALIC, BOLD, BOLD_ITALIC;
     
+    /**
+     * A synonym for NORMAL.
+     */
     public static final TextStyle REGULAR = NORMAL;
+    /**
+     * A synonym for BOLD_ITALIC.
+     */
     public static final TextStyle ITALIC_BOLD = BOLD_ITALIC;
+    /**
+     * Lower-case synonyms.
+     */
+    public static final TextStyle normal = NORMAL;
+    public static final TextStyle italic = ITALIC;
+    public static final TextStyle bold = BOLD;
+    public static final TextStyle bold_italic = BOLD_ITALIC;
+    public static final TextStyle regular = NORMAL;
+    public static final TextStyle italic_bold = BOLD_ITALIC;
     
     public int toInt ()
     {
