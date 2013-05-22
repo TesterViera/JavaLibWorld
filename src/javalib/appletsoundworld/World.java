@@ -61,7 +61,7 @@ abstract public class World implements SoundConstants{
   
   /** a blank image, to avoid <code>null</code> in the <code>lastWorld</code> */
   private transient WorldImage blankImage = 
-      new CircleImage(new Posn(0, 0), 1, Color.white);
+      AImage.makeCircle (1, Color.white);
   
   /** the last world - if needed */
   public WorldEnd lastWorld = new WorldEnd(false, this.blankImage);
@@ -475,8 +475,7 @@ abstract public class World implements SoundConstants{
     
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place(AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -561,8 +560,7 @@ abstract public class World implements SoundConstants{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place (AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -706,8 +704,7 @@ abstract public class World implements SoundConstants{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place (AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -746,8 +743,7 @@ abstract public class World implements SoundConstants{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place (AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -787,8 +783,7 @@ abstract public class World implements SoundConstants{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place (AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -828,8 +823,7 @@ abstract public class World implements SoundConstants{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place (AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -868,8 +862,7 @@ abstract public class World implements SoundConstants{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place (AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);

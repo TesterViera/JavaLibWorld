@@ -1,0 +1,225 @@
+Several things I'd like to fix:
+1) Posn.toString (and use it in the other toString methods)
+2) Fix commas and newlines in toStrings
+3) Have toString use toIndentedString
+
+4) Add convenience methods that take either two ints or a Posn
+
+5) Figure out what pinholes are supposed to be, and make them that
+consistently
+	If they're a center, store them as ints in doubled form
+
+6) Add methods "addBelow", "addRight", and aligned versions of same.
+
+
+
+I've worked on some of the above, and concluded that Viera's pinholes are irremediably broken.  If I want things to feel like they do in DrRacket, images shouldn't have a location at all.  OTOH, if I want any semblance of compatibility with Viera's work, images DO need a location.  I don't want to use the name "pinhole", because these things don't act anything like htdp's pinholes.
+
+Option 1: images have a location.  It's just a translation vector, telling where the top-left corner of the image's bounding box is relative to the top-left corner of its containing image (or should it be relative to the window?)  If it's relative to the containing image, then 
+a) translating an image doesn't require recurring into its sub-parts;
+b) one could potentially have multiple copies of object A, each of which contains a shared copy of object B, and moving an A (even mutatingly) wouldn't mutate its B;
+c) drawing an image into "the window" is just a special case of the same mechanism we'll need everywhere else anyway.
+
+Option 2: images do not have a location; we'll place them onto background images explicitly with something like place-image or overlay/xy.
+
+
+OK, I've started implementing my version of Option 1.  Question: do we actually need the RectangularImage and CircularImage classes, or can they be collapsed with Colored{Rectangular,Circular}Image?
+
+Dec. 2, 2012:
+I just generated 1200-odd lines of code, with maybe 30 lines of actual
+semantic content; the rest is mostly lots of copies of constructors
+with different argument lists (since constructors can't be inherited),
+and copies of other methods that invoke those constructors (and
+therefore can't be inherited either).
+
+Dec. 5, 2012:
+Added SBImageAdapter class to make my images (hopefully) work in the
+rest of Viera's libraries, most notably "funworld" and "impworld".
+
+Dec. 12, 2012:
+Back to Option 2, sort of.  Images "have" a translation, but for most of
+them it's (0,0).  There's a Translate class that takes an existing image
+and translates it somewhere else.  This allowed me to snip out 15-20% of
+the lines of code in the package.
+
+Dec. 19, 2012: Not actually working on this until semester grades are
+in, but I want to provide equivalents of "rotate", "reflect", "scale",
+and "scale/xy" (of which "scale" is presumably a special case).
+It would probably be easiest to "rotate" around (0,0), but that will
+produce bounding boxes with negative top or left coordinates.  Should I
+just rotate around (0,0) and then translate as necessary to put the top
+left corner at (0,0)?  Should I provide a "rotateAround" entrypoint that
+rotates around a specified Posn?  And the same issues come up with
+"reflect".
+
+I am increasingly annoyed with Java constructors: they ALWAYS return a
+newly-allocated instance of the class, never an existing instance, or an
+instance of a subclass, etc.  They're unavoidably tied to implementation,
+and they don't belong in an API.  Can I convince Viera that the API
+shouldn't expose constructors?  Or at least that it should expose only
+the constructors of primitive image classes (Circle, Rectangle, Line,
+Text, etc.) but not the ones that correspond to operators (Overlay,
+Above, Beside, Scale, Rotate, Reflect, Translate)?
+
+Dec. 23, 2012: I started adding Rotate, and realized that Java's
+AffineTransform class already does most of what I would want from
+Translate, and Rotate, and Reflect, and Scale, and ScaleXY; maybe the
+right answer is a single class LinearImage which applies an arbitrary
+AffineTransform to another image.  This wouldn't necessarily be exposed
+in the API.
+
+Dec. 24, 2012: Did the above.  Added PolygonImage, FilledPolygonImage,
+and PolyLineImage, making FilledTriangleImage, OutlinedTriangleImage,
+and LineImage subclasses of these as appropriate.
+
+We have a FromFileImage, but not the obvious FromURLImage.  I don't
+think it should be difficult to get that working, but it's not my top
+priority right now.
+
+I put in a "mode" field that distinguishes between filled and outlined,
+as in htdp.  This saves a whole lot of duplicate code and allows me to
+delete several whole classes.
+
+Reflection now preserves location.  That's the easy one, since the
+bounding box after X or Y reflection is the same shape as the bounding
+box before.  What about rotation?  The easiest thing to do is rotate
+around (0,0), but that's almost certainly not what the user wants.  I
+could rotate around the center of the bounding box, or I could make the
+top-left corner after rotation the same as the top-left corner before
+rotation (with results similar to those in 2htdp -- although I'm not
+sure what would happen if you rotated 60 degrees 6 times in succession,
+which in a just world should be the identity).
+
+Dec. 26, 2012: I can create images from a local file or from a URL on
+the Web.  I can freeze (render and memoize) an existing image.  I can
+save an image as a local PNG file.  I have most of the functionality of
+PP chapters 1-3.  I've defined the prerolled image variables (pic:bloch
+et al), but they're currently commented out.  I have an equivalent of
+place-image.  I don't have right-triangle, isosceles-triangle, etc. but
+I have a triangle with three arbitrary vertices (and even a polygon with
+arbitrary vertices).
+
+I've written a FunWorld world that uses my image library, rotating a
+picture of me by 1 degree every .01 second.
+
+It's still a pain negotiating between WorldImage and Image; I would
+prefer to just REPLACE WorldImage, but I haven't confirmed that the rest
+of javalib would compile and run.
+
+Dec. 29, 2012: Since much of the point of this course is test-driven
+design, I need to make really sure checkExpect works properly.  This is
+a bit more complicated because there are at least two different notions
+of equality for WorldImages: are they the same as expression trees?, and
+do they render the same?  The former implies the latter, but not
+conversely.  For example,
+	WorldImage rect1 = AImage.makeRectangle (50, 30, Color.red, Mode.FILLED);
+	WorldImage rect2 = AImage.makeRectangle (50, 60, Color.red, Mode.FILLED);
+	checkExpect (rect1.above(rect1), rect2);
+should pass, even though the two expressions are decidedly not the same
+as trees.
+
+I had already put an "equals" method into most of the classes that
+basically did tree equivalence (although I didn't have test cases for
+it).  So I decided to implement "renders-the-same" equality through the
+"same" method: WorldImage extends ISame.  To compare most images, I
+"freeze" them, make sure the frozen version is rendered, then compare
+the rasters pixel by pixel.  And I got this working: the test
+	checkExpect (rect1.above(rect1).same(rect2), true);
+passed.  But if I wrote the same test as
+	checkExpect (rect1.above(rect1), rect2);
+it failed.  It turns out that the Tester code recognizes WorldImages and
+some of its subclasses as special, and applies "equals" to them rather
+than "same".  (It also does the same for Canvas and the Tunes package.)
+
+So I renamed my "equals" method as "treeEquals", and renamed "same" as
+"equals" (changing signatures as necessary), and it still didn't work.
+It turns out that the Tester code does some other clever optimizations:
+once it has determined that two objects aren't the same class, they
+obviously aren't "same", so it returns false immediately rather than
+actually calling any comparison method on them at all.  This is
+fundamentally incompatible with the notion of "same" meaning "has the
+same rendering".
+
+What now?  The least intrusive answer is to write a publicly-visible
+"looksSame" method, and have student test cases look like
+	checkExpect (rect1.above(rect1).looksSame(rect2), true);
+This would require minimal changes to the Tester library (although still
+some, because the Tester library has the list of WorldImage subclasses
+hard-coded, and that list has changed in the past two weeks).
+
+The more user-friendly (and long-term more elegant) answer is to take
+out those two optimizations from Tester, and use "same" as I had
+originally intended.  If WorldImage, Canvas, and Tunes want a custom
+comparison operator, they can implement ISame just like anybody else.
+
+But as it turns out, I don't think any of those classes have their own
+definitions of equals() OR same().  Which means that if these
+optimizations weren't there, the tester would use its default "deep"
+comparison; presumably the special case is to avoid this expense.
+But the same could have been accomplished by writing a same() method
+for those classes, couldn't it?
+
+Dec. 30, 2012: I'm trying the "more user-friendly" solution described
+above.  I've taken out a couple of optimizations in tester.Inspector,
+and put in a same() method that tells whether two images render the
+same.  Seems to be working so far; need more test cases.
+
+Dec. 31, 2012: Viera convinced me to do this through checkEquivalent
+instead, with a predefined equivalence-testing object named LOOKS_SAME.
+And that works nicely as long as I'm comparing WorldImages directly,
+but when I have a World that contains a field of type WorldImage, it
+falls apart.  I think I need to go back to same().
+
+In other news, I found a bug in the interaction between AImage and
+LinearImage that was causing successive linear transforms to nest rather
+than just composing the transform matrix.  I originally thought of that
+as just an optimization, but in fact it affects the calculation of
+bounding boxes, which leads to images wandering around through cascading
+errors.  So I fixed that, and the wandering is largely gone.
+
+Feb. 6, 2013: Several problems showed up in recent days.
+1) The template for an "animation class" (not actually part of javalib,
+but part of my BlueJ customization files) uses the method name toImage
+rather than makeImage.
+2) The "save" method in WorldImage works on images that were originally
+provided as rasters, but it crashes on constructed images.
+3) The ImageBuilder and ImageMap interfaces aren't public, so user code
+can't implement them, which makes "map" and "build" useless.
+4) There's no equilateral-triangle method; that would be convenient.
+
+The first and third are trivial fixes.  The fourth should be easy.  The
+second is debugging: I suspect that "freeze" isn't being told to
+rasterize and memoize the image before writing it to a file.  Anyway,
+I'll need to roll out all of these in a new release.
+
+Feb. 10, 2013: Fixed all of the problems described on Feb. 6.  Also
+added a version of bigBang that doesn't require width and height,
+and gave SampleImages.stickFigure a transparent background.
+
+Feb. 13, 2013: Added gotMouseMoved and gotMouseDragged hooks to the
+Animation class (and corresponding hooks to World) in funworld.
+
+Feb. 14, 2013: We don't have getPixelColor in this library, so although students can
+write pixel-to-pixel color-changing maps, they can't write something that looks at
+other locations in a given image, with which they could write their own reflections,
+or "fuzz", etc.  Add it.
+
+Feb. 21, 2013: Added getPixelColor.
+
+Feb. 25, 2013: Templatized ImageMap and ImageBuilder so if you know in
+advance what type of "extra" information they'll be given, you can write
+them without explicit casts.
+
+April 13, 2013: Trying to write a bullsEye method on IntLists.  What's
+the right answer for the base case?  I wanted to use a 0x0 image, but
+that's crashing.  Make sure the library supports 0-sized images.
+
+Correction: the WorldImage library is fine with 0-sized images, but
+Tester barfs on them.
+
+May 22, 2013: Fixed a bug in Tester that I had introduced Dec. 30: it
+was comparing fields of two objects under the invalid assumption that
+they were the same class.  As a side effect, this seems to fix the
+problem of April 13 as well: I can say
+	t.checkExpect(something, AImage.makeCircle(0,Color.white,Mode.filled));
+and it doesn't crash.

@@ -32,73 +32,56 @@ public class ExamplesImageDrawings  {
   // a text inside a red rectangle with a yellow dot in its pinhole location
   public static WorldImage makeText(Posn pos, int size){
     WorldImage hello = 
-      new TextImage(pos, "quickbrownfoxjumpedoveralazydog", size, 3, new Blue());
+      AImage.makeText("quickbrownfoxjumpedoveralazydog", size, TextStyle.BOLD_ITALIC, new Blue()).moved(pos);
 
     WorldImage helloRed = 
-        new OverlayImages(
-            new RectangleImage(pos, 
-                hello.getWidth(), hello.getHeight(), 
-                new Red()),
-                hello);
-    return 
-        new OverlayImages(helloRed,
-            new DiskImage(hello.pinhole, 2, new Yellow()));
+            AImage.makeRectangle(hello.getWidth(), hello.getHeight(), new Red(), Mode.FILLED).moved(pos)
+                .overlay (hello);
+    return helloRed.overlayCentered (AImage.makeCircle(2, new Yellow(), Mode.FILLED));
   }
   
   WorldImage circleText = 
-      new TextImage(new Posn(200, 20),
-          "CircleImage(new Posn(200, 60), 10, new Red())", Color.red);
-  WorldImage circle = new CircleImage(new Posn(200, 60), 10, new Red());
+      AImage.makeText ("CircleImage(new Posn(200, 60), 10, new Red())", Color.red).moved(200, 20);
+  WorldImage circle = AImage.makeCircle(10, new Red(), Mode.OUTLINED).moved(200, 60);
   
-
   WorldImage diskText = 
-      new TextImage(new Posn(200, 100),
-          "DiskImage(new Posn(200, 140), 10, new Red())", Color.red);
-  WorldImage disk = new DiskImage(new Posn(200, 140), 10, new Red());
-  
+      AImage.makeText ("AImage.makeCircle(new Posn(200, 140), 10, new Red(), Mode.FILLED)", Color.red).moved(200, 100);
+  WorldImage disk = AImage.makeCircle(10, new Red(), Mode.FILLED).moved(200, 140);
 
   WorldImage lineText = 
-      new TextImage(new Posn(220, 180),
-          "LineImage(new Posn(200, 220), new Posn(280, 230), Color.green)", Color.green);
+      AImage.makeText ("LineImage(new Posn(200, 220), new Posn(280, 230), Color.green)", Color.green).moved(220,180);
   WorldImage line = 
-      new LineImage(new Posn(200, 220), new Posn(280, 230), Color.green);
-  
+      AImage.makeLine (new Posn(200, 220), new Posn(280, 230), Color.green);
 
   WorldImage triangleText = 
-      new TextImage(new Posn(280, 260),
-      "TriangleImage(new Posn(250, 300), new Posn(200, 340), new Posn(150, 310), Color.cyan)", 
-      Color.cyan);
+      AImage.makeText ("TriangleImage(new Posn(250, 300), new Posn(200, 340), new Posn(150, 310), Color.cyan)", 
+      Color.cyan).moved(280, 260);
   WorldImage triangle = 
-      new TriangleImage(new Posn(250, 300), new Posn(200, 340), new Posn(150, 310), Color.cyan);
+      AImage.makeTriangle(new Posn(250, 300), new Posn(200, 340), new Posn(150, 310), Color.cyan, Mode.FILLED);
   
 
   WorldImage ellipseText = 
-      new TextImage(new Posn(600, 20),
-          "EllipseImage(new Posn(600, 60), 60, 20, new Blue())", new Blue());
-  WorldImage ellipse = new EllipseImage(new Posn(600, 60), 60, 20, new Blue());
+      AImage.makeText("EllipseImage(new Posn(600, 60), 60, 20, new Blue())", new Blue()).moved(600, 20);
+  WorldImage ellipse = AImage.makeEllipse(60, 20, new Blue()).moved(600, 60);
   
   WorldImage frameText = 
-      new TextImage(new Posn(600, 100),
-          "FrameImage(new Posn(600, 120), 60, 20, new Black())", new Black());
-  WorldImage frame = new FrameImage(new Posn(600, 120), 60, 20, new Black());
+      AImage.makeText("FrameImage(new Posn(600, 120), 60, 20, new Black())", new Black()).moved(600, 100);
+  WorldImage frame = AImage.makeRectangle(60, 20, new Black()).moved(600, 120);
   
   WorldImage ovalText = 
-      new TextImage(new Posn(600, 180),
-          "OvalImage(new Posn(600, 220), 60, 20, new Yellow())", new Yellow());
-  WorldImage oval = new OvalImage(new Posn(600, 220), 60, 20, new Yellow());
+      AImage.makeText("OvalImage(60, 20, new Yellow())", new Yellow()).moved(600, 180);
+  WorldImage oval = AImage.makeEllipse(60, 20, new Yellow(), Mode.FILLED).moved(600, 220);
   
   WorldImage rectangleText = 
-      new TextImage(new Posn(600, 300),
-          "RectangleImage(new Posn(600, 330), 60, 20, Color.orange)", Color.orange);
-  WorldImage rectangle = new RectangleImage(new Posn(600, 330), 60, 20, Color.orange);
+      AImage.makeText("RectangleImage(new Posn(600, 330), 60, 20, Color.orange)", Color.orange).moved(600, 300);
+  WorldImage rectangle = AImage.makeRectangle(60, 20, Color.orange, Mode.FILLED).moved(600, 330);
   
   WorldImage fromFileText = 
-      new TextImage(new Posn(600, 420),
-          "FromFileImage(new Posn(600, 480), Images/fish.png)", Color.black);
-  WorldImage fish = new FromFileImage(new Posn(600, 480), "Images/fish.png");
+      AImage.makeText("FromFileImage(new Posn(600, 480), Images/fish.png)", Color.black).moved(600, 420);
+  WorldImage fish = AImage.makeFromFile("Images/fish.png").moved(600, 480);
   
   WorldImage combined = 
-      this.circleText.overlayImages(
+      this.circleText.overlay(
           this.circle, 
           this.diskText,
           this.disk,
@@ -135,5 +118,9 @@ public class ExamplesImageDrawings  {
         c.show() && 
         c.drawImage(e.combined) &&
         c.drawImage(pic);
+    
+//    Tester.run (e);
+    
   }
+
 }

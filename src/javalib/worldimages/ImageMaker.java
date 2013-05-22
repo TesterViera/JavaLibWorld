@@ -11,6 +11,8 @@ import java.util.*;
  * <p>Copyright 2012 Viera K. Proulx</p>
  * <p>This program is distributed under the terms of the 
  * GNU Lesser General Public License (LGPL)</p>
+ * 
+ * Dec. 26, 2012, sbloch: I'm not sure we still need these, but WorldCanvas seems to use them.
  */
 
 /**

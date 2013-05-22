@@ -20,11 +20,10 @@ import javalib.tunes.Note;
 import javalib.tunes.SoundConstants;
 import javalib.tunes.TuneBucket;
 import javalib.worldcanvas.WorldCanvas;
-import javalib.worldimages.CircleImage;
-import javalib.worldimages.Posn;
-import javalib.worldimages.TextImage;
-import javalib.worldimages.WorldEnd;
 import javalib.worldimages.WorldImage;
+import javalib.worldimages.WorldEnd;
+import javalib.worldimages.Posn;
+import javalib.worldimages.AImage;
 
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
@@ -72,7 +71,7 @@ abstract public class World implements SoundConstants, Versions{
   
   /** a blank image, to avoid <code>null</code> in the <code>lastWorld</code> */
   private transient WorldImage blankImage = 
-      new CircleImage(new Posn(0, 0), 1, Color.white);
+      AImage.makeCircle (1, Color.white);
   
   /** the last world - if needed */
   public WorldEnd lastWorld = new WorldEnd(false, this.blankImage);
@@ -451,8 +450,9 @@ abstract public class World implements SoundConstants, Versions{
 
       catch(RuntimeException re){
         re.printStackTrace();
-        this.lastWorld.lastImage.overlayImages(
-            new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+        this.lastWorld.lastImage =
+            this.lastWorld.lastImage.place(
+                AImage.makeText (re.getMessage(), Color.red), 40, 40);
         this.stopWorld();
         //throw re;
         Runtime.getRuntime().halt(1);
@@ -537,8 +537,8 @@ abstract public class World implements SoundConstants, Versions{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place(
+          AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -553,14 +553,14 @@ abstract public class World implements SoundConstants, Versions{
    * 
    */
   void processKeyReleasedEvent(String ke){
-	  TuneBucket tmp = this.keyReleasedTunes.remove(ke);
-	  this.pressedKeys.remove(ke);
-	  if (tmp != null) {
-		  if(!isPlaying(tmp))
-			  tmp.clearBucket();
-	  }
-	  // invoke user-defined onKeyReleased method
-	  this.onKeyReleased(ke);
+      TuneBucket tmp = this.keyReleasedTunes.remove(ke);
+      this.pressedKeys.remove(ke);
+      if (tmp != null) {
+          if(!isPlaying(tmp))
+              tmp.clearBucket();
+      }
+      // invoke user-defined onKeyReleased method
+      this.onKeyReleased(ke);
   }
 
   /**
@@ -572,7 +572,7 @@ abstract public class World implements SoundConstants, Versions{
    * @return true if keyReleasedTunes contains the TuneBucket as value. 
    */
   public boolean isPlaying(TuneBucket tuneBucket) {
-	  return this.keyReleasedTunes.containsValue(tuneBucket);
+      return this.keyReleasedTunes.containsValue(tuneBucket);
   }
 
   /**
@@ -598,33 +598,33 @@ abstract public class World implements SoundConstants, Versions{
    */
   public void testOnKey(String ke){
 
-	  if (!this.pressedKeys.contains(ke)) {
+      if (!this.pressedKeys.contains(ke)) {
 
-		  this.lastWorld = this.worldEnds();
-		  if (this.lastWorld.worldEnds) {
-			  this.stopWorld();
-		  }
+          this.lastWorld = this.worldEnds();
+          if (this.lastWorld.worldEnds) {
+              this.stopWorld();
+          }
 
-		  this.pressedKeys.add(ke);
+          this.pressedKeys.add(ke);
 
-		  // empty the key tune bucket
-		  this.keyTunes.clearTunes();
+          // empty the key tune bucket
+          this.keyTunes.clearTunes();
 
-		  this.onKeyEvent(ke);
+          this.onKeyEvent(ke);
 
-		  // Only if tunes are added to the keyTunes bucket on key press,
-		  // add it to the keyReleasedTunes hashmap and the currentKeyTunes 
-		  // list so that it can be tested against.
-		  // Play the collected tunes in the keyTunes bucket.
-		  if(this.keyTunes.bucketSize() > 0) {
-			  this.keyReleasedTunes.put(ke, this.keyTunes.copy());
-			  this.currentKeyTunes.add(this.keyTunes);
-			  this.keyTunes.playTunes();
-		  }
+          // Only if tunes are added to the keyTunes bucket on key press,
+          // add it to the keyReleasedTunes hashmap and the currentKeyTunes 
+          // list so that it can be tested against.
+          // Play the collected tunes in the keyTunes bucket.
+          if(this.keyTunes.bucketSize() > 0) {
+              this.keyReleasedTunes.put(ke, this.keyTunes.copy());
+              this.currentKeyTunes.add(this.keyTunes);
+              this.keyTunes.playTunes();
+          }
 
-		  if (this.worldExists)
-			  this.drawWorld("");
-	  } 
+          if (this.worldExists)
+              this.drawWorld("");
+      } 
   }
 
   /**
@@ -633,20 +633,20 @@ abstract public class World implements SoundConstants, Versions{
    * @param ke the key that was released
    */
   public void testOffKey(String ke) {
-	  TuneBucket tmp = this.keyReleasedTunes.remove(ke);
-	  this.pressedKeys.remove(ke);
+      TuneBucket tmp = this.keyReleasedTunes.remove(ke);
+      this.pressedKeys.remove(ke);
 
-	  if (tmp != null) {
-		  /** Remove only the tunes/notes associated with the corresponding key released. */
-		  for (int i = 0; i < 16; i++) {
-			  ArrayList<Note> notes = tmp.tunes.get(i).getChord().notes;
-			  for(Note n : notes)
-				  this.currentKeyTunes.tunes.get(i).getChord().notes.remove(n);		
-		  }
-		  tmp.clearBucket();
-	  }
-	  // invoke user-defined onKeyReleased method
-	  this.onKeyReleased(ke);
+      if (tmp != null) {
+          /** Remove only the tunes/notes associated with the corresponding key released. */
+          for (int i = 0; i < 16; i++) {
+              ArrayList<Note> notes = tmp.tunes.get(i).getChord().notes;
+              for(Note n : notes)
+                  this.currentKeyTunes.tunes.get(i).getChord().notes.remove(n);     
+          }
+          tmp.clearBucket();
+      }
+      // invoke user-defined onKeyReleased method
+      this.onKeyReleased(ke);
   }
 
 
@@ -659,7 +659,7 @@ abstract public class World implements SoundConstants, Versions{
    * tunes on key press
    */
   public TuneBucket nowPlayingOnKeyPress(){
-	  return this.currentKeyTunes;
+      return this.currentKeyTunes;
   }
   
  
@@ -685,8 +685,8 @@ abstract public class World implements SoundConstants, Versions{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place (
+          AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -725,8 +725,8 @@ abstract public class World implements SoundConstants, Versions{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place(
+          AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -766,8 +766,8 @@ abstract public class World implements SoundConstants, Versions{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place(
+          AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -807,8 +807,8 @@ abstract public class World implements SoundConstants, Versions{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place(
+          AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);
@@ -847,8 +847,8 @@ abstract public class World implements SoundConstants, Versions{
     }
     catch(RuntimeException re){
       re.printStackTrace();
-      this.lastWorld.lastImage.overlayImages(
-          new TextImage(new Posn(40, 40), re.getMessage(), Color.red));
+      this.lastWorld.lastImage = this.lastWorld.lastImage.place(
+          AImage.makeText (re.getMessage(), Color.red), 40, 40);
       this.stopWorld();
       //throw re;
       Runtime.getRuntime().halt(1);

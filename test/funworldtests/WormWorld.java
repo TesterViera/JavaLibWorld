@@ -7,7 +7,7 @@ import javalib.colors.*;
 import javalib.worldimages.*;
 
 /**
- * Copyright 2012 Viera K. Proulx, Matthias Felleisen
+ * Copyright 2012 Viera K. Proulx, Matthias Felleisen, ported by Stephen Bloch
  * This program is distributed under the terms of the 
  * GNU Lesser General Public License (LGPL)
  *
@@ -15,6 +15,8 @@ import javalib.worldimages.*;
  * by Matthias Felleisen
  * 
  * represent the world of a Worm Game: Worm, Food, and the Bounding Box
+ * 
+ * @version Ported to new API, Dec 26 2012
  */
 //------------------------------------------------------------------------------
 //represent the world of a Worm Game: Worm, Food, and the Bounding Box
@@ -68,15 +70,13 @@ public class WormWorld extends World {
     if (w.ateItself())
       return 
       new WorldEnd(true,
-          new OverlayImages(this.makeImage(),
-          new TextImage(new Posn(100, 40), "Your worm ate itself.", 
-                        13, Color.red)));
+          this.makeImage()
+            .overlay (AImage.makeText ("Your worm ate itself.", 13, Color.red).moved(100,40)));
     else if (w.ranIntoWall(this.b))
       return 
       new WorldEnd(true, 
-          new OverlayImages(this.makeImage(),
-          new TextImage(new Posn(100, 40), "Your worm ran into a wall.", 
-                        13, Color.red)));
+          this.makeImage()
+            .overlay (AImage.makeText ("Your worm ran into a wall.", 13, Color.red).moved(100,40)));
     else
       return
       new WorldEnd(false, this.makeImage());
@@ -116,8 +116,7 @@ public class WormWorld extends World {
   // produce an image of this world
   public WorldImage makeImage() {
     return 
-    new OverlayImages(this.b.drawImage(),
-    new OverlayImages(this.w.drawImage(),f.drawImage()));
+        this.b.drawImage().overlay(this.w.drawImage(), f.drawImage());
   }
   
   public static void main(String[] argv){
@@ -192,8 +191,7 @@ class Worm {
 
   // make an image of this nonempty list of segments
   protected WorldImage drawImage(){
-    return 
-    new OverlayImages(this.head.drawImage(), this.body.drawImage());
+    return this.head.drawImage().overlay (this.body.drawImage()); 
   }
 }
 
@@ -262,7 +260,7 @@ class Segment {
   }
   
   protected WorldImage drawImage(){
-    return new DiskImage(new Posn(this.x,this.y),this.radius,this.color);
+    return AImage.makeCenteredCircle(new Posn(this.x,this.y),this.radius,this.color, Mode.FILLED);
   }
 
   // --- auxiliaries that are only needed for this class: motivate private ---
@@ -291,7 +289,7 @@ class MtSegment extends ListSegment {
  
   // make an image of this empty segment
   protected WorldImage drawImage(){
-    return new RectangleImage(new Posn(0, 0), 0, 0, new Blue());
+    return AImage.makeRectangle(0, 0, new Blue());
   }
 }
 
@@ -318,7 +316,7 @@ class ConsSegment extends ListSegment {
   // make an image of this nonempty list of segments
   protected WorldImage drawImage(){
     return 
-    new OverlayImages(this.first.drawImage(), this.rest.drawImage());
+        this.first.drawImage().overlay(this.rest.drawImage());
   }
 
 }
@@ -385,8 +383,7 @@ class Food {
   
   // make an image of this food
   protected WorldImage drawImage(){
-    return new RectangleImage(
-        new Posn(this.x,this.y),this.width,this.height,this.color);
+    return AImage.makeRectangle(this.width,this.height,this.color).moved(this.x,this.y);
   }
 }
 
@@ -411,7 +408,7 @@ class Box {
   
   // make an image of this box
   protected WorldImage drawImage(){
-    return new RectangleImage(new Posn(100, 100), width, height, new Blue());
+    return AImage.makeRectangle(width-1, height-1, new Blue(), Mode.OUTLINED);
   }
 }
 

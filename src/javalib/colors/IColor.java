@@ -12,6 +12,8 @@ import java.awt.Color;
  */
 public interface IColor{
   
-  // the only method - provides the color represented by this class
+  /**
+   * Convert an IColor to <tt>java.awt.Color</tt> for use with standard Java libraries.
+   */
   public Color thisColor();
 }

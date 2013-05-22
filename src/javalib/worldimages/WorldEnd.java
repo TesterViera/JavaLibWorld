@@ -13,8 +13,8 @@ package javalib.worldimages;
  * <p>This is used to indicate when the world should end and allow for 
  * creating one last image to display at the end.</p>
  *
- * @author Viera K. Proulx
- * @since February 4 2012
+ * @author Viera K. Proulx, slightly modified by Stephen Bloch
+ * @since February 4 2012, then Dec 12 2012
  */
 public class WorldEnd{
   /** the indicator whether the world should end:

@@ -1,11 +1,9 @@
 package javalib.appletsoundworld;
 
 import javalib.worldcanvas.*;
-import javalib.worldimages.FromFileImage;
+import javalib.worldimages.AImage;
 import javalib.worldimages.Posn;
-import javalib.worldimages.RectangleImage;
-import javalib.worldimages.TextImage;
-
+import javalib.worldimages.Mode;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -84,8 +82,8 @@ abstract public class WorldApplet extends JApplet{
    * @return always true
    */
   protected boolean isApplet(){
-    FromFileImage.isApplet = true;
-    return FromFileImage.isApplet;
+    AImage.isApplet (true);
+    return true;
   }
   
   /////////////////////////////////////////////////////////////////////////
@@ -401,8 +399,7 @@ abstract public class WorldApplet extends JApplet{
   public void stop(){
     //if the world is running, end it, remove listeners and timer
     if (currentworld.worldExists){
-      theCanvas.drawImage(new TextImage(new Posn(10, 20), 
-          "World stopped when not visible", Color.black));
+      theCanvas.drawImage(AImage.makeText ("World stopped when not visible", Color.black));
       
       currentworld.endOfWorld("Stop button stopped the world");
       
@@ -422,8 +419,7 @@ abstract public class WorldApplet extends JApplet{
    */
   protected void redraw(){
     Color back = Color.darkGray;
-    theCanvas.drawImage(new RectangleImage(new Posn(WIDTH/2, HEIGHT/2), 
-        WIDTH, HEIGHT, back));
+    theCanvas.drawImage(AImage.makeRectangle (WIDTH, HEIGHT, back, Mode.FILLED));
   }
 
   /**

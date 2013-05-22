@@ -1,161 +1,154 @@
 package javalib.worldimages;
 
 import javalib.colors.*;
-
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.*;
 
 
 /**
- * <p>Copyright 2012 Viera K. Proulx</p>
- * <p>This program is distributed under the terms of the 
- * GNU Lesser General Public License (LGPL)</p>
+ * An outlined circle
+ * 
+ * @author Stephen Bloch
+ * @version Dec. 2, 2012
  */
-
- /**
- * <p>The class to represent circle outline images drawn by the 
- * world when drawing on its <code>Canvas</code>.</p>
- *
- * @author Viera K. Proulx
- * @since February 4 2012
- */
-public class CircleImage extends WorldImage{
-  
-  /** the radius of this circle */
-  public int radius;
-  
-  /**
-   * A full constructor for this circle image.
-   * 
-   * @param pinhole the pinhole location for this image
-   * @param radius the radius of this circle
-   * @param color the color for this image
-   */ 
-  public CircleImage(Posn pinhole, int radius, Color color){
-    super(pinhole, color);
-    this.radius = radius;
-  }
-
-  /**
-   * A convenience constructor to supply the color in the form of
-   * <code>{@link IColor IColor}</code>.
-   * 
-   * @param pinhole the pinhole location for this image
-   * @param radius the radius of this circle
-   * @param color the color for this image
-   */
-  public CircleImage(Posn pinhole, int radius, IColor color){
-    super(pinhole, color);
-    this.radius = radius;
-  }
-  
-  /** 
-   * Draw this image in the provided <code>Graphics2D</code> context.
-   * 
-   * @param g the provided <code>Graphics2D</code> context
-   */
-  public void draw(Graphics2D g){
-    if (this.radius <= 0)
-      return;
-    if (this.color == null)
-      this.color = new Color(0, 0, 0);
+class CircleImage extends EllipseImage
+{    
+    private int radius;
     
-    // save the current paint
-    Paint oldPaint = g.getPaint();
-    // set the paint to the given color
-    g.setPaint(this.color);  
-    // draw the object
-    g.draw(new Ellipse2D.Double(this.pinhole.x - this.radius, 
-        this.pinhole.y - this.radius, 
-        2 * this.radius, 
-        2 * this.radius));
-    // reset the original paint
-    g.setPaint(oldPaint);   
-  }  
-  
-  /**
-   * Produce the circle with the pinhole moved by the given (dx, dy)
-   * 
-   * @param dx the horizontal offset
-   * @param dy the vertical offset
-   */
-  public WorldImage getMovedImage(int dx, int dy){
-    return new CircleImage(new Posn(this.pinhole.x + dx, this.pinhole.y + dy), 
-        this.radius, this.color);
-  }
-  
-  /**
-   * Produce the circle with the pinhole moved to the given location
-   * 
-   * @param p the given location
-   */
-  public WorldImage getMovedTo(Posn p){
-    return new CircleImage(p, this.radius, this.color);
-  }
-
-  /**
-   * Produce the width of this image
-   * 
-   * @return the width of this image
-   */
-  public int getWidth(){
-    return 2 * this.radius;
-  }
-
-  /**
-   * Produce the height of this image
-   * 
-   * @return the height of this image
-   */
-  public int getHeight(){
-    return 2 * this.radius;
-  }
-  
-  /**
-   * Produce a <code>String</code> representation of this circle image
-   */
-  public String toString(){
-    return "new CircleImage(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y + 
-        "), \nthis.color = " + this.color.toString() + 
-        "\nthis.radius = " + this.radius + ")\n";
-  }
-  
-  /**
-   * Produce a <code>String</code> that represents this image, 
-   * indented by the given <code>indent</code>
-   * 
-   * @param indent the given prefix representing the desired indentation
-   * @return the <code>String</code> representation of this image
-   */
-  public String toIndentedString(String indent){
-    indent = indent + "  ";
-    return classNameString(indent, "CircleImage") + 
-        pinholeString(indent, this.pinhole) + 
-        colorString(indent, this.color) + 
-        "\n" + indent + "this.radius = " + this.radius + ")\n";
-  }
-  
-  /**
-   * Is this <code>CircleImage</code> same as the given object?
-   */
-  public boolean equals(Object o){
-    if (o instanceof CircleImage){
-      CircleImage that = (CircleImage)o;
-      return this.pinhole.x == that.pinhole.x 
-        && this.pinhole.y == that.pinhole.y
-        && this.radius == that.radius
-        && this.color.equals(that.color);
+    /**
+     * The full constructor for a CircleImage.
+     * 
+     * @param radius
+     * @param color
+     * @param mode
+     */
+    private CircleImage (int radius, Color color, Mode mode) {
+        super (2*radius, 2*radius, color, mode);
+        this.radius = radius;
     }
-    else 
-      return false;
-  }
+    
+    /**
+     * Pseudo-constructor.
+     * 
+     * @param radius
+     * @param color
+     * @param mode
+     */
+    static CircleImage make (int radius, Color color, Mode mode)
+    {
+        return new CircleImage (radius, color, mode);
+    }
+    
+   /**
+     * Pseudo-constructor.
+     */
+    static CircleImage make (int radius, IColor color, Mode mode)
+    {
+        return new CircleImage (radius, color.thisColor(), mode);
+    }
+    
+    /**
+     * Another pseudo-constructor, with a default color.
+     */
+    static CircleImage make (int radius, Mode mode)
+    {
+        return new CircleImage (radius, Color.black, mode);
+    }
+    
+    /**
+     * Another pseudo-constructor, with a Color and a default mode.
+     */
+    static CircleImage make (int radius, Color color)
+    {
+        return new CircleImage (radius, color, Mode.OUTLINED);
+    }
+    
+    /**
+     * Another pseudo-constructor, with an IColor and a default mode.
+     */
+    static CircleImage make (int radius, IColor color)
+    {
+        return new CircleImage (radius, color.thisColor(), Mode.OUTLINED);
+    }
+    
+    /**
+     * Another pseudo-constructor, with default color and mode.
+     */
+    static CircleImage make (int radius)
+    {
+        return new CircleImage (radius, Color.black, Mode.OUTLINED);
+    }
+        
+    static WorldImage makeCentered (Posn center, int radius, Color color, Mode mode) {
+        return new CircleImage (radius, color, mode)
+                .moved (center.getX()-radius, center.getY()-radius);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius, IColor color, Mode mode) {
+        return makeCentered (center, radius, color.thisColor(), mode);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius, Mode mode)
+    {
+        return makeCentered (center, radius, Color.black, mode);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius, Color color)
+    {
+        return makeCentered (center, radius, color, Mode.OUTLINED);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius, IColor color)
+    {
+        return makeCentered (center, radius, color.thisColor(), Mode.OUTLINED);
+    }
+    
+    static WorldImage makeCentered (Posn center, int radius)
+    {
+        return makeCentered (center, radius, Color.black, Mode.OUTLINED);
+    }
+    
+    
+    CircleImage replaceRadius (int newRadius) {
+        return new CircleImage(newRadius, this.getColor(), this.getMode());
+    }
+    
+    ColoredImage replaceColor (Color newColor) {
+        return new CircleImage(this.getRadius(), newColor, this.getMode());
+    }
+
+    ColoredImage replaceMode (Mode newMode) {
+        return new CircleImage(this.getRadius(), this.getColor(), newMode);
+    }
+    
+    public int getRight () {
+        return (int)(Math.round(2*radius));
+    }
+    
+    public int getBottom () {
+        return (int)(Math.round(2*radius));
+    }
+    
+    public int getRadius() {
+        return this.radius;
+    }
+    
+    public boolean equals (Object other) {
+        return super.equals(other) &&
+        this.radius == ((CircleImage)other).getRadius();
+    }
+    
+    public int hashCode () {
+        return super.hashCode() + this.radius;
+    }
   
-  /**
-   * The hashCode to match the equals method
-   */
-  public int hashCode(){
-    return this.pinhole.x + this.pinhole.y + this.color.hashCode() +
-        this.radius; 
-  }
+    public String toIndentedString (String indent) {
+        String newIndent = indent + "  ";
+        return "new CircleImage(this.radius = " + this.getRadius() +
+        ",\n" + newIndent + "this.color = " + this.getColor() + 
+        ",\n" + newIndent + "this.mode = " + this.getMode() +
+        ",\n" + newIndent + this.cornerString() +
+        ")";
+    }
+
 }

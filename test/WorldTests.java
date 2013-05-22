@@ -14,12 +14,12 @@ public class WorldTests{
   static int n;
   
   static Object blobExamples = BlobWorldFun.examplesInstance;
-  static Object tickyTackExamples = TickyTackFun.examplesInstance;
+  // static Object tickyTackExamples = TickyTackFun.examplesInstance;
   
   static Object[] examples = new Object[]{
     
     BlobWorldFun.examplesInstance,
-    TickyTackFun.examplesInstance,
+    // TickyTackFun.examplesInstance,
     BlobWorldImp.examplesInstance,
     TickyTackImp.examplesInstance,
     

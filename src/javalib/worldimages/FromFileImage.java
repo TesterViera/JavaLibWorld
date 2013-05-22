@@ -2,6 +2,9 @@ package javalib.worldimages;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.File;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 /**
  * <p>Copyright 2012 Viera K. Proulx</p>
@@ -14,144 +17,86 @@ import java.awt.geom.*;
  * is to be drawn by the  
  * world when drawing on its <code>Canvas</code>.</p>
  *
- * @author Viera K. Proulx
- * @since February 4 2012
+ * @author Viera K. Proulx, slightly modified by Stephen Bloch
+ * @since February 4 2012, then Dec 12 2012
  */
-public class FromFileImage extends WorldImage{
+public class FromFileImage extends RasterImage{
   
   /** is this being used with an application or an applet? */
-  public static boolean isApplet = false;
+  private static boolean isApplet = false;
   
   /** the file name for the image source */
-  public String fileName;
+  private String fileName;
   
-  /** the instance of the class that handles reading of files just once 
-   * set to be transient, so that it is not used in comparisons by tester lib*/
-  protected volatile ImageMaker imread;
+  /** the file we're reading from */
+  private File inputFile;
   
-  /** the affine transform for moving the images to their pinhole locations */
-  protected transient AffineTransform at;
+  /**
+   * Record whether we're in an applet.
+   * 
+   * @param flag   true if we're in an applet, false if we're not.
+   */
+  static void setIsApplet (boolean flag)
+  {
+      FromFileImage.isApplet = flag;
+  }
   
+  /**
+   * Pseudo-constructor for objects of class FromFileImage
+   * 
+   * @TODO: do something more intelligent with exceptions than just return null, so
+   * students get a meaningful error message as soon as they try to create an image
+   * from a missing or corrupted file.
+   * 
+   * @param fileName
+   */
+  static WorldImage make (String fileName)
+  {
+      try {
+          if (isApplet)
+          {
+            return new FromURLImage (FromFileImage.class.getResource("/" + fileName));
+          }
+          else
+          {
+              return new FromFileImage (new File (fileName));
+          }
+        }
+      catch (java.io.IOException e)
+      {
+          return null;
+      }
+  }
+  
+    public boolean equals (Object other)
+    {
+        return super.equals (other) &&
+               this.fileName.equals(((FromFileImage)other).fileName);
+               // Note that if super.equals(other), they must be the same class,
+               // so since this is a FromFileImage, other is too, so the cast should work.
+    }
+
   /**
    * A full constructor for this image created from the file input
    * 
-   * @param pinhole the pinhole location (the center) for this image
-   * @param fileName the file name for the image source
+   * @param inputFile    the input file (already opened)
    */ 
-  public FromFileImage(Posn pinhole, String fileName){
-    super(pinhole, Color.white);
+  private FromFileImage(File inputFile) throws java.io.IOException
+  {
+    super();
+    this.inputFile = inputFile;
+    this.fileName = inputFile.getCanonicalPath();
     
-    // determine how to read the file name
-    // then read the image, or verify that it has been read already    
-    if (isApplet)
-      this.imread = new ImageMakerApplet(fileName);
+    if (LoadedImages.table.containsKey (this.fileName))
+    {
+        this.setRendering (LoadedImages.table.get(this.fileName));
+    }
     else
-      this.imread = new ImageMaker(fileName);
-    /*
-    this.pinhole.x = pinhole.x - (this.imread.width / 2);
-    this.pinhole.y = pinhole.y - (this.imread.height / 2);
-
-    
-    System.out.println("Image width = " + this.imread.width);
-    System.out.println("Image height = " + this.imread.height);
-    
-    System.out.println("pinhole.x = " + this.pinhole.x);
-    System.out.println("pinhole.y = " + this.pinhole.y);
-    */
-    
-    // initialize the filename and the affine transform
-    this.fileName = fileName;
-    
-    // for drawing we supply the coordinates of the NW corner of the image
-    this.at = 
-    AffineTransform.getTranslateInstance(this.pinhole.x - this.imread.width / 2, 
-                                       this.pinhole.y - this.imread.height / 2);   
-  }
-  
-  /** 
-   * Draw this image in the provided <code>Graphics2D</code> context.
-   * 
-   * @param g the provided <code>Graphics2D</code> context
-   */
-  public void draw(Graphics2D g){
-    // recompute the affine transform, as teh pinhole may have moved
-    this.at = 
-        AffineTransform.getTranslateInstance(this.pinhole.x - this.imread.width / 2, 
-                                           this.pinhole.y - this.imread.height / 2);   
-    // save the current paint
-    Paint oldPaint = g.getPaint();
-    // set the paint to the given color
-    //g.setPaint(color);  
-    
-    // draw the given image at the given location
-    g.drawRenderedImage(this.imread.image, this.at);
-    
-    // reset the original paint
-    g.setPaint(oldPaint);          
-  }
-  
-  /**
-   * <p>Provide a method for comparing two images constructed from image files
-   * to be used by the <em>tester</em> library.</p>
-   * 
-   * <p>This requires the import of the tester library. The comparison involves
-   * only the file names and the location of the pinholes.</p>
-   */
-  public boolean same(FromFileImage that){
-    return
-    this.fileName.equals(that.fileName) &&
-    this.pinhole.x == that.pinhole.x &&
-    this.pinhole.y == that.pinhole.y;
-  }
-
-  /**
-   * Produce the file-based images with the pinhole moved by the given (dx, dy)
-   * 
-   * @param dx the horizontal offset
-   * @param dy the vertical offset
-   */
-  public WorldImage getMovedImage(int dx, int dy){
-    return  
-        new FromFileImage(this.movePosn(this.pinhole, dx, dy), this.fileName);
-  }
-
-  /**
-   * Produce the file-based with the pinhole moved to the given location
-   * 
-   * @param p the given location
-   */
-  public WorldImage getMovedTo(Posn p){
-    int dx = p.x - pinhole.x;
-    int dy = p.y - pinhole.y;
-    return this.getMovedImage(dx, dy);
-  }
-
-  /**
-   * Produce the width of this image
-   * 
-   * @return the width of this image
-   */
-  public int getWidth(){
-    return this.imread.width;
-  }
-  
-  /**
-   * Produce the height of this image
-   * 
-   * @return the height of this image
-   */
-  public int getHeight(){
-    return this.imread.height;
-  }
-
-  
-  /**
-   * Produce a <code>String</code> representation of this from-file image
-   */
-  public String toString(){
-    return "new FromFileImage(this.pinhole = (" 
-        + this.pinhole.x + ", " + this.pinhole.y +  
-        ")\nthis.fileName = " + this.fileName +")\n";
+    {
+        BufferedImage img = ImageIO.read (this.inputFile);
+        LoadedImages.table.put(this.fileName, img);
+        this.setRendering (img);
+    }
   }
  
   /**
@@ -162,29 +107,16 @@ public class FromFileImage extends WorldImage{
    * @return the <code>String</code> representation of this image
    */
   public String toIndentedString(String indent){
-    indent = indent + "  ";
-    return classNameString(indent, "FromFileImage") + 
-        pinholeString(indent, this.pinhole) + 
-        ")\n" + indent + "this.fileName = " + this.fileName +")\n";
-  }
-  
-  /**
-   * Is this <code>FromFileImage</code> same as the given object?
-   */
-  public boolean equals(Object o){
-    if (o instanceof FromFileImage){
-      FromFileImage that = (FromFileImage)o;
-      return this.same(that);
-    }
-    else 
-      return false;
+    String newIndent = indent + "  ";
+    return "new FromFileImage(this.fileName = \"" + this.fileName + 
+        "\",\n" + newIndent + this.cornerString() +
+        ")";
   }
   
   /**
    * The hashCode to match the equals method
    */
   public int hashCode(){
-    return this.pinhole.x + this.pinhole.y + this.color.hashCode() +
-        this.fileName.hashCode(); 
+    return super.hashCode() + this.fileName.hashCode(); 
   }
 }
